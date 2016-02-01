@@ -1,0 +1,48 @@
+<nav>
+
+    <ul class="nav nav-justified">
+        <li class="active"><a href="#">Top20</a></li>
+        <li><a href="#">Last20</a></li>
+        <li><a href="#">经济学</a></li>
+        <li><a href="#">医学类</a></li>
+        <li><a href="#">人文类</a></li>
+        <li><a href="#">信息技术类</a></li>
+    </ul>
+
+</nav>
+<!--        -->
+<table class="table">
+    <caption>
+        <h4>统计信息汇总</h4></caption>
+    <thead>
+        <tr>
+            <th>评分</th>
+            <th>书名</th>
+            <th>作者</th>
+            <th>出版社</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <% top_twenty_books.forEach(function(book){ %>
+
+            <tr class="warning">
+                <td>
+                    <%= book.book_rating %>
+                </td>
+                <td>
+                    <%= book.book_name %>
+                </td>
+                <td>
+                    <%= book.book_author %>
+                </td>
+                <td>
+                    <%= book.book_press %>
+                </td>
+
+            </tr>
+
+            <% }); %>
+
+    </tbody>
+</table>

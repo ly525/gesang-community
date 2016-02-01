@@ -1,0 +1,94 @@
+<h3>总得来看呢</h3>
+
+<ol>
+    <li>你总共看了
+        <%=totalCount %>本书
+    </li>
+    <li>按照书籍的价格，总共是
+        <%= sumMoney%>元，相当于是
+            <%= parseInt(sumMoney/958) %> 个 Kindle Paperwhite </li>
+    <li>其中评分最高的一本书是
+        <%=highestRating.book_name %>，评分是
+            <%=highestRating.book_rating %>,借阅时间是
+                <%=highestRating.book_time_borrow %>
+    </li>
+    <li>评分最低的一本书是
+        <%=lowestRating.book_name %>，评分是
+            <%=lowestRating.book_rating %>,借阅时间是
+                <%=lowestRating.book_time_borrow %>
+                    <li>读的时间最长的一本书是
+                        <%=booksPeriodInfo[0].book_name %>
+                    </li>,持续时间是
+                    <%=booksPeriodInfo[0].period %>
+
+</ol>
+
+<h3>豆瓣评分怎么样？</h3>
+
+<ol>
+    <li>拥有豆瓣评分的书籍是
+        <%= booksWithDoubanRatingCount%>本，占据了
+            <%=(booksWithDoubanRatingCount/totalCount).toFixed(2)* 100 %>%的比例</li>
+    <li>其中豆瓣评分超过8.0的共
+        <%=booksWithDoubanRatingCountGT8 %>本，占据了
+            <%=(booksWithDoubanRatingCountGT8/booksWithDoubanRatingCount).toFixed(2) *100 %>%的比例</li>
+</ol>
+
+<h3>趋势是怎么样的？</h3>
+
+<ol>
+    <li>每一年的借书情况是</li>
+    <li>大一借了
+        <%= senior1 %>本
+    </li>
+    <li>大二借了
+        <%= senior2 %>本
+    </li>
+    <li>大三借了
+        <%= senior3 %>本
+    </li>
+    <li>大四借了
+        <%= senior4 %>本
+    </li>
+    <li>有图有真相，就是下面这样咯
+        <%= %>
+    </li>
+</ol>
+
+<h3>书籍的分布情况是怎么样的？</h3>
+
+<ol>
+    <li>书籍分布信息如下</li>
+    <li>经济类</li>
+    <li>工业技术类</li>
+    <li>心理学类</li>
+    <li>文学类</li>
+    <li>医学类</li>
+</ol>
+
+<h3>Nothing</h3>
+
+<ol>
+    <li>你去的最多的地方是
+        <%= %>
+    </li>
+    <li>你应该是*专业的学生，</li>
+    <li>你兴趣分布是
+        <%= %>
+    </li>
+    <li>每一年的具体分布如下
+        <%= %>
+    </li>
+    <li>每一年的整体豆瓣评分趋势如下
+        <%= %>
+    </li>
+</ol>
+
+<h3>向您推荐</h3>
+
+<ol>
+    <li>经济类图书排名榜</li>
+    <li>医学类排行榜</li>
+    <li>信息技术类排行榜</li>
+    <li>心理学类排行榜</li>
+</ol>

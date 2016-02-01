@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>
+        <%= title %>
+    </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--        这几个文件是做什么的?-->
+    <!-- Custom styles for this template -->
+    <link href="navbar-fixed-top.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">图豆^_^</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">问答</a></li>
+                    <li><a href="#contact">简文</a></li>
+                    <li><a href="#contact">校园卡</a></li>
+                    <li><a href="#contact">图书馆</a></li>
+
+                    <form class="navbar-form navbar-right" role="search">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                书名
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">问答</a></li>
+                                <li><a href="#">简文</a></li>
+                                <li><a href="#">作者</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">书名</a></li>
+                                <li><a href="#">作者</a></li>
+                                <li><a href="#">出版社</a></li>
+                            </ul>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+
+                        <div class="btn-group" role="group" aria-label="...">
+
+
+
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Go!</button>
+                    </form>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="">帮助</a></li>
+                    <li><a href="">消息</a></li>
+                    <li class="active"><a href="./">登录#注册<span class="sr-only">(current)</span></a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+        <div class="masthead">
+            <h1 class="text-muted">-</h1>
+
+        </div>
+        <!--    -->
+        <nav>
+
+            <ul id="myTab" class="nav nav-justified nav-tabs">
+                <li><a href="#rankingList" data-toggle="tab">
+      排行榜</a></li>
+                <li class="active"><a href="#ios" data-toggle="tab">检索</a></li>
+
+                <li class="dropdown">
+                    <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">
+         借阅分析 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+                        <li><a href="#jmeter" tabindex="-1" data-toggle="tab">jmeter</a></li>
+                        <li><a href="#ejb" tabindex="-1" data-toggle="tab">ejb</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </nav>
+        <hr>
+
+        <div id="myTabContent" class="tab-content">
+
+            <div class="tab-pane fade in active" id="rankingList">
+                <!--      -->
+                <nav>
+
+                    <ul class="nav nav-justified">
+                        <li class="active"><a href="#">Top20</a></li>
+                        <li><a href="#">Last20</a></li>
+                        <li><a href="#">经济学</a></li>
+                        <li><a href="#">医学类</a></li>
+                        <li><a href="#">人文类</a></li>
+                        <li><a href="#">信息技术类</a></li>
+                    </ul>
+
+                </nav>
+                <!--        -->
+                <table class="table">
+                    <caption>
+                        <h4>统计信息汇总</h4></caption>
+                    <thead>
+                        <tr>
+                            <th>评分</th>
+                            <th>书名</th>
+                            <th>作者</th>
+                            <th>出版社</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <% top_twenty_books.forEach(function(book){ %>
+
+                            <tr class="warning">
+                                <td>
+                                    <%= book.book_rating %>
+                                </td>
+                                <td>
+                                    <%= book.book_name %>
+                                </td>
+                                <td>
+                                    <%= book.book_author %>
+                                </td>
+                                <td>
+                                    <%= book.book_press %>
+                                </td>
+
+                            </tr>
+
+                            <% }); %>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="tab-pane fade" id="ios">
+                <p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch 和 Apple TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X 操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+            </div>
+            <div class="tab-pane fade" id="jmeter">
+                <p>jMeter 是一款开源的测试软件。它是 100% 纯 Java 应用程序，用于负载和性能测试。</p>
+            </div>
+            <div class="tab-pane fade" id="ejb">
+                <p>Enterprise Java Beans（EJB）是一个创建高度可扩展性和强大企业级应用程序的开发架构，部署在兼容应用程序服务器（比如 JBOSS、Web Logic 等）的 J2EE 上。
+                </p>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    // 获取已激活的标签页的名称
+                    var activeTab = $(e.target).text();
+                    // 获取前一个激活的标签页的名称
+                    var previousTab = $(e.relatedTarget).text();
+                    $(".active-tab span").html(activeTab);
+                    $(".previous-tab span").html(previousTab);
+                });
+            });
+        </script>
+        <!--        -->
+    </div>
+    <!-- /container -->
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+        <div class="container">
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p class="text-muted">Place sticky footer content here.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

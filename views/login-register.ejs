@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<%- include ./header-footer/header %>
+
+
+    <body>
+
+        <!-- Fixed navbar -->
+        <%- include ./nav/navbar %>
+            <!-- /Fixed navbar -->
+            <div class="container">
+                <div class="masthead">
+                    <h1 class="text-muted">-</h1>
+
+                </div>
+                <!--    -->
+                <nav>
+
+                    <ul id="myTab" class="nav nav-justified nav-tabs">
+                        <li class="active"><a href="#register" data-toggle="tab">
+      注册</a></li>
+                        <li><a href="#login" data-toggle="tab">登录</a></li>
+
+
+                    </ul>
+
+                </nav>
+                <hr>
+
+                <div id="myTabContent" class="tab-content">
+
+                    <div class="tab-pane fade in active" id="register">
+                        <!--不加action的时候默认的是什么?-->
+                        <form method="post" action="/users/register">
+                            用户名:
+                            <input type="text" name="name" />
+                            <br/> 密码:
+                            <input type="password" name="password" />
+                            <br/> 确认密码:
+                            <input type="password" name="password-repeat" />
+                            <br/> 邮箱:
+                            <input type="email" name="email" />
+                            <br/>
+                            <input type="submit" value="注册" />
+                        </form>
+
+                    </div>
+                    <div class="tab-pane fade" id="login">
+                        <!--登录-->
+                        <form method="post">
+                            用户名:
+                            <input type="text" name="name" />
+                            <br/> 密码:
+                            <input type="password" name="password" />
+                            <br/>
+                            <input type="submit" value="登录" /> </form>
+                    </div>
+
+                </div>
+                <script>
+                    $(function () {
+                        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                            // 获取已激活的标签页的名称
+                            var activeTab = $(e.target).text();
+                            // 获取前一个激活的标签页的名称
+                            var previousTab = $(e.relatedTarget).text();
+                            $(".active-tab span").html(activeTab);
+                            $(".previous-tab span").html(previousTab);
+                        });
+                    });
+                </script>
+                <!--        -->
+            </div>
+            <!-- /container -->
+
+
+
+            <%- include ./header-footer/footer %>
+
+    </body>
+
+</html>
