@@ -19,7 +19,7 @@ User.prototype.save = function (callback) {
     };
     // 打开与数据库的连接 
     mongodbInstance.open(function (err, db) {
-        console.log('打开数据库连接,连接信息未' + db);
+        console.log('打开数据库连接,连接信息为:' + db.toString());
 
         if (err) {
             //mongodbInstance.close(); 这句话注释的原因是:既然打开过程中失败,自然是没有打开,所以也无须关闭了
@@ -33,7 +33,6 @@ User.prototype.save = function (callback) {
                 mongodbInstance.close();
                 return callback(err);
             }
-            console.log('即将进行存储的用户信息' + user);
             // 没有错误,进行存储:将用户信息存储到users集合
             collection.insert(user, {
                 safe: true
@@ -44,12 +43,8 @@ User.prototype.save = function (callback) {
                 if (err) return callback(err); //错误,返回 err 信息
                 callback(null, user[0]); //成功!err 为 null,并返回存储后的用户文档
             });
-
-
         });
-
     });
-
 };
 
 
@@ -57,14 +52,13 @@ User.get = function (name, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         // 读取user集合
-        db.collection('users', function (err, collections) {
+        db.collection('users', function (err, users) {
             if (err) {
                 mongodbInstance.close();
                 return callback(err);
-
             }
 
-            collections.findOne({
+            users.findOne({
                 name: name
             }, function (err, user) {
                 mongodbInstance.close();

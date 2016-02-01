@@ -18,7 +18,11 @@ router.get('/users/:demo', function (req, res, next) {
 });
 router.get('/login-register', function (req, res, next) {
     console.log(req.params);
-    res.render('login-register')
+    res.render('login-register', {
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
 });
 
 router.post('/login', function (req, res, next) {
@@ -53,11 +57,13 @@ router.post('/register', function (req, res, next) {
 
     User.get(newUser.name, function (err, user) {
 
+        console.log('注册之前先检索是否存在');
         if (err) {
             req.flash('error', err);
             return res.redirect('/');
         }
         if (user) {
+            console.log('用户名已经存在');
             //console.log('重定向的结果是:' + res.redirect('/users/login-register'));
             // 不能这样来测试重定向结果,因为会报错:Error: Can't set headers after they are sent;因为console.log()里面有了重定向语句了
             req.flash('error', '用户名已经存在');
@@ -67,25 +73,18 @@ router.post('/register', function (req, res, next) {
 
         // 如果数据库中不存在该用户名,则新增用户
         newUser.save(function (err, user) {
+            console.log('用户不存在,可以注册,注册后返回的user信息' + user);
+
             if (err) {
+                console.log('保存新用户出错' + err);
                 req.flash('error', err);
-                return res.redirect('/login-register');
+                return res.redirect('/users/login-register');
             }
             req.session.user = user; // 把注册成功的用户信息存入session中
             req.flash('success', '注册成功');
             res.redirect('/'); // TODO 这边从系返回是的/users 还是/ ?此外怎么记住用户之前浏览的文章,注册成功之后返回这边篇文章或者想点击收藏按钮,需要注册,怎么在注册后执行收藏动作
         });
-
-
     });
-
-
-
-
-
-
-
-
 });
 router.get('logout', function (req, res, next) {
 

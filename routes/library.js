@@ -182,6 +182,7 @@ function (callback) {
         function (err, results) {
             // 在这里处理data和data2的数据,每个文件的内容从results中获取
             res.render('library', {
+                user: req.session.user,
                 title: 'Lend_history',
                 totalCount: results[0].length,
                 sumMoney: getSumMoney(results[0]),
