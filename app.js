@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 /*
 1. express 也提供了会话中间件,默认情况下是把用户信息存储在内存中
@@ -48,6 +49,13 @@ app.use(cookieParser());
 //设置public文件夹为存放静态文件的目录
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(multer({
+    //dest 是上传的文件所在的目录,rename 函数用来修改上传后的文件名,这里设置为保持原来的文件名
+    dest: './public/images',
+    rename: function (fieldName, fileName) {
+        return fileName;
+    }
+}));
 app.use(session({
     secret: mongodbSettings.cookieSecret,
     key: mongodbSettings.db, //cookie name
