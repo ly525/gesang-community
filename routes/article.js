@@ -1,19 +1,40 @@
 var express = require('express');
 var router = express.Router();
+var Article = require('../models/article');
 
-router.get('/post', function (req, res, next) {
-    res.render('postArticle', {
-        user: req.session.user
+router.get('/articles', function (req, res, next) {
+    Article.get(null, function (err, articles) {
+        if (err) articles = [];
+        res.render('articles', {
+            user: req.session.user,
+            articles: articles,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+
     });
 });
-router.get('/articles', function (req, res, next) {
+router.get('/post', function (req, res, next) {
     res.render('postArticle', {
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
+
     });
 });
-router.post('/post', function (req, res, next) {});
+router.post('/post', function (req, res, next) {
+    var currentUser = req.session.user;
+    var newArticle = new Article(currentUser.name, req.body.title, req.body.content);
+    newArticle.save(function (err) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/');
+        }
+        // TODO  2016年02月02日17:00:28 怎么在发表成功后,也就是客户端接收到success信号后,弹出一个发表成功的弹出框呢?
+        req.flash('success', '发表成功');
+        return res.redirect('/');
+    });
+});
 
 
 module.exports = router;

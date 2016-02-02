@@ -43,7 +43,7 @@ router.post('/login', function (req, res, next) {
         }
 
         // 检查密码是否一致
-        if (user.password !== req.body.password) {
+        if (user.password !== password) {
             console.log('密码错误');
             req.flash('error', '密码错误!');
             return res.redirect('/users/login-register');
@@ -74,7 +74,7 @@ router.post('/register', function (req, res, next) {
     // 生成密码的md5值
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
-
+    console.log('注册加密后的密码:' + password);
     var newUser = new User({
         name: name,
         password: password,
