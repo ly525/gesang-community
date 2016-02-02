@@ -21,8 +21,6 @@
                         <li class="active"><a href="#register" data-toggle="tab">
       注册</a></li>
                         <li><a href="#login" data-toggle="tab">登录</a></li>
-
-
                     </ul>
 
                 </nav>
@@ -48,7 +46,7 @@
                     </div>
                     <div class="tab-pane fade" id="login">
                         <!--登录-->
-                        <form method="post">
+                        <form method="post" action="/users/login">
                             用户名:
                             <input type="text" name="name" />
                             <br/> 密码:
@@ -60,11 +58,14 @@
                 </div>
                 <script>
                     $(function () {
+
+
                         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                             // 获取已激活的标签页的名称
                             var activeTab = $(e.target).text();
                             // 获取前一个激活的标签页的名称
                             var previousTab = $(e.relatedTarget).text();
+
                             $(".active-tab span").html(activeTab);
                             $(".previous-tab span").html(previousTab);
                         });

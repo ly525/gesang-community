@@ -26,8 +26,27 @@ router.get('/login-register', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
+    console.log('/users/login');
+    var md5 = crypto.createHash('md5'),
+        password = md5.update(req.body.password).digest('hex');
+    User.get(req.body.name, function (err, user) {
+        if (!user) {
+            console.log('用户不存在,请确认用户名是否正确');
+            req.flash('error', '用户不存在,请确认用户名是否正确');
+            return res.redirect('/user/login-register');
+        }
 
-
+        // 检查密码是否一致
+        if (user.password !== req.body.password) {
+            console.log('密码错误');
+            req.flash('error', '密码错误!');
+            return res.redirect('/users/login-register');
+        }
+        // 用户名和密码匹配后,将用户信息存入session
+        req.session.user = user;
+        req.flash('success', '登录成功!');
+        res.redirect('/'); //登录成功后跳转到首页
+    });
 });
 router.post('/register', function (req, res, next) {
     var name = req.body.name,
@@ -86,8 +105,10 @@ router.post('/register', function (req, res, next) {
         });
     });
 });
-router.get('logout', function (req, res, next) {
-
+router.get('/logout', function (req, res, next) {
+    req.session.user = null;
+    req.flash('success', '登出成功!');
+    res.redirect('/');
 });
 
 module.exports = router;

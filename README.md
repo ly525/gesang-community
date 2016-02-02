@@ -45,3 +45,6 @@
 ##QA
 1. Page35 中的flash模块实现页面通知是什么机制和socket.io有关系么?
 2. 登录注册成功之后,怎么执行之前未完成的动作?
+3. session 怎么利用express-session以及connect-mongo两个中间件存储到数据库?
+>1. 以及注册登录之后的session怎么存储到数据库中
+>2. app.use(session{secret,key,cookie,store});以及req.session.user=user;是怎么把session存储到数据库中的!
