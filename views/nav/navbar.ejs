@@ -44,10 +44,21 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
+
                 <li><a href="help">帮助</a></li>
                 <li><a href="message">消息</a></li>
                 <%if(user){%>
 
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="提问&写文章">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="">写篇文章</a></li>
+                            <li><a href="">提个问题</a></li>
+                        </ul>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <%= user.name %>
