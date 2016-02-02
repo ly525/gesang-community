@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var User = require('../models/user.js');
+var accessControl = require('./accessControl');
+var checkNotLogin = accessControl.checkNotLogin;
+var checkLogin = accessControl.checkLogin;\
+
 
 /* GET users listing. */
 router.get('/users', function (req, res, next) {
@@ -16,6 +20,7 @@ router.get('/users/:demo', function (req, res, next) {
     //        res.send(req.params('demo'));
     res.send(req.params.demo);
 });
+router.get('/login-register', checkNotLogin);
 router.get('/login-register', function (req, res, next) {
     console.log(req.params);
     res.render('login-register', {
@@ -25,6 +30,7 @@ router.get('/login-register', function (req, res, next) {
     });
 });
 
+router.get('/login', checkNotLogin);
 router.post('/login', function (req, res, next) {
     console.log('/users/login');
     var md5 = crypto.createHash('md5'),
@@ -48,6 +54,8 @@ router.post('/login', function (req, res, next) {
         res.redirect('/'); //登录成功后跳转到首页
     });
 });
+
+router.get('/register', checkNotLogin);
 router.post('/register', function (req, res, next) {
     var name = req.body.name,
         password = req.body.password,
