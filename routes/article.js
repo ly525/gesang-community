@@ -36,5 +36,12 @@ router.post('/post', function (req, res, next) {
     });
 });
 
+router.get('/upload', function (req, res) {
+    res.render('upload', {
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
+});
 
 module.exports = router;
