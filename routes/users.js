@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 var accessControl = require('./accessControl');
 var checkNotLogin = accessControl.checkNotLogin;
-var checkLogin = accessControl.checkLogin;\
+var checkLogin = accessControl.checkLogin;
 
 
 /* GET users listing. */

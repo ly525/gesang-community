@@ -17,6 +17,7 @@ var MongoStore = require('connect-mongo')(session); //TODO 2016年01月31日22:3
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var library = require('./routes/library');
+var article = require('./routes/article');
 var errorHandler = require('./routes/error');
 // 引入数据库配置文件
 var settings = require('./settings');
@@ -64,6 +65,7 @@ app.use(session({
 app.use('/', routes);
 app.use('/users', users);
 app.use('/library', library);
+app.use('/', article);
 errorHandler(app);
 
 
