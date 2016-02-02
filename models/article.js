@@ -1,4 +1,5 @@
-var mongodbInstance = require('./db');
+var mongodbInstance = require('./db'),
+    markdown = require('markdown').markdown;
 
 function Article(author, title, content) {
     this.author = author;
@@ -65,6 +66,9 @@ Article.get = function (author, callback) {
             }).toArray(function (err, articles) {
                 mongodbInstance.close();
                 if (err) return callback(err);
+                articles.forEach(function (article) {
+                    article.content = markdown.toHTML(article.content);
+                });
                 callback(null, articles); // 返回根据检索条件检索到的所有文章合集,以数组形式返回查询的结果
             });
         });

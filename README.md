@@ -48,3 +48,8 @@
 3. session 怎么利用express-session以及connect-mongo两个中间件存储到数据库?
 >1. 以及注册登录之后的session怎么存储到数据库中
 >2. app.use(session{secret,key,cookie,store});以及req.session.user=user;是怎么把session存储到数据库中的!
+
+##TODO
+1. 安装Robomongo
+>初次打开 Robomongo ,点击 Create 创建一个名为 blog (名字自定)的数据库链接(默认监听 localhost:27017),点击 Connect 就连接到数
+据库了
