@@ -1,25 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var User = require('../models/user.js');
+var Article = require('../models/article');
+var User = require('../models/user');
 var accessControl = require('./accessControl');
 var checkNotLogin = accessControl.checkNotLogin;
 var checkLogin = accessControl.checkLogin;
 
 
 /* GET users listing. */
-router.get('/users', function (req, res, next) {
-    console.log(req.params);
-    res.send(req.params);
-});
-router.get('/users/:demo', function (req, res, next) {
-    console.log(req.originalUrl);
-    console.log(req.params);
-    console.log(req.params.demo);
-    console.log(req.params[0]);
-    //        res.send(req.params('demo'));
-    res.send(req.params.demo);
-});
+//router.get('/users', function (req, res, next) {
+//    console.log(req.params);
+//    res.send(req.params);
+//});
+//router.get('/:demo', function (req, res, next) {
+//    console.log(req.originalUrl);
+//    console.log(req.params);
+//    console.log(req.params.demo);
+//    console.log(req.params[0]);
+//    //        res.send(req.params('demo'));
+//    res.send(req.params.demo);
+//});
 router.get('/login-register', checkNotLogin);
 router.get('/login-register', function (req, res, next) {
     console.log(req.params);
@@ -117,6 +118,44 @@ router.get('/logout', function (req, res, next) {
     req.session.user = null;
     req.flash('success', '登出成功!');
     res.redirect('/');
+});
+router.get('/u/:name', function (req, res, next) {
+    User.get(req.params.name, function (err, user) {
+        if (!user) {
+            req.flash('error', '用户不存在!');
+            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
+        }
+        Article.getAll(user.name, function (err, articles) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            res.render('user', {
+                title: user.name, // 被查看的用户xxx
+                user: req.session.user, // 访问xxx的用户
+                articles: articles,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString(),
+            });
+        });
+    });
+
+});
+router.get('/u/:name/:day/:title', function (req, res) {
+    Article.getOne(req.params.name, req.params.day, req.params.title, function (err, article) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
+        }
+
+        res.render('article', {
+            title: req.params.title, // 被查看的用户xxx
+            article: article,
+            user: req.session.user, // 访问xxx的用户
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString(),
+        });
+    });
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@ var router = express.Router();
 var Article = require('../models/article');
 
 router.get('/articles', function (req, res, next) {
-    Article.get(null, function (err, articles) {
+    Article.getAll(null, function (err, articles) {
         if (err) articles = [];
         res.render('articles', {
             user: req.session.user,

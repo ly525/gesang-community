@@ -46,9 +46,6 @@ app.use(bodyParser.urlencoded({
 }));
 //加载解析cookie的中间件
 app.use(cookieParser());
-//设置public文件夹为存放静态文件的目录
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(multer({
     //dest 是上传的文件所在的目录,rename 函数用来修改上传后的文件名,这里设置为保持原来的文件名
     dest: './public/uploadFiles',
@@ -56,6 +53,8 @@ app.use(multer({
         return fileName;
     }
 }));
+//设置public文件夹为存放静态文件的目录
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: mongodbSettings.cookieSecret,
     key: mongodbSettings.db, //cookie name

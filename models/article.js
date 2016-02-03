@@ -47,7 +47,8 @@ Article.prototype.save = function (callback) {
     });
 };
 
-Article.get = function (author, callback) {
+//获取一个人的所有文章(传入参数 name)或获取所有人的文章(不传入参数)
+Article.getAll = function (author, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         db.collection('articles', function (err, collection) {
@@ -70,6 +71,32 @@ Article.get = function (author, callback) {
                     article.content = markdown.toHTML(article.content);
                 });
                 callback(null, articles); // 返回根据检索条件检索到的所有文章合集,以数组形式返回查询的结果
+            });
+        });
+    });
+};
+
+// 根据作者,标题,发表时间获得一篇文章
+Article.getOne = function (author, day, title, callback) {
+    // 打开数据库
+    // TODO 查一下open()返回结果db的查询 2016年02月03日08:50:34
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+            collection.findOne({
+                "author": author,
+                "time.day": day,
+                "title": title
+            }, function (err, article) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                // 解析markdown为html
+                article.content = markdown.toHTML(article.content);
+                callback(null, article);
             });
         });
     });
