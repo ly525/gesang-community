@@ -114,6 +114,8 @@ router.post('/register', function (req, res, next) {
         });
     });
 });
+
+router.get('/logout', checkLogin);
 router.get('/logout', function (req, res, next) {
     req.session.user = null;
     req.flash('success', '登出成功!');
@@ -141,6 +143,7 @@ router.get('/u/:name', function (req, res, next) {
     });
 
 });
+
 router.get('/u/:name/:day/:title', function (req, res) {
     Article.getOne(req.params.name, req.params.day, req.params.title, function (err, article) {
         if (err) {

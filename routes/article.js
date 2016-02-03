@@ -14,6 +14,8 @@ router.get('/articles', function (req, res, next) {
 
     });
 });
+
+router.get('/post', checkLogin);
 router.get('/post', function (req, res, next) {
     res.render('postArticle', {
         user: req.session.user,
@@ -22,6 +24,9 @@ router.get('/post', function (req, res, next) {
 
     });
 });
+
+
+router.post('/post', checkLogin);
 router.post('/post', function (req, res, next) {
     var currentUser = req.session.user;
     var newArticle = new Article(currentUser.name, req.body.title, req.body.content);
@@ -36,6 +41,8 @@ router.post('/post', function (req, res, next) {
     });
 });
 
+
+router.get('/upload', checkLogin);
 router.get('/upload', function (req, res) {
     res.render('upload', {
         user: req.session.user,
@@ -44,6 +51,7 @@ router.get('/upload', function (req, res) {
     });
 });
 
+router.post('/upload', checkLogin);
 router.post('/upload', function (req, res) {
     console.log('文件上传成功');
     req.flash('success', '文件上传成功');
