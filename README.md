@@ -40,7 +40,12 @@
     // 具体场景:
     res.status(err.status || 500);
     ```
-    
+
+### python 启用一个目录作为静态文件服务器
+>1. `python -m  SimpleHTTPServer` ->`Serving HTTP on 0.0.0.0 port 8000 ...`
+>2. 例如在bootstrap文件的目录直接这样使用就可以了
+> 这样就可以在每一个html文件中引入`http://localhost:8000/css/bootstrap.min.css`了,这样就可以避免相对路径的问题了
+
     
 ##QA
 1. Page35 中的flash模块实现页面通知是什么机制和socket.io有关系么?
