@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var Article = require('../models/article');
+var checkLogin = require('./accessControl').checkLogin;
+var checkNotLogin = require('./accessControl').checkNotLogin;
 
-router.get('/articles', function (req, res, next) {
+router.get('/', function (req, res, next) {
     Article.getAll(null, function (err, articles) {
         if (err) articles = [];
         res.render('articles', {

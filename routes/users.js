@@ -145,6 +145,8 @@ router.get('/u/:name', function (req, res, next) {
 });
 
 router.get('/u/:name/:day/:title', function (req, res) {
+    console.log(req.params.name+'-'+req.params.day+'-'+ req.params.title);
+
     Article.getOne(req.params.name, req.params.day, req.params.title, function (err, article) {
         if (err) {
             req.flash('error', err);
