@@ -44,4 +44,10 @@ router.get('/upload', function (req, res) {
     });
 });
 
+router.post('/upload', function (req, res) {
+    console.log('文件上传成功');
+    req.flash('success', '文件上传成功');
+    res.redirect('/upload');
+});
+
 module.exports = router;

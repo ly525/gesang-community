@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(multer({
     //dest 是上传的文件所在的目录,rename 函数用来修改上传后的文件名,这里设置为保持原来的文件名
-    dest: './public/images',
+    dest: './public/uploadFiles',
     rename: function (fieldName, fileName) {
         return fileName;
     }
