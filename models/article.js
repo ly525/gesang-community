@@ -78,6 +78,43 @@ Article.getAll = function (author, callback) {
     });
 };
 
+// 一次获取10篇文章
+Article.getTen = function (author, page, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                console.log('==[Error] in /models/article.js Article.getTen() ' + err);
+                mongodbInstance.close();
+                return callback(err);
+            }
+            var query = {};
+            // 如果是查询某一个用户的文章的,比如:if('zhangsan')-> if(true)
+            if (author) {
+                query.author = author;
+            }
+            // 根据count返回特定查询的文档数 total
+            collection.count(query, function (err, total) {
+                console.log('==输出total的总量:' + total);
+                // 根据query对象查询, 并且跳过前(page-1)*10个结果,并且返回之后的10个结果
+                collection.find(query, {
+                    skip: (page - 1) * 10,
+                    limit: 10
+                }).sort({time: -1}).toArray(function (err, articles) {
+                    mongodbInstance.close();
+                    if (err) return callback(err);
+                    // 解析文章内容 markdown -> html
+                    articles.forEach(function (article) {
+                        article.content = markdown.toHTML(article.content);
+                    });
+                    callback(null, articles, total);
+                });
+            });
+        });
+    });
+
+};
+
 // 根据作者,标题,发表时间获得一篇文章
 Article.getOne = function (_id, callback) {
 

@@ -16,7 +16,7 @@
                     <h1 class="text-muted">-</h1>
 
                 </div>
-                <!--    -->
+                <div>
                 <% articles.forEach(function(article,index){%>
                     <p>
                         <h2><a href="/article/<%= article._id %>"><%= article.title %></a></h2></p>
@@ -33,6 +33,8 @@
                     </p>
 
                     <%})%>
+                </div>
+                <%- include ./paging %>
             </div>
             <!-- /container -->
 
