@@ -148,5 +148,24 @@ Article.update = function (_id, title, content, callback) {
     });
 };
 
+Article.remove = function(_id, callback){
+    mongodbInstance.open(function (err,db) {
+        if (err) return callback(err);
+        db.collection('articles',function(err,collection){
+            if (err){
+                mongodbInstance.close();
+                return callback(err);
+            }
+            collection.remove({_id: new mongodb.ObjectID(_id)},{w:1}, function (err) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                callback(null);
+            });
+        });
+
+    })
+
+
+};
 
 module.exports = Article;
