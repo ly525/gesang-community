@@ -11,8 +11,10 @@
                     <h1 class="text-muted">-</h1>
                 </div>
                 <p><h2><%= article.title %></h2>
+                <%if (user && (article.author == user.name)){ %>
                 <span><a href="/article/edit/<%= article._id %>" class="edit" >编辑</a> </span>
                 <span><a href="/article/remove/<%= article._id %>" class="edit" >删除</a> </span>
+                <% } %>
                 </p>
                 <p class="info">
                     作者:
