@@ -116,7 +116,7 @@ Article.edit = function (_id, callback) {
             collection.findOne({
                 _id: new mongodb.ObjectID(_id)
             }, function (err, article) {
-                console.log(article.content);
+                //console.log(article.content);
                 mongodbInstance.close();
                 if (err) return callback(err);
                 callback(null, article);

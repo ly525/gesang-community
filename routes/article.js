@@ -67,8 +67,8 @@ router.get('/edit/:_id', function (req, res) {
 router.post('/edit/:_id',checkLogin);
 router.post('/edit/:_id', function (req,res) {
    Article.update(req.params._id,req.body.title,req.body.content,function(err){
-     // TODO 2016年02月04日10:06:13 查看文章详细的逻辑,将其移动到article的路由中,且使用_id进行查看!
-       //var url= encodeURI('/users/u/')
+      //TODO 2016年02月04日10:06:13 查看文章详细的逻辑,将其移动到article的路由中,且使用_id进行查看! [Done]
+       var url= encodeURI('/article/'+req.params._id);
        if (err){
            req.flash('error',err);
            return res.redirect(url);// 错误,返回对应的文章页面
