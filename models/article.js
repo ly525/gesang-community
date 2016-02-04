@@ -1,5 +1,6 @@
 var mongodbInstance = require('./db'),
-    markdown = require('markdown').markdown;
+    markdown = require('markdown').markdown,
+    mongodb = require('mongodb');
 
 function Article(author, title, content) {
     this.author = author;
@@ -78,7 +79,7 @@ Article.getAll = function (author, callback) {
 
 // 根据作者,标题,发表时间获得一篇文章
 Article.getOne = function (author, day, title, callback) {
-    console.log(author+'-'+title);
+    console.log(author + '-' + title);
 
     // 打开数据库
     // TODO 查一下open()返回结果db的查询 2016年02月03日08:50:34
@@ -97,8 +98,8 @@ Article.getOne = function (author, day, title, callback) {
                 mongodbInstance.close();
                 if (err) return callback(err);
                 // 解析markdown为html
-                if (article ===null){
-                    console.log(author+'-'+title);
+                if (article === null) {
+                    console.log(author + '-' + title);
                 }
                 article.content = markdown.toHTML(article.content);
                 callback(null, article);
@@ -106,4 +107,49 @@ Article.getOne = function (author, day, title, callback) {
         });
     });
 };
+
+Article.edit = function (_id, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+            collection.findOne({
+                _id: new mongodb.ObjectID(_id)
+            }, function (err, article) {
+                console.log(article.content);
+                mongodbInstance.close();
+                if (err) return callback(err);
+                callback(null, article);
+            });
+        });
+    });
+};
+
+Article.update = function (_id, title, content, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+            // TODO 2016年02月04日09:57:30 这边进行更新的时候如何在后来的扩展中可以查看文章的历史版本?
+            collection.update({_id: new mongodb.ObjectID(_id)}, {
+                $set: {
+                    title: title,
+                    content: content
+                }
+            }, function (err) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                return callback(null);
+            });
+        });
+    });
+};
+
+
 module.exports = Article;

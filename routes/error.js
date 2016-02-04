@@ -9,6 +9,7 @@ module.exports = function (app) {
         next(err);
     });
 
+    // TODO 2016年02月03日21:00:16 在routes/article.js中出错了,怎么把错误传递到500的处理里面?
     // production error handler
     // no stacktraces leaked to user
     app.use(function (err, req, res, next) {

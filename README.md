@@ -60,3 +60,12 @@
 据库了
 2. 文件上传之后若是使用,其路径写的是/uploadFiles/xxx.jpg,那么添加了`static中间件`是否意味着在解析的时候是/public/uploadFiles/xxx.jpg?
  1. 添加文件拖拽上传和markdown的预览功能!
+
+## Error
+1. Error: collection name must be a String
+```
+// 错误写法:缺少了集合的名称
+db.collection(function(err,articles){}
+// 正确写法
+db.collection('aricles',function(err,articles){}
+```
