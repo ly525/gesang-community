@@ -78,8 +78,7 @@ Article.getAll = function (author, callback) {
 };
 
 // 根据作者,标题,发表时间获得一篇文章
-Article.getOne = function (author, day, title, callback) {
-    console.log(author + '-' + title);
+Article.getOne = function (_id, callback) {
 
     // 打开数据库
     // TODO 查一下open()返回结果db的查询 2016年02月03日08:50:34
@@ -91,16 +90,14 @@ Article.getOne = function (author, day, title, callback) {
                 return callback(err);
             }
             collection.findOne({
-                "author": author,
-                "time.day": day,
-                "title": title
+                _id:new mongodb.ObjectID(_id)
             }, function (err, article) {
                 mongodbInstance.close();
                 if (err) return callback(err);
                 // 解析markdown为html
-                if (article === null) {
-                    console.log(author + '-' + title);
-                }
+                //if (article === null) {
+                //    console.log(author + '-' + title);
+                //}
                 article.content = markdown.toHTML(article.content);
                 callback(null, article);
             });

@@ -78,4 +78,24 @@ router.post('/edit/:_id', function (req,res) {
    });
 });
 
+// 查看一篇文章详情
+router.get('/:_id', function (req, res) {
+    console.log('查看一篇文章详情的文章ID'+req.params._id);
+
+    Article.getOne(req.params._id, function (err, article) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
+        }
+
+        res.render('article', {
+            title: req.params.title, // 被查看的用户xxx
+            article: article,
+            user: req.session.user, // 访问xxx的用户
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString(),
+        });
+    });
+});
+
 module.exports = router;

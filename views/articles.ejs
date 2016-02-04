@@ -19,7 +19,7 @@
                 <!--    -->
                 <% articles.forEach(function(article,index){%>
                     <p>
-                        <h2><a href="/users/u/<%= article.author %>/<%= article.time.day %>/<%=article.title %>"><%= article.title %></a></h2></p>
+                        <h2><a href="/article/<%= article._id %>"><%= article.title %></a></h2></p>
                     <p class="info">
                         作者:
                         <a href="/users/u/<%=article.author %>">

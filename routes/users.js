@@ -144,23 +144,6 @@ router.get('/u/:name', function (req, res, next) {
 
 });
 
-router.get('/u/:name/:day/:title', function (req, res) {
-    console.log(req.params.name+'-'+req.params.day+'-'+ req.params.title);
 
-    Article.getOne(req.params.name, req.params.day, req.params.title, function (err, article) {
-        if (err) {
-            req.flash('error', err);
-            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
-        }
-
-        res.render('article', {
-            title: req.params.title, // 被查看的用户xxx
-            article: article,
-            user: req.session.user, // 访问xxx的用户
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString(),
-        });
-    });
-});
 
 module.exports = router;
