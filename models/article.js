@@ -1,6 +1,6 @@
 var mongodbInstance = require('./db'),
     markdown = require('markdown').markdown,
-    mongodb = require('mongodb');
+    ObjectID = require('mongodb').ObjectID;
 
 function Article(author, title, content) {
     this.author = author;
@@ -27,7 +27,8 @@ Article.prototype.save = function (callback) {
         author: this.author,
         time: time,
         title: this.title,
-        content: this.content
+        content: this.content,
+        comments: []
     };
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
@@ -90,7 +91,7 @@ Article.getOne = function (_id, callback) {
                 return callback(err);
             }
             collection.findOne({
-                _id:new mongodb.ObjectID(_id)
+                _id: new ObjectID(_id)
             }, function (err, article) {
                 mongodbInstance.close();
                 if (err) return callback(err);
@@ -98,7 +99,12 @@ Article.getOne = function (_id, callback) {
                 //if (article === null) {
                 //    console.log(author + '-' + title);
                 //}
-                article.content = markdown.toHTML(article.content);
+                if (article) {
+                    article.content = markdown.toHTML(article.content);
+                    article.comments.forEach(function (comment) {
+                        comment.content = markdown.toHTML(comment.content);
+                    });
+                }
                 callback(null, article);
             });
         });
@@ -114,7 +120,7 @@ Article.edit = function (_id, callback) {
                 return callback(err);
             }
             collection.findOne({
-                _id: new mongodb.ObjectID(_id)
+                _id: new ObjectID(_id)
             }, function (err, article) {
                 //console.log(article.content);
                 mongodbInstance.close();
@@ -134,7 +140,7 @@ Article.update = function (_id, title, content, callback) {
                 return callback(err);
             }
             // TODO 2016年02月04日09:57:30 这边进行更新的时候如何在后来的扩展中可以查看文章的历史版本?
-            collection.update({_id: new mongodb.ObjectID(_id)}, {
+            collection.update({_id: new ObjectID(_id)}, {
                 $set: {
                     title: title,
                     content: content
@@ -148,15 +154,15 @@ Article.update = function (_id, title, content, callback) {
     });
 };
 
-Article.remove = function(_id, callback){
-    mongodbInstance.open(function (err,db) {
+Article.remove = function (_id, callback) {
+    mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
-        db.collection('articles',function(err,collection){
-            if (err){
+        db.collection('articles', function (err, collection) {
+            if (err) {
                 mongodbInstance.close();
                 return callback(err);
             }
-            collection.remove({_id: new mongodb.ObjectID(_id)},{w:1}, function (err) {
+            collection.remove({_id: new ObjectID(_id)}, {w: 1}, function (err) {
                 mongodbInstance.close();
                 if (err) return callback(err);
                 callback(null);

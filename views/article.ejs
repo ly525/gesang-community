@@ -2,34 +2,39 @@
 <html lang="zh-CN">
 <%- include ./header-footer/header %>
 
-    <body>
-        <!-- Fixed navbar -->
-        <%- include ./nav/navbar %>
-            <!-- /Fixed navbar -->
-            <div class="container">
-                <div class="masthead">
-                    <h1 class="text-muted">-</h1>
-                </div>
-                <p><h2><%= article.title %></h2>
-                <%if (user && (article.author == user.name)){ %>
-                <span><a href="/article/edit/<%= article._id %>" class="edit" >编辑</a> </span>
-                <span><a href="/article/remove/<%= article._id %>" class="edit" >删除</a> </span>
-                <% } %>
-                </p>
-                <p class="info">
-                    作者:
-                    <a href="/users/u/<%=article.author %>">
-                        <%= article.author%>
-                    </a> |
-                    日期:
-                    <%= article.time.postTime %>
-                </p>
-                <p>
-                    <%- article.content %>
-                </p>
-            </div>
-            <!-- /container -->
-            <%- include ./header-footer/footer %>
-    </body>
+<body>
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
+<div class="container">
+    <div class="masthead">
+        <h1 class="text-muted">-</h1>
+    </div>
+    <div class="article">
+        <p>
+        <h2><%= article.title %></h2>
+        <% if (user && (article.author == user.name)){ %>
+        <span><a href="/article/edit/<%= article._id %>" class="edit">编辑</a> </span>
+        <span><a href="/article/remove/<%= article._id %>" class="edit">删除</a> </span>
+        <% } %>
+        </p>
+        <p class="info">
+            作者:
+            <a href="/users/u/<%= article.author %>">
+                <%= article.author %>
+            </a> |
+            日期:
+            <%= article.time.postTime %>
+        </p>
+        <p>
+            <%- article.content %>
+        </p>
+    </div>
+    <%- include ./comment %>
+</div>
+
+<!-- /container -->
+<%- include ./header-footer/footer %>
+</body>
 
 </html>

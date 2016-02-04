@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Article = require('../models/article');
 var checkLogin = require('./accessControl').checkLogin;
+var Comment = require('../models/comment');
 
 router.get('/post', checkLogin);
 router.get('/post', function (req, res, next) {
