@@ -25,6 +25,14 @@
             </a> |
             日期:
             <%= article.time.postTime %>
+            标签 <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
+            <% if(article.tags){ %>
+            <% article.tags.forEach(function (tag, index) { %>
+            <% if(tag){ %>
+            <a href="/tags/<%= tag %>" class="tag"><%= tag %></a>
+            <% } %>
+            <% }) %>
+            <% } %>
         </p>
         <p>
             <%- article.content %>

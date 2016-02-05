@@ -3,45 +3,52 @@
 
 <%- include ./header-footer/header %>
 
-    <body>
+<body>
 
-        <!-- Fixed navbar -->
-        <%- include ./nav/navbar %>
-            <!-- /Fixed navbar -->
-
-
-            <div class="container">
-
-                <div class="masthead">
-                    <h1 class="text-muted">-</h1>
-
-                </div>
-                <div>
-                <% articles.forEach(function(article,index){%>
-                    <p>
-                        <h2><a href="/article/<%= article._id %>"><%= article.title %></a></h2></p>
-                    <p class="info">
-                        作者:
-                        <a href="/users/u/<%=article.author %>">
-                            <%= article.author %> |
-                        </a>
-                        日期:
-                        <%= article.time.postTime %>
-                    </p>
-                    <p>
-                        <%- article.content %>
-                    </p>
-
-                    <%})%>
-                </div>
-                <%- include ./paging %>
-            </div>
-            <!-- /container -->
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
 
 
+<div class="container">
 
-            <%- include ./header-footer/footer %>
+    <div class="masthead">
+        <h1 class="text-muted">-</h1>
 
-    </body>
+    </div>
+    <div>
+        <% articles.forEach(function(article, index){ %>
+        <p>
+        <h2><a href="/article/<%= article._id %>"><%= article.title %></a></h2></p>
+        <p class="info">
+            作者:
+            <a href="/users/u/<%= article.author %>">
+                <%= article.author %>
+            </a> |
+            日期:
+            <%= article.time.postTime %> |
+            标签 <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
+            <% if(article.tags){ %>
+                <% article.tags.forEach(function (tag, index) { %>
+                  <% if(tag){ %>
+                    <a href="/tags/<%= tag %>" class="tag"><%= tag %></a>
+                  <% } %>
+                <% }) %>
+            <% } %>
+        </p>
+        <p>
+            <%- article.content %>
+        </p>
+
+        <% }) %>
+    </div>
+    <%- include ./paging %>
+</div>
+<!-- /container -->
+
+
+<%- include ./header-footer/footer %>
+
+</body>
 
 </html>

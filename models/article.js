@@ -2,10 +2,11 @@ var mongodbInstance = require('./db'),
     markdown = require('markdown').markdown,
     ObjectID = require('mongodb').ObjectID;
 
-function Article(author, title, content) {
+function Article(author, title, content, tags) {
     this.author = author;
     this.title = title;
     this.content = content;
+    this.tags = tags;
 }
 
 Article.prototype.save = function (callback) {
@@ -27,6 +28,7 @@ Article.prototype.save = function (callback) {
         author: this.author,
         time: time,
         title: this.title,
+        tags: this.tags,
         content: this.content,
         comments: []
     };
