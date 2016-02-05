@@ -49,4 +49,20 @@ router.get('/archive', function (req, res) {
         });
     });
 });
+
+router.get('/tags', function (req, res) {
+    Article.getTags(function (err, tags) {
+        if (err) {
+            console.log('==[Error] in routes/articles/tags :' + err);
+            req.flash('error', err);
+            res.redirect('/articles');
+        }
+        res.render('tags', {
+            tags: tags,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+});
 module.exports = router;
