@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<%- include ./header-footer/header %>
+
+<body>
+
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
+
+
+<div class="container">
+
+    <div class="masthead">
+        <h1 class="text-muted">-</h1>
+
+    </div>
+    <ul class="archive">
+        <% var lastYear = 0 %>
+        <% articles.forEach(function(article){ %>
+        <% if (lastYear !== article.time.year) { %>
+            <li><h3><%= article.time.year %></h3></li>
+            <% lastYear = article.time.year }%>
+            <li><time><%= article.time.day %></time></li>
+            <li><a href="/article/<%= article._id %>"><%= article.title %></a></li>
+        <% }) %>
+    </ul>
+</div>
+<!-- /container -->
+
+
+<%- include ./header-footer/footer %>
+
+</body>
+
+</html>

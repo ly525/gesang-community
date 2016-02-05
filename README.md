@@ -55,11 +55,12 @@
 >2. app.use(session{secret,key,cookie,store});以及req.session.user=user;是怎么把session存储到数据库中的!
 
 ##TODO
-1. 安装Robomongo
->初次打开 Robomongo ,点击 Create 创建一个名为 blog (名字自定)的数据库链接(默认监听 localhost:27017),点击 Connect 就连接到数
-据库了
-2. 文件上传之后若是使用,其路径写的是/uploadFiles/xxx.jpg,那么添加了`static中间件`是否意味着在解析的时候是/public/uploadFiles/xxx.jpg?
+1. 文件上传之后若是使用,其路径写的是/uploadFiles/xxx.jpg,那么添加了`static中间件`是否意味着在解析的时候是/public/uploadFiles/xxx.jpg?
  1. 添加文件拖拽上传和markdown的预览功能!
+2. CSS样式:
+ 1. float的复习和应用场景
+  1. 编辑,删除文章;发表文章在右下角
+  
 
 ## Error
 1. Error: collection name must be a String

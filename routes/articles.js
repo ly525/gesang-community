@@ -33,5 +33,20 @@ router.get('/', function (req, res, next) {
     //});
 });
 
-
+router.get('/archive', function (req, res) {
+    Article.getArchive(function (err, articles) {
+        if (err) {
+            console.log('==[Error] in routes/articles/archive :' + err);
+            req.flash('error', err);
+            res.redirect('/articles');
+        }
+        console.log('==[Error] 归档的大小' + articles.length);
+        res.render('archive', {
+            articles: articles,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('err').toString()
+        });
+    });
+});
 module.exports = router;
