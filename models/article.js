@@ -281,5 +281,30 @@ Article.remove = function (_id, callback) {
 
 };
 
+Article.search = function (keyword, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+            var pattern = new RegExp(keyword, 'i');// i修饰符用于执行对大小写不敏感的匹配
+            collection.find({
+                title: pattern // TODO 2016年02月06日20:02:10 现在是只匹配标题,怎么查询文章的内容和作者呢?
+            }, {
+                name: 1,
+                time: 1,
+                title: 1
+            }).sort({
+                time: -1 // TODO 2016年02月06日20:02:52 这边的-1 是什么意思?
+            }).toArray(function (err, articles) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                callback(null, articles);
+            });
+        });
+    });
+};
 
 module.exports = Article;

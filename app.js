@@ -21,6 +21,7 @@ var library = require('./routes/library');
 var articles = require('./routes/articles');
 var article = require('./routes/article');
 var comment = require('./routes/comment');
+var search = require('./routes/search');
 var errorHandler = require('./routes/error');
 // 引入数据库配置文件
 var settings = require('./settings');
@@ -77,6 +78,7 @@ app.use('/library', library);
 app.use('/articles', articles);
 app.use('/article', article);
 app.use('/comment', comment);
+app.use('/search', search);
 errorHandler(app);
 
 
