@@ -65,4 +65,20 @@ router.get('/tags', function (req, res) {
         });
     });
 });
+
+router.get('/tag/:tag', function (req, res) {
+    Article.getTag(req.params.tag, function (err, articles) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect('back');
+        }
+        res.render('tag', {
+            articles: articles,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
+});
 module.exports = router;

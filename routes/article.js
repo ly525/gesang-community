@@ -45,7 +45,7 @@ router.post('/upload', checkLogin);
 router.post('/upload', function (req, res) {
     console.log('文件上传成功');
     req.flash('success', '文件上传成功');
-    res.redirect('/upload');
+    res.redirect('/article/upload');
 });
 
 router.get('/edit/:_id', checkLogin);

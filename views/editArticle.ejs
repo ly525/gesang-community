@@ -10,17 +10,22 @@
     <div class="masthead">
         <h1 class="text-muted">-</h1>
     </div>
-    <span><a href="/upload" title="上传">Upload</a></span>
+    <span><a href="/article/upload" title="上传">Upload</a></span>
     <form method="post" action="/article/edit/<%= article._id %>">
         标题:
         <br/>
-        <input type="text" name="title" value="<%= article.title %>" />
-        <br/> 正文:
+        <input type="text" name="title" value="<%= article.title %>"/>
         <br/>
+        标签(每篇文章最多三个标签):
+        <br/>
+        <input type="text" name="tag1" value="<%= article.tags[0]%>"/>
+        <input type="text" name="tag2" value="<%= article.tags[1]%>"/>
+        <input type="text" name="tag3" value="<%= article.tags[2]%>"/>
+        <br/>正文:<br/>
         <textarea name="content" rows="20" cols="100"><%= article.content %></textarea>
         <br/>
-        <input type="submit" value="存为草稿" />
-        <input type="submit" value="保存修改" />
+        <input type="submit" value="存为草稿"/>
+        <input type="submit" value="保存修改"/>
     </form>
 
 </div>

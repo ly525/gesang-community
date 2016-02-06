@@ -31,7 +31,7 @@
             <% if(article.tags){ %>
                 <% article.tags.forEach(function (tag, index) { %>
                   <% if(tag){ %>
-                    <a href="/tag/<%= tag %>" class="tag"><%= tag %></a>
+                    <a href="/articles/tag/<%= tag %>" class="tag"><%= tag %></a>
                   <% } %>
                 <% }) %>
             <% } %>
