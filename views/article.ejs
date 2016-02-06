@@ -24,7 +24,7 @@
                 <%= article.author %>
             </a> |
             日期:
-            <%= article.time.postTime %>
+            <%= article.time.postTime %> |
             标签 <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
             <% if(article.tags){ %>
             <% article.tags.forEach(function (tag, index) { %>
@@ -33,6 +33,8 @@
             <% } %>
             <% }) %>
             <% } %>
+            | 阅读: <span><%= article.pv %></span>
+            | 评论: <span><%= article.comments.length %></span><!--TODO 2016年02月06日12:46:24 这里评论可以改成超链接的形式,可以直接跳转到对应的评论部分!-->
         </p>
         <p>
             <%- article.content %>

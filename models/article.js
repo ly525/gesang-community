@@ -30,7 +30,8 @@ Article.prototype.save = function (callback) {
         title: this.title,
         tags: this.tags,
         content: this.content,
-        comments: []
+        comments: [],
+        pv: 0
     };
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
@@ -132,19 +133,29 @@ Article.getOne = function (_id, callback) {
             collection.findOne({
                 _id: new ObjectID(_id)
             }, function (err, article) {
-                mongodbInstance.close();
-                if (err) return callback(err);
-                // 解析markdown为html
-                //if (article === null) {
-                //    console.log(author + '-' + title);
-                //}
+                if (err) {
+                    mongodbInstance.close();
+                    return callback(err);
+                }
+                console.log(article.content);
                 if (article) {
+                    collection.update({
+                        _id: new ObjectID(_id)
+                    }, {$inc: {pv: 1}}, function (err) {
+                        console.log(err);
+                        mongodbInstance.close();
+                        if (err) return callback(err);
+                    });
+                    // 解析markdown为html
+                    //if (article === null) {
+                    //    console.log(author + '-' + title);
+                    //}
                     article.content = markdown.toHTML(article.content);
                     article.comments.forEach(function (comment) {
                         comment.content = markdown.toHTML(comment.content);
                     });
+                    return callback(null, article);
                 }
-                callback(null, article);
             });
         });
     });
