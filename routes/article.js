@@ -18,8 +18,8 @@ router.get('/post', function (req, res, next) {
 router.post('/post', checkLogin);
 router.post('/post', function (req, res, next) {
     var currentUser = req.session.user;
-    var tags = [req.body.tag1,req.body.tag2,req.body.tag3];
-    var newArticle = new Article(currentUser.name, req.body.title, req.body.content,tags);
+    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
+    var newArticle = new Article(currentUser.name, currentUser.avatar, req.body.title, req.body.content, tags);
     newArticle.save(function (err) {
         if (err) {
             req.flash('error', err);

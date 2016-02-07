@@ -1,5 +1,6 @@
 // 创建一个数据库连接实例
 var mongodbInstance = require('./db');
+var crypto = require('crypto');
 
 // 创建一个对象
 function User(user) {
@@ -11,11 +12,18 @@ function User(user) {
 // 给对象添加方法,使得该类的所有实例都可以使用
 User.prototype.save = function (callback) {
     console.log('User 实例的prototype方法 save()');
+    var md5 = crypto.createHash('md5'),
+    // TODO 有大写的邮箱账号吗?
+        email_MD5 = md5.update(this.email.toLowerCase()).digest('hex'),//需要把 email 转化成小写再编码
+        avatar = "http://www.gravatar.com/avatar" + email_MD5 + "?s=48";
+
+
     // 创建实例
     var user = {
         name: this.name,
         password: this.password,
-        email: this.email
+        email: this.email,
+        avatar: avatar
     };
     // 打开与数据库的连接 
     mongodbInstance.open(function (err, db) {
