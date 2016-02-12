@@ -29,6 +29,10 @@ var settings = require('./settings');
 var mongodbSettings = settings.mongodbSettings;
 var flash = require('connect-flash');
 
+
+var fs = require('fs');
+var accessLog = fs.createWriteStream('access.log',{flags:'a'});
+var errorLog = fs.createWriteStream('error.log',{flags:'a'});
 // 执行express函数也就是express();将express()执行结果返回赋值给app变量
 var app = express();
 
@@ -42,6 +46,7 @@ app.use(flash());
 //TODO 发现这边设置favicon和在<head></head>中是否冲突,而且貌似head中的生效
 //app.use(favicon(path.join(__dirname, 'public', 'img/favicon.ico')));
 app.use(logger('dev'));
+app.use(logger({stream:accessLog}));
 //加载解析json的中间件
 app.use(bodyParser.json());
 //加载解析urlencoded请求体的中间件。
@@ -59,6 +64,11 @@ app.use(multer({
 }));
 //设置public文件夹为存放静态文件的目录
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(err,req,res,next){
+    var meta = '[' + new Date() +']'+req.url+'\n';
+    errorLog.write(meta+err.stack+'\n\n');
+    next();
+});
 app.use(session({
     secret: mongodbSettings.cookieSecret,
     key: mongodbSettings.db, //cookie name
