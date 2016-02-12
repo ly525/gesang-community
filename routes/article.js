@@ -73,7 +73,7 @@ router.post('/edit/:_id', function (req, res) {
         var url = encodeURI('/article/' + req.params._id);
         if (err) {
             req.flash('error', err);
-            return res.redirect(url);// 错误,返回对应的文章页面
+            return res.redirect(url); // 错误,返回对应的文章页面
         }
         req.flash('success', '修改成功');
         res.redirect(url);
@@ -88,7 +88,7 @@ router.get('/remove/:_id', function (req, res) {
             return res.redirect('back');
         }
         req.flash('success', '删除成功');
-        res.redirect('/users/u/' + req.session.user.name);// TODO 2016年02月04日11:57:14 删除文章之后,应该返回个人文章列表吧[Done]
+        res.redirect('/users/u/' + req.session.user.name); // TODO 2016年02月04日11:57:14 删除文章之后,应该返回个人文章列表吧[Done]
     });
 })
 
@@ -113,5 +113,20 @@ router.get('/:_id', function (req, res) {
     });
 });
 
+router.get('/reprint/:_id',checkLogin);
+router.get('/reprint/:_id', function (req, res) {
+    Article.reprint(req.params._id, req.session.user, function (err, newReprintArticle) {
+        if (err) {
+            console.log('==[Error] in routes/article/reprint:' + err);
+            req.flash('error', err);
+            return res.redirect('back');
+        }
+        req.flash('success', '转载成功');
+        var url = encodeURI('/article/' + newReprintArticle._id);
+        console.log('==重定向的Url'+url);
+        res.redirect(url);
+
+    });
+});
 
 module.exports = router;
