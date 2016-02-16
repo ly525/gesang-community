@@ -18,7 +18,7 @@ router.get('/post', function (req, res, next) {
 router.post('/post', checkLogin);
 router.post('/post', function (req, res, next) {
     var currentUser = req.session.user;
-    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
+    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];// 这边也可以使用req.body[tag3]来获得属性值,而且[]的方法通常可以用来遍历对象的属性和属性值(for-in)
     var newArticle = new Article(currentUser.name, currentUser.avatar, req.body.title, req.body.content, tags);
     newArticle.save(function (err) {
         if (err) {
