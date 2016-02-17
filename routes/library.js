@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var async = require('async');
-var co = require('co');
-var thunkify = require('thunkify');
+//var co = require('co');
+//var thunkify = require('thunkify');
 
 //var markdown = require("markdown").markdown;
 //var lendHistoryModel = markdown.toHTML("");
@@ -195,7 +195,9 @@ function (callback) {
                 senior2: results[6][0].count,
                 senior3: results[7][0].count,
                 senior4: results[8][0].count,
-                top_twenty_books: results[10]
+                top_twenty_books: results[10],
+                success:"",
+                error:""
             });
 
             console.log('总的借书量是' + results[0].length);
