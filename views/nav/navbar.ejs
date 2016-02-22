@@ -1,21 +1,27 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <!--container是用来固定宽度的,若是写成container-fluid则表示流媒体视窗,是根据视窗大小来的.也就是百分百的大小,效果上就是导航条顶到两边-->
     <div class="container">
+        <!-- 可以看一下: 导航的LOGO以及小按钮放在一个div,而导航的具体内容也放在一个div中,因此就是两个容器层,这样在缩小浏览器的时候就能体现比较明显了-->
         <%- include navbar-bak.ejs %>
         <!--麦子学院 start-->
         <!--小屏幕导航按钮和LOGO-->
         <!--折叠起来的导航栏实际上是一个带有 class .navbar-toggle 及两个 data- 元素的按钮-->
-        <button class="navbar-toggle">
-            <!--icon-bar就是折叠滞后的一个个的晓得折线-->
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">图豆^_^</a>
+        <!--第一个是 data-toggle，用于告诉 JavaScript 需要对按钮做什么;这里表示collapse,表示进行打开与折叠-->
+        <!--第二个是 data-target，指示要切换到哪一个元素;这里表示切换到一个class是navbar-collapse的元素;-->
+        <div class="navbar-header">
+            <!--切记:data-target=".navbar-collapse" 这里有一个.表示选择一个class元素;丢掉这个点,就没有效果;还是把作者的代码下载下来对照才找到错误!切记-->
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <!--icon-bar就是折叠滞后的一个个的晓得折线-->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">图豆^_^</a>
+        </div>
 
         <!--导航的具体内容-->
         <!--为了给导航栏添加响应式特性，您要折叠的内容必须包裹在带有 classes .collapse .navbar-collapse 的 <div>-->
-        <div class=" navbar-collapse collapse">
+        <div class="navbar-collapse collapse">
             <!--想让导航的内容居右显示-->
             <!--nav 类是去掉li属性前面的一个点点的-->
             <ul class="nav navbar-nav navbar-right">
