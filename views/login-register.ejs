@@ -4,81 +4,85 @@
 <%- include ./header-footer/header %>
 
 
-    <body>
+<body>
 
-        <!-- Fixed navbar -->
-        <%- include ./nav/navbar %>
-            <!-- /Fixed navbar -->
-            <div class="container">
-                <div class="masthead">
-                    <h1 class="text-muted">-</h1>
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
+<div class="container">
+    <div class="masthead">
+        <h1 class="text-muted">-</h1>
 
+    </div>
+    <!--    -->
+    <nav>
+
+        <ul id="myTab" class="nav nav-justified nav-tabs">
+            <li class="active"><a href="#register" data-toggle="tab">
+                    注册</a></li>
+            <li><a href="#login" data-toggle="tab">登录</a></li>
+        </ul>
+
+    </nav>
+    <hr>
+
+    <div id="myTabContent" class="tab-content">
+
+        <div class="tab-pane fade in active" id="register">
+            <!--不加action的时候默认的是什么?-->
+
+            <form class="form-signin" method="post" action="/users/register">
+                <h1>&nbsp</h1>
+
+                <input type="text"  class="form-control" placeholder="用户名"  name="name" required autofocus><br>
+                <input type="email"  class="form-control" placeholder="邮箱" name="email" required autofocus><br>
+                <input type="password"  class="form-control" placeholder="密码" name="password" required><br>
+                <input type="password"  class="form-control" placeholder="确认密码" name="password-repeat" required><br>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> 记住密码
+                    </label>
                 </div>
-                <!--    -->
-                <nav>
-
-                    <ul id="myTab" class="nav nav-justified nav-tabs">
-                        <li class="active"><a href="#register" data-toggle="tab">
-      注册</a></li>
-                        <li><a href="#login" data-toggle="tab">登录</a></li>
-                    </ul>
-
-                </nav>
-                <hr>
-
-                <div id="myTabContent" class="tab-content">
-
-                    <div class="tab-pane fade in active" id="register">
-                        <!--不加action的时候默认的是什么?-->
-                        <form method="post" action="/users/register">
-                            用户名:
-                            <input type="text" name="name" />
-                            <br/> 密码:
-                            <input type="password" name="password" />
-                            <br/> 确认密码:
-                            <input type="password" name="password-repeat" />
-                            <br/> 邮箱:
-                            <input type="email" name="email" />
-                            <br/>
-                            <input type="submit" value="注册" />
-                        </form>
-
-                    </div>
-                    <div class="tab-pane fade" id="login">
-                        <!--登录-->
-                        <form method="post" action="/users/login">
-                            用户名:
-                            <input type="text" name="name" />
-                            <br/> 密码:
-                            <input type="password" name="password" />
-                            <br/>
-                            <input type="submit" value="登录" /> </form>
-                    </div>
-
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="login">
+            <form class="form-signin" method="post" action="/users/login">
+                <h1>&nbsp</h1>
+                <input type="email" class="form-control" placeholder="邮箱" required autofocus><br>
+                <input type="password"  class="form-control" placeholder="密码" required>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> 记住密码
+                    </label>
                 </div>
-                <script>
-                    $(function () {
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            </form>
+        </div>
+
+    </div>
+    <script>
+        $(function () {
 
 
-                        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                            // 获取已激活的标签页的名称
-                            var activeTab = $(e.target).text();
-                            // 获取前一个激活的标签页的名称
-                            var previousTab = $(e.relatedTarget).text();
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                // 获取已激活的标签页的名称
+                var activeTab = $(e.target).text();
+                // 获取前一个激活的标签页的名称
+                var previousTab = $(e.relatedTarget).text();
 
-                            $(".active-tab span").html(activeTab);
-                            $(".previous-tab span").html(previousTab);
-                        });
-                    });
-                </script>
-                <!--        -->
-            </div>
-            <!-- /container -->
+                $(".active-tab span").html(activeTab);
+                $(".previous-tab span").html(previousTab);
+            });
+        });
+    </script>
+    <!--        -->
+</div>
+<!-- /container -->
 
 
+<%- include ./header-footer/footer %>
 
-            <%- include ./header-footer/footer %>
-
-    </body>
+</body>
 
 </html>

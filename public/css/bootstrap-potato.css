@@ -49,3 +49,8 @@ body {
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #1c9982;
 }
+
+.form-signin {
+    margin:0 auto ;
+    width: 400px;
+}
