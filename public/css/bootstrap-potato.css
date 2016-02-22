@@ -1,0 +1,51 @@
+/*修改导航栏的字体,大小,背景颜色*/
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+.navbar-default {
+    background-color: #fff;
+    border: none; /* 浏览器不会再去渲染边框,即不占内存.参见:http://www.blueidea.com/tech/web/2009/7232.asp*/
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.25); /*透明度越大越不透明*/
+}
+
+.navbar-brand {
+    font-size: 26px;
+    font-weight: bold;
+    height: 50px;
+    line-height: 25px;
+    /*行高25,高度50 这样元素的内容就居中了*/
+}
+
+/*使导航条小按钮竖直居中显示*/
+.navbar-toggle {
+    margin-top: 11px;
+}
+
+/*导航条的内容的样式设计*/
+.navbar-nav > li > a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+
+    /*使其竖直居中显示*/
+    height: 50px;
+    line-height: 25px;
+}
+
+/*这个样式与 .navbar-brand有什么区别呢?*/
+.navbar-default .navbar-brand {
+    color: #40d2b1;
+}
+
+/*小按钮在鼠标滑动过去事后的颜色*/
+.navbar-default .navbar-toggle:hover {
+    background-color: rgb(69, 210, 184);
+    border-color: #40d2b1;
+
+}
+
+/*导航条小按钮中折线的颜色*/
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #1c9982;
+}
