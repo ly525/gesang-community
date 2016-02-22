@@ -68,8 +68,9 @@
 3. 文章的归档可以放到用户界面中
 > 也就是查看一个用户界面的时候,可以浏览这个用户某一段时间内发表文章的动态!
 4. 现在只能搜索文章标题,怎么搜索文章的内容和作者
-5. Bootstrap的下拉菜单怎么被选中,并且根据下拉菜单进行判断检索?
-
+5. ~~Bootstrap的下拉菜单怎么被选中,并且根据下拉菜单进行判断检索?~~
+> 参见views/header-footer/footer.ejs
+6. 如何定义一个JSON的API
 
 ## Error
 1. Error: collection name must be a String
