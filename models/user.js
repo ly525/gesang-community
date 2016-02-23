@@ -56,7 +56,7 @@ User.prototype.save = function (callback) {
 };
 
 
-User.get = function (name, callback) {
+User.get = function (email, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         // 读取user集合
@@ -67,7 +67,7 @@ User.get = function (name, callback) {
             }
 
             users.findOne({
-                name: name
+                email: email
             }, function (err, user) {
                 mongodbInstance.close();
                 if (err) return callback(err);

@@ -36,11 +36,11 @@ router.post('/login', function (req, res, next) {
     console.log('/users/login');
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
-    User.get(req.body.name, function (err, user) {
+    User.get(req.body.email, function (err, user) {
         if (!user) {
             console.log('用户不存在,请确认用户名是否正确');
             req.flash('error', '用户不存在,请确认用户名是否正确');
-            return res.redirect('/user/login-register');
+            return res.redirect('/users/login-register');
         }
 
         // 检查密码是否一致
