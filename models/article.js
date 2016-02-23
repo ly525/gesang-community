@@ -113,7 +113,9 @@ Article.getTen = function (author, page, callback) {
                     if (err) return callback(err);
                     // 解析文章内容 markdown -> html
                     articles.forEach(function (article) {
+
                         article.content = markdown.toHTML(article.content);
+                        article.content = article.content.length > 300 ? article.content.substring(0, 200) + "..." : article.content;
                     });
                     callback(null, articles, total);
                 });
@@ -300,17 +302,17 @@ Article.remove = function (_id, callback) {
                 var reprint_from_article_id = '';
                 if (article.reprint_info.reprint_from_article_id) {
                     reprint_from_article_id = article.reprint_info.reprint_from_article_id;
-                    console.log('==被删除的文章的Id=='+reprint_from_article_id);
+                    console.log('==被删除的文章的Id==' + reprint_from_article_id);
                 }
                 if (reprint_from_article_id !== '') {
-                    console.log('========'+reprint_from_article_id);
+                    console.log('========' + reprint_from_article_id);
 
                     collection.update({_id: new ObjectID(reprint_from_article_id)}, {
                         $pull: {
                             "reprint_info.reprint_to_user": {name: article.author}
                         }
                     }, function (err) {
-                        console.log('===__====='+err);
+                        console.log('===__=====' + err);
 
                         if (err) {
                             mongodbInstance.close();
@@ -320,9 +322,9 @@ Article.remove = function (_id, callback) {
                     });
                 }
 
-                collection.remove({_id:new ObjectID(_id)},{w:1},function(err){
+                collection.remove({_id: new ObjectID(_id)}, {w: 1}, function (err) {
                     mongodbInstance.close();
-                    if(err) return callback(err);
+                    if (err) return callback(err);
                     callback(null);
                 });
             });
