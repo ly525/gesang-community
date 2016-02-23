@@ -8,7 +8,7 @@ router.post('/:_id', function (req, res) {
     var postTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':' + (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
     var md5 = crypto.createHash('md5'),
         email_MD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
-        avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+        avatar = "http://7xr66o.com1.z0.glb.clouddn.com/avatar/" + email_MD5 + "?s=48";
 
     var comment = {
         author: req.body.author,

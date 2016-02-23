@@ -10,67 +10,100 @@
     <div class="masthead">
         <h1 class="text-muted">-</h1>
     </div>
-    <div class="article">
-        <p>
-        <h2><%= article.title %></h2>
-        <% if (user && (article.author == user.name)){ %>
-        <span><a href="/article/edit/<%= article._id %>" class="edit">编辑</a> </span>
-        <span><a href="/article/remove/<%= article._id %>" class="edit">删除</a> </span>
-        <% } %>
-
-        <% if (user && (article.author !== user.name)){ %>
-        <% if(article.reprint_info.reprint_to_user && article.reprint_info.reprint_to_user.length>0 ){ %>
-        <% article.reprint_info.reprint_to_user.forEach(function(eachReprintUser){ %>
-        <% if (eachReprintUser && (eachReprintUser.name === user.name)){ %>
-        <span><a href="#" disabled="true" class="edit">已转载</a> </span>
-
-        <% } else { %>
-
-        <span><a href="/article/reprint/<%= article._id %>" class="edit">转载</a> </span>
-        <% } %>
-        <% }) %>
+    <!--更改文章布局 Start-->
+    <div class="container">
+        <div class="main-article">
+            <!--作者信息-->
+            <div class="user-info">
+                <a href="/user/u/<%= article.author %>"><img src="http://tp4.sinaimg.cn/1670421223/50/5747213561/1"></a>
+                作者:
+                <a href="/users/u/<%= article.author %>">
+                    <%= article.author %>
+                </a> &nbsp&nbsp&nbsp&nbsp 写了76902字，被8567人关注，获得了18396个喜欢
 
 
-        <% } else { %>
-        <span><a href="/article/reprint/<%= article._id %>" class="edit">转载</a> </span>
-        <% }%>
-        <% } %>
-        </p>
-        <p class="info">
-            <a href="/user/u<%= article.author %>"><img src="<%= article.avartar %>"></a> | 作者:
-            <a href="/users/u/<%= article.author %>">
-                <%= article.author %>
-            </a> | 日期:
-            <%= article.time.postTime %> | 标签
-            <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
-            <% if(article.tags){ %>
-            <% article.tags.forEach(function (tag, index) { %>
-            <% if(tag){ %>
-            <a href="/articles/tag/<%= tag %>" class="tag">
-                <%= tag %>
-            </a>
-            <% } %>
-            <% }) %>
-            <% } %>
-            | 阅读: <span><%= article.pv %></span> | 评论: <span><%= article.comments.length %></span>
-            <!--TODO 2016年02月06日12:46:24 这里评论可以改成超链接的形式,可以直接跳转到对应的评论部分!-->
-            <% if (article.reprint_info.reprint_from_article_id) { %>
-            | <a href="/article/<%= article.reprint_info.reprint_from_article_id %>">[原文链接]</a>
-            <% } %>
-            | 转载:
-            <% if(article.reprint_info.reprint_to_user){ %>
-            <%= article.reprint_info.reprint_to_user.length %>
-            <% } else { %>
-            <%= 0 %>
-            <% } %>
-        </p>
-        <p>
-            <%- article.content %>
-        </p>
+                <br><br>
+                <!--添加关注 Start-->
+                <a href="#" class="label label-success">添加关注</a>
+                <!--添加关注 End-->
+
+                <!--编辑删除 Start-->
+                <% if (user && (article.author == user.name)){ %>
+                <span><a href="/article/edit/<%= article._id %>" class="label label-success">编辑</a> </span>
+                <span><a href="/article/remove/<%= article._id %>" class="label label-success">删除</a> </span>
+                <% } %>
+                <!--编辑删除 Start-->
+                <!--原文链接 Start-->
+                <% if (article.reprint_info.reprint_from_article_id) { %>
+                <a href="/article/<%= article.reprint_info.reprint_from_article_id %>"
+                   class="label label-success">原文链接</a>
+                <% } %>
+                <!--原文链接 End-->
+
+                <!--转载 Start-->
+                <% if (user && (article.author !== user.name)){ %>
+                <% if(article.reprint_info.reprint_to_user && article.reprint_info.reprint_to_user.length > 0 ){ %>
+                <% article.reprint_info.reprint_to_user.forEach(function(eachReprintUser){ %>
+                <% if (eachReprintUser && (eachReprintUser.name === user.name)){ %>
+                <span><a href="#" disabled="true" class="label label-success">已转载</a> </span>
+
+                <% } else { %>
+
+                <!--<span><a href="/article/reprint/<%= article._id %>" class="edit">转载</a> </span>-->
+                <a href="/article/reprint/<%= article._id %>" class="label label-success">转载</a>
+                <% } %>
+                <% }) %>
+
+                <% } else { %>
+                <a href="/article/reprint/<%= article._id %>" class="label label-success">转载</a>
+
+                <% } %>
+                <% } %>
+                <!--转载 End-->
+
+                <!--标签显示 Start-->
+                标签：
+                <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
+                <% if(article.tags){ %>
+                <% article.tags.forEach(function (tag, index) { %>
+                <% if(tag){ %>
+                <a href="/articles/tag/<%= tag %>" class="label label-success">
+                    <%= tag %>
+                </a>
+                <% } %>
+                <% }) %>
+                <% } %>
+                <!--标签显示 End-->
+
+
+            </div>
+            <div class="content">
+                <div class="inner-header article">
+                    <h1><%= article.title %></h1>
+                </div>
+                <div class="article-info">
+                    <%= article.time.postTime %>
+                    &nbsp&nbsp&nbsp 阅读: <span><%= article.pv %></span>
+                    <!--TODO 2016年02月06日12:46:24 这里评论可以改成超链接的形式,可以直接跳转到对应的评论部分!-->
+                    &nbsp&nbsp&nbsp 评论: <span><%= article.comments.length %></span>
+                    &nbsp&nbsp&nbsp 转载:
+                    <% if(article.reprint_info.reprint_to_user){ %>
+                    <%= article.reprint_info.reprint_to_user.length %>
+                    <% } else { %>
+                    <%= 0 %>
+                    <% } %>
+                </div>
+                <div class="article-content">
+                    <p>
+                        <%- article.content %>
+                    </p>
+                </div>
+                <%- include ./comment %>
+            </div>
+        </div>
     </div>
-    <%- include ./comment %>
 </div>
-
+<!--更改文章布局 End-->
 <!-- /container -->
 <%- include ./header-footer/footer %>
 </body>

@@ -4,7 +4,7 @@ body {
 }
 
 .main-container {
-    margin-top: 70px;
+    margin-top: 90px;
 }
 
 .navbar-default {
@@ -97,13 +97,13 @@ body {
 }
 
 /**/
-.col-md-8.article-summary{
+.col-md-8.article-summary {
 
     margin-bottom: 70px;
 }
 
-.article-item .box
-{
+/* 设置文章简介旁边的浏览和推荐*/
+.article-item .box {
     float: left;
     margin-right: 12px;
     padding-right: 12px;
@@ -115,7 +115,58 @@ body {
     color: #666;
     width: 10%;
 }
-.summary{
-    overflow:auto;
+
+.summary {
+    overflow: auto;
     /*clear:right; 为什么这个没有效果*/
+}
+
+/*对文章具体内容的标题进行修饰*/
+
+/*.inner-header.article h1{*/
+/*font-size: 36px;*/
+
+/*}*/
+
+.main-article {
+    margin: 0 auto;
+    width: 800px;
+    text-align: center;
+}
+
+.user-info {
+    padding: 20px 0;
+    color: #999;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+
+}
+
+.article-info {
+    color: #999;
+    padding: 20px 0;
+
+}
+
+article {
+    font-size: 18px;
+    line-height: 2;
+    color: #222;
+}
+
+.inner-header.article h1 {
+    font-weight: bold;
+    color: #555;
+    margin-top: 30px;
+    margin-left: 0;
+}
+
+.content {
+    text-align: left;
+}
+
+.article-content {
+    padding-bottom: 30px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #999;
 }

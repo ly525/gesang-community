@@ -15,7 +15,7 @@ User.prototype.save = function (callback) {
     var md5 = crypto.createHash('md5'),
     // TODO 有大写的邮箱账号吗?
         email_MD5 = md5.update(this.email.toLowerCase()).digest('hex'),//需要把 email 转化成小写再编码
-        avatar = "http://www.gravatar.com/avatar" + email_MD5 + "?s=48";
+        avatar = "http://7xr66o.com1.z0.glb.clouddn.com/avatar" + email_MD5 + "?s=48";
 
 
     // 创建实例
