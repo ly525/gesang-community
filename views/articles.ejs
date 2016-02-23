@@ -11,40 +11,167 @@
 
 
             <div class="container">
+                <div class="main-container row">
+                        <!--这边是文章汇总部分-->
+                        <div class="col-md-8 article-summary">
+                            <% articles.forEach(function(article, index){ %>
+                            <!--单个文章简介 start-->
+                            <div class="article-item">
 
-                <div class="masthead">
-                    <h1 class="text-muted">-</h1>
-
-                </div>
-                <div>
-                    <% articles.forEach(function(article, index){ %>
-                        <p>
-                            <h2><a href="/article/<%= article._id %>" ><%= article.title %></a></h2></p>
-                        <p class="info">
-                            <a href="/user/u/<%= article.author %>" class="right_avatar"><img src="<%= article.avartar %>"></a> | 作者:
-                            <a href="/users/u/<%= article.author %>">
-                                <%= article.author %>
-                            </a> | 日期:
-                            <%= article.time.postTime %> | 标签
-                                <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
-                                <% if(article.tags){ %>
-                                    <% article.tags.forEach(function (tag, index) { %>
+                                <div class="box">
+                                    <a href="#" class="btn btn-info btn-sm disabled" role="button">42<br> 赞</a><br><br>
+                                    <span><%= article.pv %><br>浏览</span>
+                                </div>
+                                <div class="summary">
+                                    <h3><a href="/article/<%= article._id %>" ><%= article.title %></a></h3>
+                                    <p class="info">
+                                        <a href="/user/u/<%= article.author %>" class="right_avatar"><img src="<%= article.avartar %>"></a> | 作者:
+                                        <a href="/users/u/<%= article.author %>">
+                                            <%= article.author %>
+                                        </a> | 日期:
+                                        <%= article.time.postTime %> | 标签
+                                        <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
+                                        <% if(article.tags){ %>
+                                        <% article.tags.forEach(function (tag, index) { %>
                                         <% if(tag){ %>
-                                            <a href="/articles/tag/<%= tag %>" class="tag">
-                                                <%= tag %>
-                                            </a>
-                                            <% } %>
-                                                <% }) %>
-                                                    <% } %>
-                        </p>
-                        <p>
-                            <%- article.content %>
-                        </p>
+                                        <a href="/articles/tag/<%= tag %>" class="tag">
+                                            <%= tag %>
+                                        </a>
+                                        <% } %>
+                                        <% }) %>
+                                        <% } %>
+                                    </p>
+                                    <p class="brief-introduction">
+                                        <%= article.content %>
+                                    </p>
+                                </div>
 
-                        <% }) %>
-                </div>
+                            </div>
+                            <% }) %>
+                            <!--单个文章简介 end-->
+
+                        </div>
+                    <!--存放右侧模块: 我的文章系列,热门专栏,热门标签-->
+                    <div class="col-md-4">
+
+                            <div class="panel panel-default">
+
+
+
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">NodeJs 博客分享社区</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="list-group">
+
+                                            <a href="/user/de" class="list-group-item active">我的主页</a>
+                                            <a href="/user/article" class="list-group-item">我的文章</a>
+                                            <a href="/user/draft" class="list-group-item">我的草稿</a>
+                                            <a href="/user/collection" class="list-group-item">我的收藏</a>
+                                            <a href="/user/comment" class="list-group-item">我的评论</a>
+                                            <a href="/user/settings?tab=personal_info" class="list-group-item">账户设置</a>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">热议标签</h3>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <span class="label label-warning">Info</span>
+                                        <span class="label label-warning">javascript</span>
+                                        <span class="label label-warning">javascript</span>
+                                        <span class="label label-warning">javascript</span>
+                                        <span class="label label-warning">javascript</span>
+                                        <span class="label label-warning">javascript</span>
+                                        <span class="label label-warning">javascript</span>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading">热门收藏</div>
+
+                                    <!-- List group -->
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="content-blog">
+                                                <a href="/collection/37446102" target="_blank">一名法学生的基本修养</a>
+                                                <div class="meta">
+                                                    <span>1766 人关注</span>
+                                                    <span class="zg-bull">•</span>
+                                                    <span>47 个回答</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="content-blog">
+                                                <a href="/collection/37446102" target="_blank">一名法学生的基本修养</a>
+                                                <div class="meta">
+                                                    <span>1766 人关注</span>
+                                                    <span class="zg-bull">•</span>
+                                                    <span>47 个回答</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="content-blog">
+                                                <a href="/collection/37446102" target="_blank">南中医图书馆的好书</a>
+                                                <div class="meta">
+                                                    <span>1766 人关注</span>
+                                                    <span class="zg-bull">•</span>
+                                                    <span>47 个回答</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="content-blog">
+                                                <a href="/collection/37446102" target="_blank">图书馆的检索技巧</a>
+                                                <div class="meta">
+                                                    <span>1766 人关注</span>
+                                                    <span class="zg-bull">•</span>
+                                                    <span>47 个回答</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="content-blog">
+                                                <a href="/collection/37446102" target="_blank">一食堂还不错的餐点[有图有真相]</a>
+                                                <div class="meta">
+                                                    <span>1766 人关注</span>
+                                                    <span class="zg-bull">•</span>
+                                                    <span>47 个回答</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
+
+                        </div>
+                        <!--右侧模块 End-->
+                    <div>
+                        <p>
+                            <h2></h2></p>
+                        <p class="info">
+
+                        <p>
+
+                        </p>
+                    </div>
+
                 <%- include ./paging %>
             </div>
+                </div>
             <!-- /container -->
 
 

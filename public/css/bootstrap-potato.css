@@ -3,6 +3,10 @@ body {
     font-family: "Microsoft YaHei", sans-serif;
 }
 
+.main-container {
+    margin-top: 70px;
+}
+
 .navbar-default {
     background-color: #fff;
     border: none; /* 浏览器不会再去渲染边框,即不占内存.参见:http://www.blueidea.com/tech/web/2009/7232.asp*/
@@ -51,6 +55,67 @@ body {
 }
 
 .form-signin {
-    margin:0 auto ;
+    margin: 0 auto;
     width: 400px;
+}
+
+/*文章汇总部分的样式*/
+.article-item {
+    padding-right: 20px;
+    border-bottom: 1px solid #ddd;
+
+}
+
+.article-item .brief-introduction {
+    font-size: 15px;
+    color: #888; /*降低颜色的亮度, 偏向于灰色系列*/
+
+}
+
+.article-item .info {
+    font-size: 10px;
+    color: #aaa;
+}
+
+/*给标签增加样式*/
+.label {
+    display: inline-block;
+    padding: 0 8px;
+    margin-bottom: 10px;
+    margin-right: 8px;
+    color: #017e66;
+    background-color: rgba(1, 126, 102, .08);
+    height: 24px;
+    line-height: 24px;
+    font-weight: 400;
+    font-size: 13px;
+    text-align: center;
+}
+
+.label:hover {
+    color: #008E59;
+}
+
+/**/
+.col-md-8.article-summary{
+
+    margin-bottom: 70px;
+}
+
+.article-item .box
+{
+    float: left;
+    margin-right: 12px;
+    padding-right: 12px;
+    margin-top: 25px;
+    border-right: 1px solid #f3f3f3;
+    font-size: 16px;
+    text-align: center;
+    line-height: 1.2;
+    color: #666;
+    width: 10%;
+}
+.summary{
+    overflow:auto;
+    /*clear:right; 为什么这个没有效果*/
 }

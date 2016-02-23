@@ -114,7 +114,7 @@ Article.getTen = function (author, page, callback) {
                     // 解析文章内容 markdown -> html
                     articles.forEach(function (article) {
 
-                        article.content = markdown.toHTML(article.content);
+                        //article.content = markdown.toHTML(article.content);
                         article.content = article.content.length > 300 ? article.content.substring(0, 200) + "..." : article.content;
                     });
                     callback(null, articles, total);
