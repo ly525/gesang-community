@@ -2,3 +2,4 @@ views/bak/
 node_modules/
 routes/learnModule/
 .idea/
+access.log
