@@ -170,3 +170,12 @@ article {
     margin-bottom: 10px;
     border-bottom: 1px solid #999;
 }
+
+.post-comment {
+    border-top: 1px solid #999999;
+    margin:30px 0;
+    padding: 30px 0;
+}
+.post-comment-user-info{
+    margin: 0 15px;
+}
