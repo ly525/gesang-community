@@ -36,7 +36,7 @@ router.post('/login', function (req, res, next) {
     console.log('/users/login');
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
-    User.get(req.body.email, function (err, user) {
+    User.getUserByEmail(req.body.email, function (err, user) {
         if (!user) {
             console.log('用户不存在,请确认用户名是否正确');
             req.flash('error', '用户不存在,请确认用户名是否正确');
@@ -83,7 +83,7 @@ router.post('/register', function (req, res, next) {
     });
     // 检测用户是否已经存在
 
-    User.get(newUser.name, function (err, user) {
+    User.getUserByEmail(newUser.email, function (err, user) {
 
         console.log('注册之前先检索是否存在');
         if (err) {
@@ -124,7 +124,7 @@ router.get('/logout', function (req, res, next) {
 router.get('/u/:name', function (req, res, next) {
     var page = req.params.page ? parseInt(req.params.page) : 1;
     console.log('==[Error] in routes/users/u/:name ' + page);
-    User.get(req.params.name, function (err, user) {
+    User.getUserByName(req.params.name, function (err, user) {
         if (!user) {
             req.flash('error', '用户不存在!');
             return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面

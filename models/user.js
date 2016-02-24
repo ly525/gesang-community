@@ -56,7 +56,7 @@ User.prototype.save = function (callback) {
 };
 
 
-User.get = function (email, callback) {
+User.getUserByEmail = function (email, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         // 读取user集合
@@ -68,6 +68,27 @@ User.get = function (email, callback) {
 
             users.findOne({
                 email: email
+            }, function (err, user) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                callback(null, user);
+            });
+        });
+    });
+};
+
+User.getUserByName = function (name, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        // 读取user集合
+        db.collection('users', function (err, users) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+
+            users.findOne({
+                name: name
             }, function (err, user) {
                 mongodbInstance.close();
                 if (err) return callback(err);
