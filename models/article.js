@@ -213,6 +213,25 @@ Article.getTags = function (callback) {
 
 };
 
+Article.getTagsByUserName = function (author,callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('articles', function (err, collection) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+            collection.distinct('tags',{"author":author}, function (err, tags) {
+                mongodbInstance.close();
+                if (err) return callback(err);
+                callback(null, tags);
+            });
+
+        })
+    });
+
+};
+
 Article.getTag = function (tag, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);

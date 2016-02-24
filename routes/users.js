@@ -129,22 +129,48 @@ router.get('/u/:name', function (req, res, next) {
             req.flash('error', '用户不存在!');
             return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
         }
-        Article.getTen(req.params.name, page, function (err, articles, total) {
+
+        Article.getTagsByUserName(req.params.name,function (err, tags) {
             if (err) {
                 console.log('==[Error] in routes/users/u/:name ' + err);
                 req.flash('error', err);
                 res.redirect('/articles');
             }
-            res.render('user', {
-                articles: articles,
-                page: page,
-                isFirstPage: (page - 1) === 0,
-                isLastPage: ((page - 1) * 10 + articles.length) === total,
-                user: req.session.user,
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString()
+            Article.getTen(req.params.name, page, function (err, articles, total) {
+                if (err) {
+                    console.log('==[Error] in routes/users/u/:name ' + err);
+                    req.flash('error', err);
+                    res.redirect('/articles');
+                }
+                res.render('user', {
+                    tags: tags,
+                    articles: articles,
+                    page: page,
+                    isFirstPage: (page - 1) === 0,
+                    isLastPage: ((page - 1) * 10 + articles.length) === total,
+                    user: req.session.user,
+                    success: req.flash('success').toString(),
+                    error: req.flash('error').toString()
+                });
             });
+
         });
+        //Article.getTen(req.params.name, page, function (err, articles, total) {
+        //    if (err) {
+        //        console.log('==[Error] in routes/users/u/:name ' + err);
+        //        req.flash('error', err);
+        //        res.redirect('/articles');
+        //    }
+        //    res.render('user', {
+        //        articles: articles,
+        //        page: page,
+        //        isFirstPage: (page - 1) === 0,
+        //        isLastPage: ((page - 1) * 10 + articles.length) === total,
+        //        user: req.session.user,
+        //        success: req.flash('success').toString(),
+        //        error: req.flash('error').toString()
+        //    });
+        //});
         //Article.getAll(user.name, function (err, articles) {
         //    if (err) {
         //        req.flash('error', err);
