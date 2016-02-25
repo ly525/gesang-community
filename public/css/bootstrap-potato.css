@@ -128,7 +128,7 @@ body {
 
 /*}*/
 
-.main-article {
+.main-content {
     margin: 0 auto;
     width: 800px;
     text-align: center;
@@ -173,9 +173,34 @@ article {
 
 .post-comment {
     border-top: 1px solid #999999;
-    margin:30px 0;
+    margin: 30px 0;
     padding: 30px 0;
 }
-.post-comment-user-info{
+
+.post-comment-user-info {
     margin: 0 15px;
+}
+
+.search-module {
+    color: white;
+    text-align: center;
+    min-height: 400px;
+    background: #aaa url("http://static.bootcss.com/expo/img/d/dd/2de797545de56274f03a5920eb3a1.jpg");
+    background-size: cover;
+
+}
+
+.search-module h1 {
+    margin: 0;
+    position: relative;
+    top:120px;
+}
+.search-module .form-inline{
+    position: relative;
+    top:160px;
+}
+
+/*解决articles页面出现的错乱, 具体问题见README#1问题 截图*/
+p.brief-introduction{
+    min-height: 50px;
 }

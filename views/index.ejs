@@ -4,25 +4,52 @@
 <%- include ./header-footer/header %>
 
     <body>
+    <!-- Fixed navbar -->
+    <%- include ./nav/navbar %>
+    <!-- /Fixed navbar -->
+    <div class="jumbotron">
+            <div class="search-module">
+                <h1>搜索</h1>
+                <form class="form-inline ">
+                    <div class="form-group">
+                        <label class="sr-only" for="indexSearchContent">Amount (in dollars)</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            <input type="text" class="form-control" id="indexSearchContent" placeholder="在这里输入搜索的内容">
+                        </div>
+                    </div>
 
-        <!-- Fixed navbar -->
-        <%- include ./nav/navbar %>
-            <!-- /Fixed navbar -->
-
+                    <div class="btn-group" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" id="search-choice-item">
+                                书名
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">问答</a></li>
+                            <li><a href="#">简文</a></li>
+                            <li><a href="#">作者</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">书名</a></li>
+                            <li><a href="#">作者</a></li>
+                            <li><a href="#">出版社</a></li>
+                        </ul>
+                        <button type="button" class="btn btn-primary">搜索</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
             <div class="container">
 
-                <div class="masthead">
-                    <h1 class="text-muted">-</h1>
+                <div style="margin-top: 80px;"></div>
 
-                </div>
-                <!--    -->
-                <h1>Welcome to 图豆^_^</h1>
             </div>
             <!-- /container -->
-
-
-
             <%- include ./header-footer/footer %>
 
     </body>

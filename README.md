@@ -58,6 +58,8 @@
 3. session 怎么利用express-session以及connect-mongo两个中间件存储到数据库?
 >1. 以及注册登录之后的session怎么存储到数据库中
 >2. app.use(session{secret,key,cookie,store});以及req.session.user=user;是怎么把session存储到数据库中的!
+3. CSS中的`postion:relative; top:400`和`margin-top:400`有什么区别呢？
+>其实很明显的区别,一个是相对定位的,另外一个是外边距，但是自己这样解释说服不了自己,等下再去看看书
 
 ##TODO
 1. 文件上传之后若是使用,其路径写的是/uploadFiles/xxx.jpg,那么添加了`static中间件`是否意味着在解析的时候是/public/uploadFiles/xxx.jpg?
@@ -80,3 +82,8 @@ db.collection(function(err,articles){}
 // 正确写法
 db.collection('aricles',function(err,articles){}
 ```
+
+### #1
+1. ![](http://i11.tietuku.com/3d36f4a7dca194c6.png)
+2. 因为上面一个简介部分的文字不够,所以会导致左边的浮动部分占据下面的空间
+3. 添加 min-height属性解决
