@@ -181,7 +181,7 @@ article {
     margin: 0 15px;
 }
 
-.search-module {
+.search-header {
     color: white;
     text-align: center;
     min-height: 400px;
@@ -190,17 +190,23 @@ article {
 
 }
 
-.search-module h1 {
+.search-header h1 {
     margin: 0;
     position: relative;
-    top:120px;
+    top: 120px;
 }
-.search-module .form-inline{
+
+.search-header .form-inline {
     position: relative;
-    top:160px;
+    top: 160px;
 }
 
 /*解决articles页面出现的错乱, 具体问题见README#1问题 截图*/
-p.brief-introduction{
+p.brief-introduction {
     min-height: 50px;
+}
+
+.article-item-right {
+    text-align: left;
+
 }

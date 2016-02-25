@@ -357,6 +357,7 @@ Article.remove = function (_id, callback) {
 };
 
 Article.search = function (keyword, callback) {
+    console.log("长度=========================");
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         db.collection('articles', function (err, collection) {
@@ -370,12 +371,17 @@ Article.search = function (keyword, callback) {
             }, {
                 name: 1,
                 time: 1,
-                title: 1
+                title: 1,
+                content:1 // 这边的属性是什么意思？？
             }).sort({
                 time: -1 // TODO 2016年02月06日20:02:52 这边的-1 是什么意思?
             }).toArray(function (err, articles) {
                 mongodbInstance.close();
                 if (err) return callback(err);
+                articles.forEach(function (article) {
+                    //article.content = markdown.toHTML(article.content);
+                    article.content = article.content.length > 150 ? article.content.substring(0, 100) + "..." : article.content;
+                });
                 callback(null, articles);
             });
         });

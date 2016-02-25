@@ -8,14 +8,14 @@
     <%- include ./nav/navbar %>
     <!-- /Fixed navbar -->
     <div class="jumbotron">
-            <div class="search-module">
+            <div class="search-header">
                 <h1>搜索</h1>
-                <form class="form-inline ">
+                <form class="form-inline " method="get" action="/search">
                     <div class="form-group">
                         <label class="sr-only" for="indexSearchContent">Amount (in dollars)</label>
                         <div class="input-group">
                             <div class="input-group-addon">$</div>
-                            <input type="text" class="form-control" id="indexSearchContent" placeholder="在这里输入搜索的内容">
+                            <input type="text" name="keyword" class="form-control" id="indexSearchContent" placeholder="在这里输入搜索的内容">
                         </div>
                     </div>
 
@@ -37,10 +37,56 @@
                             <li><a href="#">作者</a></li>
                             <li><a href="#">出版社</a></li>
                         </ul>
-                        <button type="button" class="btn btn-primary">搜索</button>
+                        <button type="submit" class="btn btn-primary">搜索</button>
                     </div>
                 </form>
             </div>
+           <!--搜索结果-->
+            <div class="main-content row">
+                <div class="col-md-2 "></div>
+                <div class="col-md-8">
+                    <%  articles.forEach(function(article, index){ %>
+                    <!--单个文章简介 start-->
+                    <div class="article-item">
+
+                        <div class="box">
+                            <a href="#" class="btn btn-info btn-sm disabled" role="button">42<br> 赞</a><br><br>
+                            <span><%= article.pv %><br>浏览</span>
+                        </div>
+                        <div class="summary article-item-right">
+                            <h3><a href="/article/<%= article._id %>" ><%= article.title %></a></h3>
+                            <p class="info">
+                                <a href="/user/u/<%= article.author %>" class="right_avatar"><img src="<%= article.avartar %>"></a>
+                                作者:
+                                <a href="/users/u/<%= article.author %>">
+                                    <%= article.author %>
+                                </a>
+                                &nbsp;&nbsp;&nbsp; 一句话介绍
+                                &nbsp;&nbsp;&nbsp; 日期:<%= article.time.postTime %>
+                            </p>
+                            <p class="brief-introduction">
+                                <%= article.content %>
+                            </p>
+                        </div>
+
+                    </div>
+                    <% }) %>
+                    <!--单个文章简介 end-->
+                </div>
+
+                <!--右侧模块 End-->
+                <div>
+                    <p>
+                    <h2></h2></p>
+                    <p class="info">
+
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+            <!--搜索结果-->
+
         </div>
     </div>
 
