@@ -122,6 +122,8 @@ router.get('/logout', function (req, res, next) {
     res.redirect('/');
 });
 router.get('/u/:name', function (req, res, next) {
+    console.log(req.params.name);
+
     var page = req.params.page ? parseInt(req.params.page) : 1;
     console.log('==[Error] in routes/users/u/:name ' + page);
     User.getUserByName(req.params.name, function (err, user) {
@@ -184,6 +186,16 @@ router.get('/u/:name', function (req, res, next) {
         //        error: req.flash('error').toString(),
         //    });
         //});
+    });
+
+});
+
+router.get('/user/account-settings', checkLogin);
+router.get('/user/account-settings', function (req, res) {
+    res.render('account-settings', {
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
     });
 
 });
