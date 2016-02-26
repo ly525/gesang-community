@@ -87,6 +87,17 @@ db.collection(function(err,articles){}
 db.collection('aricles',function(err,articles){}
 ```
 
+2. nodejs用MD5加密报`HashUpdate fail`
+```
+ var md5 = crypto.createHash('md5'),
+        oldPassword = md5.update(req.body.oldPassword).digest('hex'),
+        newPassword = md5.update(req.body.newPassword).digest('hex');
+```
+ 1. [CSDN一篇文章解决了问题](http://blog.csdn.net/linminqin/article/details/19902553)
+ 2. 因为是一个MD5对一个字符串进行加密,因此需要写成这样
+ >  1. var oldPassword = crypto.createHash('md5').update(req.body.oldPassword).digest('hex');
+    2. var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
+      
 ### #1
 1. ![](http://i11.tietuku.com/3d36f4a7dca194c6.png)
 2. 因为上面一个简介部分的文字不够,所以会导致左边的浮动部分占据下面的空间

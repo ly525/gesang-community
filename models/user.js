@@ -136,4 +136,40 @@ User.updateEmail = function (_id, newEmail, callback) {
     });
 };
 
+User.updatePassword = function (_id, newPassword, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('users').update({
+            _id: new ObjectID(_id)
+        }, {
+            $set: {
+                password: newPassword
+            }
+        }, {
+            safe: true
+        }, function (err) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+
+            db.collection('users', function (err, users) {
+                if (err) {
+                    mongodbInstance.close();
+                    return callback(err);
+                }
+
+                users.findOne({
+                    _id: new ObjectID(_id)
+                }, function (err, user) {
+                    mongodbInstance.close();
+                    if (err) return callback(err);
+                    callback(null, user);
+                });
+            });
+
+        });
+    });
+};
+
 module.exports = User;

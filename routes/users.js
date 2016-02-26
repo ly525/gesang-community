@@ -211,4 +211,32 @@ router.post('/modify-email', function (req, res) {
 
     });
 });
+
+router.post('/modify-password', checkLogin);
+router.post('/modify-password', function (req, res) {
+    console.log('接收到的AJax请求' + req.body.oldPassword);
+    console.log('接收到的AJax请求' + req.body.newPassword);
+    console.log('接收到的AJax请求' + req.session.user._id);
+
+    var oldPassword = crypto.createHash('md5').update(req.body.oldPassword).digest('hex');
+    // 检查密码是否一致
+
+    if (req.session.user.password !== oldPassword) {
+        console.log("当前密码不正确!");
+        res.status(200).json({info: "wrongOldPassword"});
+    } else {
+        console.log("当前密码正确!");
+        var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
+        User.updatePassword(req.session.user._id, newPassword, function (err, user) {
+
+            if (err) {
+                console.log("更新密码Error" + err);
+            }
+            req.session.user = user;
+            res.status(200).json({info: "success"});
+
+        });
+    }
+
+});
 module.exports = router;
