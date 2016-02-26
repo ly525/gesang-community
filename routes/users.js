@@ -7,7 +7,6 @@ var accessControl = require('./accessControl');
 var checkNotLogin = accessControl.checkNotLogin;
 var checkLogin = accessControl.checkLogin;
 
-
 /* GET users listing. */
 //router.get('/users', function (req, res, next) {
 //    console.log(req.params);
@@ -132,7 +131,7 @@ router.get('/u/:name', function (req, res, next) {
             return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
         }
 
-        Article.getTagsByUserName(req.params.name,function (err, tags) {
+        Article.getTagsByUserName(req.params.name, function (err, tags) {
             if (err) {
                 console.log('==[Error] in routes/users/u/:name ' + err);
                 req.flash('error', err);
@@ -199,6 +198,17 @@ router.get('/user/account-settings', function (req, res) {
     });
 
 });
+router.post('/modify-email', checkLogin);
+router.post('/modify-email', function (req, res) {
+    console.log('接收到的AJax请求' + req.body.newEmail);
+    console.log('接收到的AJax请求' + req.session.user._id);
+    User.updateEmail(req.session.user._id, req.body.newEmail, function (err, user) {
+        if (err) {
+            console.log("更新邮箱Error" + err);
+        }
+        req.session.user = user;
+        res.status(200).json({info: "success", email: user.email});
 
-
+    });
+});
 module.exports = router;

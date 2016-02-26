@@ -58,26 +58,32 @@
         <div class="col-md-6">
 
 
-
             <div class="bs-example" data-example-id="simple-table">
                 <ul class="list-group">
                     <label>修改邮箱</label>
                     <li class="list-group-item">
-                        <form class="form-horizontal">
+                        <div class="alert alert-warning alert-dismissible" role="alert" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <strong>Info: </strong> <span id="updateEmailResult"></span>
+                        </div>
+                        <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">当前邮箱</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-static"><%= user.email %></p>
+                                    <p class="form-control-static" id="inputOldEmail"><%= user.email %></p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword" class="col-sm-2 control-label">新的邮箱</label>
+                                <label for="inputNewEmail" class="col-sm-2 control-label">新的邮箱</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Email addreess">
+                                    <input type="email" class="form-control" id="inputNewEmail"
+                                           placeholder="Email addreess">
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-default btn-sm" role="button">提交</a>
-                        </form>
+                            <button id="buttonModifyEmailAddress" class="btn btn-default btn-sm" role="button">提交
+                            </button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -89,19 +95,22 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">当前密码</label>
                                 <div class="col-sm-7">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="inputPassword"
+                                           placeholder="Password">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword" class="col-sm-2 control-label">新密码</label>
                                 <div class="col-sm-7">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="inputPassword"
+                                           placeholder="Password">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword" class="col-sm-2 control-label">确认密码</label>
                                 <div class="col-sm-7">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="inputPassword"
+                                           placeholder="Password">
                                 </div>
                             </div>
                             <a href="#" class="btn btn-default btn-sm" role="button">提交</a>
@@ -199,6 +208,61 @@
 
 <!-- /container -->
 <%- include ./header-footer/footer %>
+<script>
+    var buttonModifyEmailAddress = document.getElementById("buttonModifyEmailAddress");
+    buttonModifyEmailAddress.onclick = function (e) {
+        e.preventDefault();
+        var newEmail = document.getElementById("inputNewEmail").value;
+        alert(newEmail);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/users/modify-email", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                var modifyEmailResult = JSON.parse(request.responseText);
+                if (modifyEmailResult.info === "success") {
+                    document.getElementById("updateEmailResult").parentNode.style.display = "block";
+                    document.getElementById("updateEmailResult").innerHTML = "更新邮箱成功";
+                    document.getElementById("inputOldEmail").innerHTML = modifyEmailResult.email;
+                }
+            }
+        }
+        request.send(JSON.stringify({
+            newEmail: newEmail
+        }));
+    }
+
+    /*
+     //        设置请求头是JSON格式,content-type
+     //        就是给当前请求设置请求头,制定当前发送的内容是json的格式来组织的
+     //        需要把JSON对象也就是JavaScript对象{}发送出去的话,是需要序列化的,因为Http只能发送文本,需要将对象转换为字符串文本.不能发送对象,就像Java对象的远程调用都是需要序列化的一样
+     //        JavaScript序列化方法JSON.stringfy()
+     var xhr = new XMLHttpRequest();
+     xhr.open("POST","/search",true);// true是异步请求,不会导致浏览器阻塞,会大大提升用户体验
+     //      和Android中的设置请求头的方法一样,因此就是setRequestHeader(key,value);
+     xhr.setRequestHeader("Content-Type","application/json");// 这边在表单数据提交时候也会用的
+     //      xhr.onload 是level2的版本,相当于是简化了 xhr.readyState ===4
+     xhr.timeout = 100;
+     xhr.ontimeout = function () {
+     alert("Ajax请求超时");
+     }
+
+     //        setTimeout(function(){ res.json(JSON字符串 )},2000);
+     xhr.onreadystatechange = function () {
+     if (xhr.readyState ===4 && xhr.status === 200 ){
+     // 根据响应的Content-Type进行处理,如果是Content-Type是XML类型的话,就会使用responseXML进行读取
+     // 否则其他任何格式的文本都使用responseText接收
+
+     alert(xhr.responseText);
+     //               xhr.getAllResponseHeaders()->JSON格式的对象
+     //               xhr.getResponseHeader(key)
+     //               xhr.status
+     //               xhr.statusText
+     // eval 将JSON字符串转换为JSON对象,也就是JavaScript对象,因为JSON对象就是原生的JavaScript对象
+     }
+     }
+     */
+</script>
 </body>
 
 </html>

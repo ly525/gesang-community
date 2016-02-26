@@ -1,6 +1,7 @@
 // 创建一个数据库连接实例
 var mongodbInstance = require('./db');
 var crypto = require('crypto');
+var ObjectID = require('mongodb').ObjectID;
 
 // 创建一个对象
 function User(user) {
@@ -98,5 +99,41 @@ User.getUserByName = function (name, callback) {
     });
 };
 
+User.updateEmail = function (_id, newEmail, callback) {
+    mongodbInstance.open(function (err, db) {
+        if (err) return callback(err);
+        db.collection('users').update({
+            _id: new ObjectID(_id)
+        }, {
+            $set: {
+                email: newEmail
+            }
+        }, {
+            safe: true
+        }, function (err) {
+            if (err) {
+                mongodbInstance.close();
+                return callback(err);
+            }
+
+            db.collection('users', function (err, users) {
+                if (err) {
+                    mongodbInstance.close();
+                    return callback(err);
+                }
+
+                users.findOne({
+                    _id: new ObjectID(_id)
+                }, function (err, user) {
+                    mongodbInstance.close();
+                    if (err) return callback(err);
+                    console.log("新邮箱是" + user.email);
+                    callback(null, user);
+                });
+            });
+
+        });
+    });
+};
 
 module.exports = User;
