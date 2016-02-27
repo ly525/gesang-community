@@ -34,10 +34,11 @@
             <form class="form-signin" method="post" action="/users/register">
                 <h1>&nbsp</h1>
 
-                <input type="text"  class="form-control" placeholder="用户名"  name="name" required autofocus><br>
-                <input type="email"  class="form-control" placeholder="邮箱" name="email" required autofocus><br>
-                <input type="password"  class="form-control" placeholder="密码" name="password" required><br>
-                <input type="password"  class="form-control" placeholder="确认密码" name="password-repeat" required><br>
+                <input type="text" class="form-control" placeholder="用户名" name="name" required autofocus><br>
+                <input type="hidden" class="referrer-dd" name="referrer">
+                <input type="email" class="form-control" placeholder="邮箱" name="email" required autofocus><br>
+                <input type="password" class="form-control" placeholder="密码" name="password" required><br>
+                <input type="password" class="form-control" placeholder="确认密码" name="password-repeat" required><br>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" value="remember-me"> 记住密码
@@ -61,28 +62,22 @@
         </div>
 
     </div>
-    <script>
-        $(function () {
 
-
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                // 获取已激活的标签页的名称
-                var activeTab = $(e.target).text();
-                // 获取前一个激活的标签页的名称
-                var previousTab = $(e.relatedTarget).text();
-
-                $(".active-tab span").html(activeTab);
-                $(".previous-tab span").html(previousTab);
-            });
-        });
-    </script>
     <!--        -->
 </div>
 <!-- /container -->
 
 
 <%- include ./header-footer/footer %>
+<script>
+    document.write(document.referrer);
+    var links = document.getElementsByClassName("referrer-dd");
+    for (var i = 0; i < links.length; i++) {
+        alert("defef");
+        links[i].value = document.referrer;
+    }
 
+</script>
 </body>
 
 </html>

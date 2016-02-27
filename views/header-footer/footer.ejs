@@ -34,7 +34,9 @@
         $("#search-choice-item").text($(this).text());
 //        alert($(this).text());
     });
-    var simplemde = new SimpleMDE();
-    simplemde.value("This text will appear in the editor");
+    if (document.getElementsByTagName("textarea")){
+        var simplemde = new SimpleMDE();
+        simplemde.value("This text will appear in the editor");
+    }
 </script>
 <!-- FOOTER -->

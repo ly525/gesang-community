@@ -1,4 +1,11 @@
+var express = require('express');
+var router = express.Router();
 var crypto = require('crypto');
+//var Article = require('../models/article');
+//var User = require('../models/user');
+var accessControl = require('./accessControl');
+
+console.log('Loading....');
 var User = require('../models').User;
 
 
@@ -31,7 +38,6 @@ exports.login = function (req, res, next) {
     });
 };
 
-router.post('/register', checkLogin);
 exports.register = function (req, res, next) {
     console.log("之前页面" + req.body.referrer);
     // 从请求中获得数据
@@ -75,83 +81,73 @@ exports.register = function (req, res, next) {
     });
 }
 
-//
-router.get('/logout', checkLogin);
 exports.logout = function (req, res, next) {
     req.session.user = null;
     req.flash('success', '登出成功!');
     res.redirect('/');
 };
 
-//router.get('/u/:name', function (req, res, next) {
-//    console.log(req.params.name);
-//
-//    var page = req.params.page ? parseInt(req.params.page) : 1;
-//    console.log('==[Error] in routes/users/u/:name ' + page);
-//    User.getUserByName(req.params.name, function (err, user) {
-//        if (!user) {
-//            req.flash('error', '用户不存在!');
-//            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
-//        }
-//
-//        Article.getTagsByUserName(req.params.name, function (err, tags) {
-//            if (err) {
-//                console.log('==[Error] in routes/users/u/:name ' + err);
-//                req.flash('error', err);
-//                res.redirect('/articles');
-//            }
-//            Article.getTen(req.params.name, page, function (err, articles, total) {
-//                if (err) {
-//                    console.log('==[Error] in routes/users/u/:name ' + err);
-//                    req.flash('error', err);
-//                    res.redirect('/articles');
-//                }
-//                res.render('user', {
-//                    tags: tags,
-//                    articles: articles,
-//                    page: page,
-//                    isFirstPage: (page - 1) === 0,
-//                    isLastPage: ((page - 1) * 10 + articles.length) === total,
-//                    user: req.session.user,
-//                    success: req.flash('success').toString(),
-//                    error: req.flash('error').toString()
-//                });
-//            });
-//
-//        });
-//        //Article.getTen(req.params.name, page, function (err, articles, total) {
-//        //    if (err) {
-//        //        console.log('==[Error] in routes/users/u/:name ' + err);
-//        //        req.flash('error', err);
-//        //        res.redirect('/articles');
-//        //    }
-//        //    res.render('user', {
-//        //        articles: articles,
-//        //        page: page,
-//        //        isFirstPage: (page - 1) === 0,
-//        //        isLastPage: ((page - 1) * 10 + articles.length) === total,
-//        //        user: req.session.user,
-//        //        success: req.flash('success').toString(),
-//        //        error: req.flash('error').toString()
-//        //    });
-//        //});
-//        //Article.getAll(user.name, function (err, articles) {
-//        //    if (err) {
-//        //        req.flash('error', err);
-//        //        return res.redirect('/');
-//        //    }
-//        //    res.render('user', {
-//        //        title: user.name, // 被查看的用户xxx
-//        //        user: req.session.user, // 访问xxx的用户
-//        //        articles: articles,
-//        //        success: req.flash('success').toString(),
-//        //        error: req.flash('error').toString(),
-//        //    });
-//        //});
-//    });
-//
-//});
-//
+exports.index = function (req, res, next) {
+    var page = req.params.page ? parseInt(req.params.page) : 1;
+    User.findOne({_id: req.params.id}, function (err, user) {
+        if (err) next(err);
+        if (!user) return res.status(200).json({info: "用户已经注销"});
+
+        Article.getTen(req.params.name, page, function (err, articles, total) {
+            if (err) {
+                console.log('==[Error] in routes/users/u/:name ' + err);
+                req.flash('error', err);
+                res.redirect('/articles');
+            }
+            res.render('user', {
+                tags: tags,
+                articles: articles,
+                page: page,
+                isFirstPage: (page - 1) === 0,
+                isLastPage: ((page - 1) * 10 + articles.length) === total,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+
+    });
+    //Article.getTen(req.params.name, page, function (err, articles, total) {
+    //    if (err) {
+    //        console.log('==[Error] in routes/users/u/:name ' + err);
+    //        req.flash('error', err);
+    //        res.redirect('/articles');
+    //    }
+    //    res.render('user', {
+    //        articles: articles,
+    //        page: page,
+    //        isFirstPage: (page - 1) === 0,
+    //        isLastPage: ((page - 1) * 10 + articles.length) === total,
+    //        user: req.session.user,
+    //        success: req.flash('success').toString(),
+    //        error: req.flash('error').toString()
+    //    });
+    //});
+    //Article.getAll(user.name, function (err, articles) {
+    //    if (err) {
+    //        req.flash('error', err);
+    //        return res.redirect('/');
+    //    }
+    //    res.render('user', {
+    //        title: user.name, // 被查看的用户xxx
+    //        user: req.session.user, // 访问xxx的用户
+    //        articles: articles,
+    //        success: req.flash('success').toString(),
+    //        error: req.flash('error').toString(),
+    //    });
+    //});
+}
+)
+;
+
+}
+;
+
 router.get('/user/accountSettings', checkLogin);
 exports.accountSettings = function (req, res) {
     res.render('account-settings', {

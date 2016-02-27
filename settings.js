@@ -3,7 +3,7 @@
 var mongodbSettings = {
     //    cookieSecret 用于 Cookie 加密与数据库无关,我们留作后用
     cookieSecret: 'mypotato',
-    db: 'potato',
+    db: 'potato-cnode',
     host: 'localhost',
     port: 27017
 

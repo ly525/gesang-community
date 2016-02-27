@@ -1,7 +1,15 @@
-var mongodbInstance = require('./db'),
-    markdown = require('markdown').markdown,
-    ObjectID = require('mongodb').ObjectID;
+var markdown = require('markdown').markdown;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
+var ArticleSchema = new Schema({
+    .author = author;
+    avatar = avatar;
+    title = title;
+    content = content;
+    tags = tags;
+})
+;
 function Article(author, avatar, title, content, tags) {
     this.author = author;
     this.avatar = avatar;
@@ -213,7 +221,7 @@ Article.getTags = function (callback) {
 
 };
 
-Article.getTagsByUserName = function (author,callback) {
+Article.getTagsByUserName = function (author, callback) {
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);
         db.collection('articles', function (err, collection) {
@@ -221,7 +229,7 @@ Article.getTagsByUserName = function (author,callback) {
                 mongodbInstance.close();
                 return callback(err);
             }
-            collection.distinct('tags',{"author":author}, function (err, tags) {
+            collection.distinct('tags', {"author": author}, function (err, tags) {
                 mongodbInstance.close();
                 if (err) return callback(err);
                 callback(null, tags);
@@ -372,7 +380,7 @@ Article.search = function (keyword, callback) {
                 name: 1,
                 time: 1,
                 title: 1,
-                content:1 // 这边的属性是什么意思？？
+                content: 1 // 这边的属性是什么意思？？
             }).sort({
                 time: -1 // TODO 2016年02月06日20:02:52 这边的-1 是什么意思?
             }).toArray(function (err, articles) {
