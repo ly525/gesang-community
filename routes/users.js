@@ -79,7 +79,6 @@ exports.register = function (req, res, next) {
 router.get('/logout', checkLogin);
 exports.logout = function (req, res, next) {
     req.session.user = null;
-    req.flash('success', '登出成功!');
     res.redirect('/');
 };
 
@@ -90,20 +89,17 @@ exports.logout = function (req, res, next) {
 //    console.log('==[Error] in routes/users/u/:name ' + page);
 //    User.getUserByName(req.params.name, function (err, user) {
 //        if (!user) {
-//            req.flash('error', '用户不存在!');
 //            return res.redirect('/'); //TODO 用户不存在则跳转到首页,合适吗,是否应该返回原来的页面
 //        }
 //
 //        Article.getTagsByUserName(req.params.name, function (err, tags) {
 //            if (err) {
 //                console.log('==[Error] in routes/users/u/:name ' + err);
-//                req.flash('error', err);
 //                res.redirect('/articles');
 //            }
 //            Article.getTen(req.params.name, page, function (err, articles, total) {
 //                if (err) {
 //                    console.log('==[Error] in routes/users/u/:name ' + err);
-//                    req.flash('error', err);
 //                    res.redirect('/articles');
 //                }
 //                res.render('user', {
@@ -112,9 +108,7 @@ exports.logout = function (req, res, next) {
 //                    page: page,
 //                    isFirstPage: (page - 1) === 0,
 //                    isLastPage: ((page - 1) * 10 + articles.length) === total,
-//                    user: req.session.user,
-//                    success: req.flash('success').toString(),
-//                    error: req.flash('error').toString()
+//                    user: req.session.user
 //                });
 //            });
 //
@@ -122,7 +116,6 @@ exports.logout = function (req, res, next) {
 //        //Article.getTen(req.params.name, page, function (err, articles, total) {
 //        //    if (err) {
 //        //        console.log('==[Error] in routes/users/u/:name ' + err);
-//        //        req.flash('error', err);
 //        //        res.redirect('/articles');
 //        //    }
 //        //    res.render('user', {
@@ -130,22 +123,17 @@ exports.logout = function (req, res, next) {
 //        //        page: page,
 //        //        isFirstPage: (page - 1) === 0,
 //        //        isLastPage: ((page - 1) * 10 + articles.length) === total,
-//        //        user: req.session.user,
-//        //        success: req.flash('success').toString(),
-//        //        error: req.flash('error').toString()
+//        //        user: req.session.user
 //        //    });
 //        //});
 //        //Article.getAll(user.name, function (err, articles) {
 //        //    if (err) {
-//        //        req.flash('error', err);
 //        //        return res.redirect('/');
 //        //    }
 //        //    res.render('user', {
 //        //        title: user.name, // 被查看的用户xxx
 //        //        user: req.session.user, // 访问xxx的用户
-//        //        articles: articles,
-//        //        success: req.flash('success').toString(),
-//        //        error: req.flash('error').toString(),
+//        //        articles: articles
 //        //    });
 //        //});
 //    });
@@ -155,9 +143,7 @@ exports.logout = function (req, res, next) {
 router.get('/user/accountSettings', checkLogin);
 exports.accountSettings = function (req, res) {
     res.render('account-settings', {
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+        user: req.session.user
     });
 };
 

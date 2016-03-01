@@ -7,10 +7,7 @@ var Comment = require('../models/comment');
 router.get('/post', checkLogin);
 router.get('/post', function (req, res, next) {
     res.render('postArticle', {
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-
+        user: req.session.user
     });
 });
 
@@ -22,11 +19,9 @@ router.post('/post', function (req, res, next) {
     var newArticle = new Article(currentUser.name, currentUser.avatar, req.body.title, req.body.content, tags);
     newArticle.save(function (err) {
         if (err) {
-            req.flash('error', err);
             return res.redirect('/');
         }
         // TODO  2016年02月02日17:00:28 怎么在发表成功后,也就是客户端接收到success信号后,弹出一个发表成功的弹出框呢?
-        req.flash('success', '发表成功');
         return res.redirect('/');
     });
 });
@@ -35,16 +30,13 @@ router.post('/post', function (req, res, next) {
 router.get('/upload', checkLogin);
 router.get('/upload', function (req, res) {
     res.render('upload', {
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+        user: req.session.user
     });
 });
 
 router.post('/upload', checkLogin);
 router.post('/upload', function (req, res) {
     console.log('文件上传成功');
-    req.flash('success', '文件上传成功');
     res.redirect('/article/upload');
 });
 
@@ -54,14 +46,11 @@ router.get('/edit/:_id', function (req, res) {
     Article.edit(req.params._id, function (err, article) {
         if (err) {
             console.log('[Error] /routes/article/edit/:_id :' + err);
-            req.flash('error', err);
             return res.redirect('back');
         }
         res.render('editArticle', {
             article: article,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
+            user: req.session.user
         });
     });
 });
@@ -72,7 +61,7 @@ router.post('/edit/:_id', function (req, res) {
         //TODO 2016年02月04日10:06:13 查看文章详细的逻辑,将其移动到article的路由中,且使用_id进行查看! [Done]
         var url = encodeURI('/article/' + req.params._id);
         if (err) {
-            req.flash('error', err);
+
             return res.redirect(url); // 错误,返回对应的文章页面
         }
         req.flash('success', '修改成功');
@@ -106,9 +95,8 @@ router.get('/:_id', function (req, res) {
         res.render('article', {
             title: req.params.title, // 被查看的用户xxx
             article: article,
-            user: req.session.user, // 访问xxx的用户
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString(),
+            user: req.session.user // 访问xxx的用户
+
         });
     });
 });

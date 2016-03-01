@@ -6,27 +6,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
-
+var config = require('./config');
 /*
 1. express 也提供了会话中间件,默认情况下是把用户信息存储在内存中
 2. 但我们既然已经有了 MongoDB,不妨把会话信息存储在数据库中,便于持久维护。
 3. 为了使用这一功能,我们需要借助 express-session 和 connect-mongo 这两个第三方中间件
  */
 var session = require('express-session');
+
 var MongoStore = require('connect-mongo')(session); //TODO 2016年01月31日22:35:29 这边后面跟着的(session)不理解是做什么的?
 // require 引入一个javascript文件(routes/index.js作为一个模块,通过require引入)
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var library = require('./routes/library');
-var articles = require('./routes/articles');
-var article = require('./routes/article');
-var comment = require('./routes/comment');
-var search = require('./routes/search');
-var footer = require('./routes/footer');
 var errorHandler = require('./routes/error');
-// 引入数据库配置文件
-var settings = require('./settings');
-var mongodbSettings = settings.mongodbSettings;
 var flash = require('connect-flash');
 
 
@@ -70,27 +61,22 @@ app.use(function(err,req,res,next){
     next();
 });
 app.use(session({
-    secret: mongodbSettings.cookieSecret,
-    key: mongodbSettings.db, //cookie name
+    secret: config.cookie_secret,
+    key:    config.cookie_name, //cookie name
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30
     }, //30days.前面的1000表示1000毫秒也就是1秒
     store: new MongoStore({
-        db: mongodbSettings.db,
-        host: mongodbSettings.host,
-        port: mongodbSettings.port
+        db:     config.mongodb_dbname,
+        host:   config.mongodb_host,
+        port:   config.mongodb_port
     })
+
 
 }));
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/library', library);
-app.use('/articles', articles);
-app.use('/article', article);
-app.use('/comment', comment);
-app.use('/search', search);
-app.use('/footer', footer);
+
 errorHandler(app);
 
 

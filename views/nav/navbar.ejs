@@ -64,13 +64,13 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/users/u/<%= user.name %>">我的主页</a></li>
-                        <li><a href="/users/logout">退出登录</a></li>
+                        <li><a href="/user/u/<%= user._id %>">我的主页</a></li>
+                        <li><a href="/user/logout">退出登录</a></li>
                     </ul>
                 </li>
 
                 <% } else{ %>
-                <li class="active"><a href="/users/login-register">登录&注册<span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="/user/login-register">登录&注册<span class="sr-only">(current)</span></a></li>
 
                 <% } %>
             </ul>

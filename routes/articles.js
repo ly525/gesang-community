@@ -15,9 +15,7 @@ router.get('/', function (req, res, next) {
             page: page,
             isFirstPage: (page - 1) === 0,
             isLastPage: ((page - 1) * 10 + articles.length) === total,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
+            user: req.session.user
         });
     });
 
@@ -37,15 +35,12 @@ router.get('/archive', function (req, res) {
     Article.getArchive(function (err, articles) {
         if (err) {
             console.log('==[Error] in routes/articles/archive :' + err);
-            req.flash('error', err);
             res.redirect('/articles');
         }
         console.log('==[Error] 归档的大小' + articles.length);
         res.render('archive', {
             articles: articles,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('err').toString()
+            user: req.session.user
         });
     });
 });
@@ -54,14 +49,11 @@ router.get('/tags', function (req, res) {
     Article.getTags(function (err, tags) {
         if (err) {
             console.log('==[Error] in routes/articles/tags :' + err);
-            req.flash('error', err);
             res.redirect('/articles');
         }
         res.render('tags', {
             tags: tags,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
+            user: req.session.user
         });
     });
 });
@@ -69,14 +61,11 @@ router.get('/tags', function (req, res) {
 router.get('/tag/:tag', function (req, res) {
     Article.getTag(req.params.tag, function (err, articles) {
         if (err) {
-            req.flash('error', err);
             return res.redirect('back');
         }
         res.render('tag', {
             articles: articles,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
+            user: req.session.user
         });
     });
 

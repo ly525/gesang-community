@@ -1,25 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var crypto = require('crypto');
-//var Article = require('../models/article');
-//var User = require('../models/user');
-var accessControl = require('./accessControl');
+var express         =   require('express');
+var crypto          =   require('crypto');
+var User            =   require('../proxy').User;
+var mail            =   require('../common/mail');
+var utility         =   require('utility');
+var config          =   require('../config');
+var validator       =   require('validator');
 
-console.log('Loading....');
-var User = require('../models').User;
-
-
-router.get('/loginAndRigister', checkNotLogin);
 exports.loginAndRigister = function (req, res, next) {
-    res.render('login-register', {
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-    });
+    res.locals.user = null;
+    res.render('user/login-register');
 };
 
 
-router.post('/login', checkNotLogin);
 exports.login = function (req, res, next) {
     var password = crypto.createHash('md5').update(req.body.password).digest('hex');
     User.getUserByEmail(req.body.email, function (err, user) {
@@ -29,65 +21,73 @@ exports.login = function (req, res, next) {
 
         // 检查密码是否一致
         if (user.password !== password) {
-            console.log('密码错误');
             return res.status(200).json({info: "passwordError"});
         }
         // 用户名和密码匹配后,将用户信息存入session
-        req.session.user = user;
+        res.locals.user = req.session.user = user;
         return res.status(200).json({info: "signinSuccess"});
     });
 };
 
 exports.register = function (req, res, next) {
-    console.log("之前页面" + req.body.referrer);
-    // 从请求中获得数据
-    var name = req.body.name,
-        password = crypto.createHash('md5').update(req.body.password).digest('hex'),
-        email = req.body['email'],
-        avatar = "http://cdn.v2ex.co/avatar/704b/889d/158237_normal.png?m=1454721031";
+    console.log("****** proxy 用户注册逻辑");
 
+    var nickname = req.body.nickname,
+        passhash = crypto.createHash('md5').update(validator.trim(req.body.password)).digest('hex'),
+        email = validator.trim(req.body.email),
+        uniquename = nickname + Date.now(),
+        avatarUrl = User.makeSomelineAvatarUrl(email, 48);
+    console.log(nickname+passhash+uniquename+avatarUrl);
 
     // 检测用户是否已经存在
-    User.findOne({email: email}, function (err, user) {
-        if (err) console.log("检测用户是否存在过程中出现问题" + err);
+    User.getUserByEmail(email, function (err, user) {
+        if (err) console.log("****** 检测用户是否存在过程中出现问题" + err);
         if (user) {
+            console.log("****** emailAlreadyUsed");
+
             return res.status(200).json({info: "emailAlreadyUsed"});
         }
-        var newUser = new User({
-            name: name,
-            password: password,
-            email: email,
-            avatar: avatar
-        });
-        newUser.save(function (err, user) {
+
+        // 昵称, 唯一名称, 邮箱, 密码, 头像的地址,是否激活
+        User.newAndSave(nickname, uniquename, email, passhash, avatarUrl, false, function (err, user) {
             if (err) {
-                console.log('将新用户保存到数据库时候出现了问题' + err);
+                return res.status(500).json({info: err});
+
             }
-            // 为了数据安全, 将用户密码清除, 保留邮箱和用户名信息
-            // TODO 2015年12月14日13:04:31 这边的delete 不明白, 还有为什么在delete之前 设置为null呢?
-            newUser.password = null;
-            delete newUser.password;
+            console.log(email + passhash + config.session_secret);
+            mail.sendActiveEmail(email, utility.md5(email + passhash + config.session_secret), nickname, uniquename,  function (error, info) {
+                if (error) {
+                    return console.log("****** 邮件发送失败"+ error);
+                }
+                console.log('****** Message sent: ' + info.response);
+                console.log("****** 验证邮件已经发送,请查收");
+                res.status(200).json({info: 'registerSuccess'});
+                // TODO 2015年12月19日12:07:54 怎么在res.json之后重定向到主页?
 
-            req.session.user = newUser;
+            });
 
-            // TODO 2015年12月14日13:02:31 这一步使可以改善的, 也就是跳转到注册之前点额页面
-
-            return res.redirect(req.get("Referer"));
-            // res.status(200).json({success: 'register_success'});
-            //return res.redirect('/');
-            // TODO 2015年12月19日12:07:54 怎么在res.json之后重定向到主页?
         });
-
     });
 }
 
+/**
+ * 用户登出
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.logout = function (req, res, next) {
-    req.session.user = null;
-    req.flash('success', '登出成功!');
+    req.locals.user = req.session.user = null;
     res.redirect('/');
 };
 
-exports.index = function (req, res, next) {
+/**
+ * 获得用户主页
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.userIndex = function (req, res, next) {
     var page = req.params.page ? parseInt(req.params.page) : 1;
     User.findOne({_id: req.params.id}, function (err, user) {
         if (err) next(err);
@@ -96,106 +96,71 @@ exports.index = function (req, res, next) {
         Article.getTen(req.params.name, page, function (err, articles, total) {
             if (err) {
                 console.log('==[Error] in routes/users/u/:name ' + err);
-                req.flash('error', err);
+
                 res.redirect('/articles');
             }
-            res.render('user', {
+            res.render('user/index', {
                 tags: tags,
                 articles: articles,
                 page: page,
                 isFirstPage: (page - 1) === 0,
                 isLastPage: ((page - 1) * 10 + articles.length) === total,
-                user: req.session.user,
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString()
+                user: req.session.user
             });
         });
 
     });
-    //Article.getTen(req.params.name, page, function (err, articles, total) {
-    //    if (err) {
-    //        console.log('==[Error] in routes/users/u/:name ' + err);
-    //        req.flash('error', err);
-    //        res.redirect('/articles');
-    //    }
-    //    res.render('user', {
-    //        articles: articles,
-    //        page: page,
-    //        isFirstPage: (page - 1) === 0,
-    //        isLastPage: ((page - 1) * 10 + articles.length) === total,
-    //        user: req.session.user,
-    //        success: req.flash('success').toString(),
-    //        error: req.flash('error').toString()
-    //    });
-    //});
-    //Article.getAll(user.name, function (err, articles) {
-    //    if (err) {
-    //        req.flash('error', err);
-    //        return res.redirect('/');
-    //    }
-    //    res.render('user', {
-    //        title: user.name, // 被查看的用户xxx
-    //        user: req.session.user, // 访问xxx的用户
-    //        articles: articles,
-    //        success: req.flash('success').toString(),
-    //        error: req.flash('error').toString(),
-    //    });
-    //});
-}
-)
-;
 
-}
-;
+};
 
-router.get('/user/accountSettings', checkLogin);
-exports.accountSettings = function (req, res) {
-    res.render('account-settings', {
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+/**
+ * 用户账户设置
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.accountSettings = function (req, res, next) {
+    res.render('user/account-settings', {
+        user: req.session.user
     });
 };
 
-//router.post('/modify-email', checkLogin);
-//router.post('/modify-email', function (req, res) {
-//    console.log('接收到的AJax请求' + req.body.newEmail);
-//    console.log('接收到的AJax请求' + req.session.user._id);
-//    User.updateEmail(req.session.user._id, req.body.newEmail, function (err, user) {
-//        if (err) {
-//            console.log("更新邮箱Error" + err);
-//        }
-//        req.session.user = user;
-//        res.status(200).json({info: "success", email: user.email});
-//
-//    });
-//});
-//
-//router.post('/modify-password', checkLogin);
-//router.post('/modify-password', function (req, res) {
-//    console.log('接收到的AJax请求' + req.body.oldPassword);
-//    console.log('接收到的AJax请求' + req.body.newPassword);
-//    console.log('接收到的AJax请求' + req.session.user._id);
-//
-//    var oldPassword = crypto.createHash('md5').update(req.body.oldPassword).digest('hex');
-//    // 检查密码是否一致
-//
-//    if (req.session.user.password !== oldPassword) {
-//        console.log("当前密码不正确!");
-//        res.status(200).json({info: "wrongOldPassword"});
-//    } else {
-//        console.log("当前密码正确!");
-//        var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
-//        User.updatePassword(req.session.user._id, newPassword, function (err, user) {
-//
-//            if (err) {
-//                console.log("更新密码Error" + err);
-//            }
-//            req.session.user = user;
-//            res.status(200).json({info: "success"});
-//
-//        });
-//    }
-//
-//});
-module.exports = router;
+/**
+ * 激活注册邮箱
+ * @param req
+ * @param res
+ * @param next
+ *
+ * - 逻辑: 检查token是否匹配
+ * - 由这个逻辑可以想到,用户登录时候需要首先检测邮箱是否激活
+ */
+exports.activeAccount = function (req, res, next) {
+
+    // 邮件中的key = utility.md5( 注册的email+passhash+session_secret )
+    var key         = validator.trim(req.query.key),
+        uniquename  = validator.trim(req.query.uniquename);
+    User.getUserByUniquename(uniquename, function(err, user){
+        res.locals.user = null;
+        if(err) return next(err);
+
+        if (!user) return res.render('user/account-active',{account_active_result: "账户激活失败, 该用户不存在"});
+
+        console.log(utility.md5(user.email + user.passhash + config.session_secret) === key);
+
+        if (!user || utility.md5(user.email + user.passhash + config.session_secret) !== key){
+
+            return res.render('user/account-active',{account_active_result: "账户激活失败, 信息有误!"});
+        }
+
+        if (user.active) return res.render('user/account-active',{account_active_result: "该账户已是激活状态,请直接<a href='/user/login-register'>登录</a>"});
+
+        user.active = true;
+        user.save(function(err, user){
+            if (err) return next(err);
+            console.log('****** ' + user.nickname);
+            res.render('user/account-active',{account_active_result: "邮箱已经激活,请登录, 该用户不存在"});
+
+        });
+    });
+
+};

@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
-var checkNotLogin = accessControl.checkNotLogin;
-var checkLogin = accessControl.checkLogin;
-
+var checkNotLogin = require('./accessControl').checkNotLogin;
+var checkLogin = require('./accessControl').checkLogin;
 var user = require('./user');
 
 
@@ -12,9 +10,7 @@ router.get('/', function (req, res, next) {
 
     res.render('index', {
         user: req.session.user,
-        articles: [],
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+        articles: []
     });
 });
 
@@ -26,15 +22,19 @@ router.get('/', function (req, res, next) {
  * - 设置
  * - 主页
  */
-router.get('/user/loginAndRigister', checkNotLogin);
-router.get('/user/loginAndRigister', users.loginAndRigister);
-router.get('/user/logout', checkLogin);
-router.get('/user/logout', users.logout);
-router.post('/user/login', checkNotLogin);
-router.post('/user/login', users.login);
-router.post('/user/register', checkNotLogin);
-router.post('/user/register', users.register);
-router.get('/user/accountSettings', checkLogin);
-router.get('/user/accountSettings', users.accountSettings);
+router.get('/user/login-register', checkNotLogin, user.loginAndRigister);
+router.post('/user/login', checkNotLogin, user.login);
+router.post('/user/register', checkNotLogin, user.register);
+router.get('/user/logout', checkLogin, user.logout);
+router.get('/user/account-settings', checkLogin, user.accountSettings);
+router.get('/user/account-active', checkNotLogin, user.activeAccount);// 会自动将req, res, next 传递给这些函数
+
+/**
+ * 添加文章路由
+ * - 发表
+ * - 删除
+ * - 编辑
+ * - 查询
+ */
 
 module.exports = router;

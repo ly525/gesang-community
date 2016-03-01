@@ -1,13 +1,16 @@
-var mongoose = require('mongoose');
-var mongodbConfig = require('../settings').mongodbSettings;
+var mongoose        = require('mongoose');
+var config          = require('../config');
 
-mongoose.connect("mongodb://localhost/potota-demo0", {server: {poolSize: 20}}, function (err) {
+mongoose.connect("mongodb://"+config.mongodb_host + ':' + config.mongodb_port + '/' + config.mongodb_dbname, {server: {poolSize: 20}}, function (err) {
     if (err) {
-        console.log("connect to %s error", mongodbConfig.db, err.message);
+        console.log("connect to %s error", config.mongodb_dbname, err.message);
         process.exit(1);
     }
-    console.log('数据库的链接信息' + mongodbConfig.host + ':' + mongodbConfig.port + '/' + mongodbConfig.db);
+    console.log('数据库的链接信息' + config.mongodb_host + ':' + config.mongodb_port + '/' + config.mongodb_dbname);
 });
 
+
+// models
 require('./user');
-module.exports.User = mongoose.model('User');
+
+exports.User = mongoose.model('User');

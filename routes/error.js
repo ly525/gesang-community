@@ -13,10 +13,9 @@ module.exports = function (app) {
     // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
         err.status = err.status || 500;
-        console.log("错误" + err.status);
+        console.log("错误" + err.status+ err);
         res.render('error', {
-            message: err.message,
-            error: err
+            message: err.message
         });
     });
 

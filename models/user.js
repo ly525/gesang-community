@@ -1,121 +1,69 @@
-var crypto = require('crypto');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-// 定义一个Schema
+var mongoose  = require('mongoose');
+var Schema    = mongoose.Schema;
+var utility   = require('utility');
+
 var UserSchema = new Schema({
-    name: String,
-    password: String,
-    email: String,
-    avatar: String,
-    introduction: String,
-    createTime: {
-        type: Date,
-        default: Date.now()
-    }
+    nickname: { type: String},
+    uniquename: { type: String},
+    passhash: { type: String },
+    email: { type: String},
+    url: { type: String },
+    profile_image_url: {type: String},
+    location: { type: String },
+    signature: { type: String },
+    profile: { type: String },
+    weibo: { type: String },
+    avatarUrl: { type: String },
+    githubId: { type: String},
+    githubUsername: {type: String},
+    githubAccessToken: {type: String},
+    is_block: {type: Boolean, default: false},
+
+    score: { type: Number, default: 0 },
+    topic_count: { type: Number, default: 0 },
+    reply_count: { type: Number, default: 0 },
+    follower_count: { type: Number, default: 0 },
+    following_count: { type: Number, default: 0 },
+    collect_tag_count: { type: Number, default: 0 },
+    collect_topic_count: { type: Number, default: 0 },
+    create_at: { type: Date, default: Date.now },
+    update_at: { type: Date, default: Date.now },
+    is_star: { type: Boolean },
+    level: { type: String },
+    active: { type: Boolean, default: false },
+
+    receive_reply_mail: {type: Boolean, default: false },
+    receive_at_mail: { type: Boolean, default: false },
+    from_wp: { type: Boolean },
+
+    retrieve_time: {type: Number},
+    retrieve_key: {type: String},
+
+    accessToken: {type: String},
 });
 
-
-/**
- * 根据邮箱地址查找用户
- * Callback:
- * - err, 数据库异常
- * - user, 用户
- * @param {String} email 邮箱地址
- * @param {Function} callback 回调函数
- */
-
-exports.getUserByEmail = function (email, callback) {
-    User.findOne({email: email}, callback);
-};
+UserSchema.virtual('avatar_url').get(function () {
+    var url = this.avatar || "https://www.someline.com/cn/avatar/f1da9d8d1bfae9ee847c3e839bde4a9c3ce2e564/48";
 
 
+    // 如果是 github 的头像，则限制大小
+    if (url.indexOf('githubusercontent') !== -1) {
+        url += '&s=120';
+    }
 
+    return url;
+});
 
+UserSchema.virtual('isAdvanced').get(function () {
+    // 积分高于 700 则认为是高级用户
+    return this.score > 700 || this.is_star;
+});
 
-/**
- * 根据用户ID, 查找用户
- * Callback:
- * - err, 数据库异常
- * - user, 用户
- * @param {String} id 用户ID
- * @param {Function} callback 回调函数
- */
+UserSchema.index({loginname: 1}, {unique: true});
+UserSchema.index({email: 1}, {unique: true});
+UserSchema.index({score: -1});
+UserSchema.index({githubId: 1});
+UserSchema.index({accessToken: 1});
 
-exports.getUserById = function (id, callback) {
-    if (!id) return callback();
-    User.findOne({_id: id}, callback);
-};
-
-//User.updateEmail = function (_id, newEmail, callback) {
-//    mongodbInstance.open(function (err, db) {
-//        if (err) return callback(err);
-//        db.collection('users').update({
-//            _id: new ObjectID(_id)
-//        }, {
-//            $set: {
-//                email: newEmail
-//            }
-//        }, {
-//            safe: true
-//        }, function (err) {
-//            if (err) {
-//                mongodbInstance.close();
-//                return callback(err);
-//            }
-//
-//            db.collection('users', function (err, users) {
-//                if (err) {
-//                    mongodbInstance.close();
-//                    return callback(err);
-//                }
-//
-//                users.findOne({
-//                    _id: new ObjectID(_id)
-//                }, function (err, user) {
-//                    mongodbInstance.close();
-//                    if (err) return callback(err);
-//                    console.log("新邮箱是" + user.email);
-//                    callback(null, user);
-//                });
-//            });
-//
-//        });
-//    });
-//};
-//
-//User.updatePassword = function (_id, newPassword, callback) {
-//    mongodbInstance.open(function (err, db) {
-//        if (err) return callback(err);
-//        db.collection('users').update({
-//            _id: new ObjectID(_id)
-//        }, {
-//            $set: {
-//                password: newPassword
-//            }
-//        }, {
-//            safe: true
-//        }, function (err) {
-//            if (err) {
-//                mongodbInstance.close();
-//                return callback(err);
-//            }
-//
-//            db.collection('users', function (err, users) {
-//                if (err) {
-//                    mongodbInstance.close();
-//                    return callback(err);
-//                }
-//
-//                users.findOne({
-//                    _id: new ObjectID(_id)
-//                }, function (err, user) {
-//                    mongodbInstance.close();
-//                    if (err) return callback(err);
-//                    callback(null, user);
-//                });
-//            });
-//
-//        });
-//    });
-//};
 mongoose.model('User', UserSchema);
+
