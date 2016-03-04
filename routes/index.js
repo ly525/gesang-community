@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var checkNotLogin = require('./accessControl').checkNotLogin;
-var checkLogin = require('./accessControl').checkLogin;
+var requiredNotLogin = require('./accessControl').requiredNotLogin;
+var requiredLogin = require('./accessControl').requiredLogin;
 var user = require('./user');
 
 
@@ -21,14 +21,16 @@ router.get('/', function (req, res, next) {
  * - 注销
  * - 设置
  * - 主页
+ * - 关注某人
  */
-router.get('/user/login-register', checkNotLogin, user.loginAndRigister);
-router.post('/user/login', checkNotLogin, user.login);
-router.post('/user/register', checkNotLogin, user.register);
-router.get('/user/logout', checkLogin, user.logout);
-router.get('/user/account-settings', checkLogin, user.accountSettings);
-router.get('/user/account-active', checkNotLogin, user.activeAccount);// 会自动将req, res, next 传递给这些函数
-
+router.get('/user/login-register', requiredNotLogin, user.loginAndRigister);
+router.get('/user/logout', requiredLogin, user.logout);
+router.get('/user/account-settings', requiredLogin, user.accountSettings);
+router.get('/user/account-active', requiredNotLogin, user.activeAccount);// 会自动将req, res, next 传递给这些函数
+router.get('/user/u/:id',user.userIndex);
+router.post('/user/follow/:id', requiredLogin, user.follow);
+router.post('/user/login', requiredNotLogin, user.login);
+router.post('/user/register', requiredNotLogin, user.register);
 /**
  * 添加文章路由
  * - 发表

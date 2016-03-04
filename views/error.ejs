@@ -1,7 +1,51 @@
-<h1>Error!</h1>
-<h4>------error.status---------</h4>
-<%= error.status %><br/>
-<h4>------message---------</h4>
-<%= message %>
-<h4>------error.stack---------</h4>
-<%= error.stack %><br/>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<%- include ./header-footer/header %>
+
+<body>
+
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
+
+<div class="container">
+    <div class="header clearfix">
+        <h1 class="text-muted">-</h1>
+    </div>
+
+    <div class="jumbotron row">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4">
+            <p><a class="btn btn-lg btn-success" href="#" role="button"><%= error.status %></a></p>
+            <h4>------message---------</h4>
+            <% if ( typeof  messages !== "undefined" ){%>
+            <p class="lead"><%= message %></p>
+
+            <% } %>
+        </div>
+        <div class="col-lg-4">
+        </div>
+    </div>
+
+    <div class="row marketing">
+
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-8">
+            <h4>------error.stack---------</h4>
+            <code><%= error.stack %></code>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+</div>
+
+
+<%- include ./header-footer/footer %>
+
+</body>
+
+</html>

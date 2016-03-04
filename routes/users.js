@@ -147,7 +147,7 @@ exports.accountSettings = function (req, res) {
     });
 };
 
-//router.post('/modify-email', checkLogin);
+//router.post('/modify-email', requiredLogin);
 //router.post('/modify-email', function (req, res) {
 //    console.log('接收到的AJax请求' + req.body.newEmail);
 //    console.log('接收到的AJax请求' + req.session.user._id);
@@ -161,7 +161,7 @@ exports.accountSettings = function (req, res) {
 //    });
 //});
 //
-//router.post('/modify-password', checkLogin);
+//router.post('/modify-password', requiredLogin);
 //router.post('/modify-password', function (req, res) {
 //    console.log('接收到的AJax请求' + req.body.oldPassword);
 //    console.log('接收到的AJax请求' + req.body.newPassword);

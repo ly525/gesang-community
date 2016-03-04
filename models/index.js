@@ -12,5 +12,7 @@ mongoose.connect("mongodb://"+config.mongodb_host + ':' + config.mongodb_port + 
 
 // models
 require('./user');
+require('./user_follower');
 
 exports.User = mongoose.model('User');
+exports.UserFollower = mongoose.model('UserFollower');

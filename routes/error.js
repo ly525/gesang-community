@@ -12,10 +12,12 @@ module.exports = function (app) {
     // production error handler
     // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
+        res.locals.user = req.session.user;
         err.status = err.status || 500;
-        console.log("错误" + err.status+ err);
+        console.log("错误" + err.status + err);
         res.render('error', {
-            message: err.message
+            message: err.message,
+            error: err
         });
     });
 
