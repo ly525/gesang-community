@@ -27,7 +27,9 @@ router.get('/user/login-register', requiredNotLogin, user.loginAndRigister);
 router.get('/user/logout', requiredLogin, user.logout);
 router.get('/user/account-settings', requiredLogin, user.accountSettings);
 router.get('/user/account-active', requiredNotLogin, user.activeAccount);// 会自动将req, res, next 传递给这些函数
-router.get('/user/u/:id',user.userIndex);
+router.get('/user/u/:id',user.userIndex); // 获得用户主页
+router.get('/user/:other_user_id/be_followers',user.getBeFollowers); // 获得A关注的人
+router.get('/user/:other_user_id/followers',user.getFollowers); // 获得A的关注者
 router.post('/user/follow/:id', requiredLogin, user.follow);
 router.post('/user/login', requiredNotLogin, user.login);
 router.post('/user/register', requiredNotLogin, user.register);

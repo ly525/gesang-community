@@ -279,3 +279,63 @@ exports.follow = function (req, res, next) {
         });
     });
 };
+
+/**
+ * 得到关注的人
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getBeFollowers = function (req, res, next) {
+    var follower_id     = req.params.other_user_id;
+    res.locals.user     = req.session.user;
+    var ep              = new eventproxy();
+
+
+    ep.all("other_user", "be_followers", function (other_user, be_followers){
+        return res.render("user/be_followers", {other_user: other_user, be_followers:be_followers });
+    });
+
+    User.getUserById(follower_id, function (err, other_user) {
+        if (err) return next(err);
+        if (!other_user) return res.render("error", {message: "用户不存在"});
+        other_user.passhash = null;
+        ep.emit('other_user', other_user);
+    });
+
+    UserFollower.getBeFollowersByfollower_id(follower_id, function (err, be_followers) {
+        // 这里的connection表示一条关系,也就是关注者和被关注者之间的关系,也就是数据库中一条记录
+        if (err) return next(err);
+        ep.emit('be_followers', be_followers);
+    });
+};
+
+/**
+ * 得到关注者(粉丝)
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getFollowers = function (req, res, next) {
+    res.locals.user = req.session.user;
+    var be_follower_id = req.params.other_user_id;
+    var ep              = new eventproxy();
+
+
+    ep.all("other_user", "followers", function (other_user, followers){
+            return res.render("user/followers", {other_user: other_user, followers:followers });
+        });
+
+        User.getUserById(be_follower_id, function (err, other_user) {
+            if (err) return next(err);
+            if (!other_user) return res.render("error", {message: "用户不存在"});
+            other_user.passhash = null;
+            ep.emit('other_user', other_user);
+        });
+
+        UserFollower.getFollowersBybe_follower_id(be_follower_id, function (err, followers) {
+            // 这里的connection表示一条关系,也就是关注者和被关注者之间的关系,也就是数据库中一条记录
+            if (err) return next(err);
+            ep.emit('followers', followers); 
+        });
+};

@@ -82,9 +82,11 @@
         <div class="col-md-6">
             <div class="bs-example" data-example-id="simple-table">
                 <table class="table">
-                    <caption>待定</caption>
+                    <caption><%= other_user.nickname %>被<%= followers.length %>人关注</caption>
                     <tbody >
-
+                    <% followers.forEach(function(follower,index){%>
+                        <tr><td><%= follower.follower_id%> </td></tr>
+                    <%})%>
                     </tbody>
                 </table>
             </div>

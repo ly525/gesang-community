@@ -82,9 +82,11 @@
         <div class="col-md-6">
             <div class="bs-example" data-example-id="simple-table">
                 <table class="table">
-                    <caption>待定</caption>
+                    <caption><%= other_user.nickname %>关注了<%be_followers.length %>人</caption>
                     <tbody >
-
+                    <% be_followers.forEach(function(be_follower,index){%>
+                        <tr><td><span class="label label-primary">浏览 <%= be_follower.be_follower_id%> </span></td></tr>
+                    <%})%>
                     </tbody>
                 </table>
             </div>
