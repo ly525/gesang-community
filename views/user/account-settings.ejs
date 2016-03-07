@@ -17,24 +17,29 @@
                 <a class="btn btn-default" href="#" role="button">修改头像</a>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-7">
+
                 <blockquote>
                     <div class="col-xs-6">
-                        <input type="text" class="form-control" value="<%= user.name %>">
+                        <input id="inputNewNickname" type="text" class="form-control" value="<%= user.nickname %>">
                     </div>
                     <br>
                     <footer>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control" value="总要不辜负自己">
+                            <input id="inputNewSignature" type="text" class="form-control" value="<%= user.signature %>">
                         </div>
                     </footer>
+
                 </blockquote>
+
+
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-3">
                 <br>
                 <span class="label label-primary">1 <br> 被赞数</span>
                 <span class="label label-primary">1 <br> 被赞数</span><br><br>
-                <a class="btn btn-success" href="/users/user/account-settings" role="button"><span
-                            class="glyphicon glyphicon-cog"></span>&nbsp;保存修改</a>
+                <button id="buttonUpdateNickNameAndSignature" class="btn btn-success" role="button">保存修改</button>
+                &nbsp;<a href="/user/u/<%= user._id %>" class="btn btn-success" role="button">我的主页</a>
+
             </div><!-- /.col-lg-4 -->
         </div>
 
@@ -217,6 +222,41 @@
 <%- include ../header-footer/footer %>
 <script>
 
+//    修改昵称和签名开始
+    var buttonUpdateNickNameAndSignature = document.getElementById("buttonUpdateNickNameAndSignature");
+    buttonUpdateNickNameAndSignature.onclick = function (e) {
+        var newNickname = document.getElementById("inputNewNickname").value.trim();
+        var newSignature = document.getElementById("inputNewSignature").value.trim();
+        var nickname =  "<%= user.nickname%>";
+        if (newNickname === "<%= user.nickname%>" && newNickname === "<%=user.signature %>" ){
+            alert("没有做任何修改");
+            return;
+        }
+        var request = new XMLHttpRequest();
+        request.open("POST", "/user/updateNickNameAndSignature", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                var response = JSON.parse(request.responseText);
+                alert(response.resultFromServer);
+                if (response.resultFromServer === "updateNickNameAndSignatureSuccess") {
+                    window.location.href = "/user/u/"+"<%= user._id%>";
+                } else {
+                    document.getElementById("updateNickNameAndSignatureResult").parentNode.style.display = "block";
+                    document.getElementById("updateNickNameAndSignatureResult").innerHTML = "未知异常!";
+
+                }
+            }
+        }
+        request.send(JSON.stringify({
+            newNickname:  newNickname,
+            newSignature: newSignature
+        }));
+        alert("提交");
+    }
+    <!--修改昵称和签名结束-->
+
+
     <!--修改邮箱开始-->
     var buttonModifyEmailAddress = document.getElementById("buttonModifyEmailAddress");
     buttonModifyEmailAddress.onclick = function (e) {
@@ -224,18 +264,26 @@
         var newEmail = document.getElementById("inputNewEmail").value;
         alert(newEmail);
         var request = new XMLHttpRequest();
-        request.open("POST", "/users/modify-email", true);
+        request.open("POST", "/user/updateEmail", true);
         request.setRequestHeader("Content-Type", "application/json");
         request.onreadystatechange = function () {
             if (request.readyState === 4 && request.status === 200) {
-                var modifyEmailResult = JSON.parse(request.responseText);
-                if (modifyEmailResult.info === "success") {
+                var response = JSON.parse(request.responseText);
+                if (response.resultFromServer === "updateEmailSuccess") {
                     document.getElementById("updateEmailResult").parentNode.style.display = "block";
-                    document.getElementById("updateEmailResult").innerHTML = "更新邮箱成功";
-                    document.getElementById("inputOldEmail").innerHTML = modifyEmailResult.email;
+                    document.getElementById("updateEmailResult").innerHTML = "更新邮箱成功, 我们已经向"+newEmail+"发送了一份验证邮件,请激活!";
+                    document.getElementById("inputOldEmail").innerHTML = newEmail;
+                } else if (response.resultFromServer === "emailAlreadyUsed" ){
+                    document.getElementById("updateEmailResult").parentNode.style.display = "block";
+                    document.getElementById("updateEmailResult").innerHTML = "邮箱已经被注册,请更换邮箱!";
+                    document.getElementById("inputNewEmail").value = "";
+                }else {
+                    document.getElementById("updateEmailResult").parentNode.style.display = "block";
+                    document.getElementById("updateEmailResult").innerHTML = "更新邮箱失败!";
+                    document.getElementById("inputOldEmail").innerHTML = newEmail;
                 }
             }
-        }
+        };
         request.send(JSON.stringify({
             newEmail: newEmail
         }));
@@ -256,18 +304,21 @@
                 document.getElementById("updatePasswordResult").innerHTML = "新密码与确认密码不一致";
             } else {
                 var request = new XMLHttpRequest();
-                request.open("POST", "/users/modify-password", true);
+                request.open("POST", "/user/updatePassword", true);
                 request.setRequestHeader("Content-Type", "application/json");
                 request.onreadystatechange = function () {
                     if (request.readyState === 4 && request.status === 200) {
-                        var modifyPasswordResult = JSON.parse(request.responseText);
-                        if (modifyPasswordResult.info === "success") {
+                        var response = JSON.parse(request.responseText);
+                        if (response.resultFromServer === "updatePasswordSuccess") {
                             document.getElementById("updatePasswordResult").parentNode.style.display = "block";
                             document.getElementById("updatePasswordResult").innerHTML = "更新密码成功";
-                        } else if (modifyPasswordResult.info === "wrongOldPassword"){
+                            oldPassword = "";
+                            newPassword = "";
+                            vertifyNewPassword ="";
+                        } else if (response.resultFromServer === "wrongOldPassword"){
                             document.getElementById("updatePasswordResult").parentNode.style.display = "block";
                             document.getElementById("updatePasswordResult").innerHTML = "当期密码错误,请重新确认";
-
+                            oldPassword = "";
                         } else {
                             document.getElementById("updatePasswordResult").parentNode.style.display = "block";
                             document.getElementById("updatePasswordResult").innerHTML = "未知异常";

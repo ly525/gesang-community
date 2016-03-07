@@ -13,6 +13,10 @@ mongoose.connect("mongodb://"+config.mongodb_host + ':' + config.mongodb_port + 
 // models
 require('./user');
 require('./user_follower');
+require('./article');
+//require('./reply');
 
-exports.User = mongoose.model('User');
-exports.UserFollower = mongoose.model('UserFollower');
+exports.User            = mongoose.model('User');
+exports.UserFollower    = mongoose.model('UserFollower');
+exports.Article         = mongoose.model('Article');
+//exports.Reply           = mongoose.model('Reply');

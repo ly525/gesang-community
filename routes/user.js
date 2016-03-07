@@ -202,6 +202,7 @@ exports.accountSettings = function (req, res, next) {
     });
 };
 
+
 /**
  * 激活注册邮箱
  * @param req
@@ -242,6 +243,107 @@ exports.activeAccount = function (req, res, next) {
 
 };
 
+/**
+ * 更新邮箱
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.updateEmail = function (req, res, next){
+    var user_id  = req.session.user._id;
+    var newEmail = validator.trim(req.body.newEmail);
+    console.log(user_id+ newEmail);
+    User.getUserByEmail(newEmail, function(err, user){
+        if (err)  next(err);
+        if (user) return res.status(200).json({resultFromServer: 'emailAlreadyUsed'});;
+        User.getUserById(user_id, function(err, user){
+            if(err) next(err);
+            user.email  = newEmail;
+            user.active = false;
+            user.save(function(err){
+                if(err) next(err);
+                mail.sendActiveEmail(newEmail, utility.md5(newEmail + user.passhash + config.session_secret),user.nickname, user.uniquename, function (error, info) {
+                    if (error) {
+                        console.log("****** 邮件发送失败" + error);
+                        return res.status(200).json({resultFromServer: 'updateEmailFailed'});;
+                    }
+                    console.log('****** Message sent: ' + info.response);
+                    console.log("****** 更改邮箱的验证邮件已经发送,请查收");
+                    user.passhash = null;
+                    res.locals.user = req.session.user = user;
+                    res.status(200).json({resultFromServer: 'updateEmailSuccess'});
+                    // TODO 2015年12月19日12:07:54 怎么在res.json之后重定向到主页?
+
+                });
+
+            });
+
+        });
+    });
+
+
+};
+
+/**
+ * 更新密码
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.updatePassword = function (req, res, next){
+    var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
+    var oldPassword = crypto.createHash('md5').update(req.body.oldPassword).digest('hex');
+    // 检查密码是否一致
+    console.log(newPassword+oldPassword);
+    User.getUserById(req.session.user._id, function (err, user){
+        if (err) next(err);
+        if (user.passhash !== oldPassword) {
+            console.log("当前密码不正确!");
+            return res.status(200).json({resultFromServer: "wrongOldPassword"});
+        }
+        console.log("当前密码正确!");
+        user.passhash = newPassword;
+        user.save(function(err){
+            if (err) next(err);
+            res.status(200).json({resultFromServer: "updatePasswordSuccess"});
+        });
+    });
+
+
+};
+
+/**
+ * 更新用户昵称和签名
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.updateNickNameAndSignature = function (req, res, next){
+    res.locals.user = req.session.user;
+    var newNickname    = req.body.newNickname;
+    var newSignature   = req.body.newSignature;
+    console.log(newNickname+"*********"+newSignature);
+    User.getUserById(req.session.user._id, function (err, user){
+        if (err) next(err);
+        user.nickname = newNickname;
+        user.signature = newSignature;
+        user.save(function(err, user){
+            if (err) next(err);
+            console.log("***************");
+            user.passhash = null;
+            res.locals.user = req.session.user = user;
+            res.status(200).json({resultFromServer: "updateNickNameAndSignatureSuccess"});
+
+        });
+    });
+
+};
+/**
+ * 关注别的用户
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.follow = function (req, res, next) {
     res.locals.user = req.session.user;
     var be_follower_id = req.params.id;

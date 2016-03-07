@@ -3,6 +3,8 @@ var router = express.Router();
 var requiredNotLogin = require('./accessControl').requiredNotLogin;
 var requiredLogin = require('./accessControl').requiredLogin;
 var user = require('./user');
+var article = require('./article');
+var articles = require('./articles');
 
 
 /* GET home page. */
@@ -33,12 +35,21 @@ router.get('/user/:other_user_id/followers',user.getFollowers); // 获得A的关
 router.post('/user/follow/:id', requiredLogin, user.follow);
 router.post('/user/login', requiredNotLogin, user.login);
 router.post('/user/register', requiredNotLogin, user.register);
+router.post('/user/updateEmail', requiredLogin, user.updateEmail);
+router.post('/user/updatePassword', requiredLogin, user.updatePassword);
+router.post('/user/updateNickNameAndSignature', requiredLogin, user.updateNickNameAndSignature);
+
 /**
  * 添加文章路由
- * - 发表
- * - 删除
- * - 编辑
- * - 查询
  */
-
+router.get('/articles', articles.index);
+router.get('/article/create', requiredLogin, article.getCreatePage);// 创建一篇新文章
+router.get('/article/:article_id', article.index);// 根据id获得文章
+router.get('/article/:article_id/edit', requiredLogin, article.showEditPage);//编辑文章
+router.post('/article/:article_id/update', requiredLogin, article.update);//编辑文章
+router.post('/article/create', requiredLogin, article.newAndSave);//
+// router.post('/article/draft', requiredLogin, article.draftAndSave);// 提交草稿
+router.get('/article/:article_id/delete', requiredLogin, article.delete);
+router.post('/article/:article_id/like', requiredLogin, article.like);
+router.post('/article/:article_id/dislike', requiredLogin, article.dislike);
 module.exports = router;

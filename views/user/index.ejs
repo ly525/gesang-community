@@ -14,7 +14,13 @@
                 <img class="img-thumbnail" src="http://localhost:8000/img/avatar_demo.jpg" alt="Generic placeholder image" width="140" height="140">
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-7">
-                <h3><%= other_user.nickname %><br> <small>总要不辜负自己</small></h3>
+                <h3><%= other_user.nickname %><br> <small>
+                        <% if (typeof  user.signature === "undefined" ){ %>
+                        听说你还没有一个签名
+                        <% } else { %>
+                        <%= user.signature %>
+                        <% } %>
+                        </small></h3>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-3">
                 <br>

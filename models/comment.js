@@ -1,4 +1,3 @@
-var mongodbInstance = require('./mongodb_dbname'),
     ObjectID = require('mongodb').ObjectID;
 
 function Comment(_id, comment) {

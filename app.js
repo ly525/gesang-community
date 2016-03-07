@@ -1,4 +1,6 @@
 //如果只写模块名：则Node会依次在内置模块、全局模块和当前模块下查找hello.js，你很可能会得到一个错误：
+// require('oneapm');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
