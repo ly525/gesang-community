@@ -1,0 +1,17 @@
+<% if (article.replies && article.replies.length > 0 ){ %>
+<% article.replies.forEach(function (reply, index) { %>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            
+            <a href="/user/u/<%= reply.author_id %>" class="label label-primary">
+                <%= reply.author.nickname %>
+            </a>
+            <span class="label label-default">回复于 <%= reply.create_at_ago() %></span></h3>
+    </div>
+    <div class="panel-body">
+        <%- reply.content %>
+    </div>
+</div>
+<% }) %>
+<% } %>

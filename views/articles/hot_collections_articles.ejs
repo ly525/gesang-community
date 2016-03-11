@@ -1,0 +1,24 @@
+ <div class="panel panel-default">
+      <!-- Default panel contents -->
+     <div class="panel-heading">热门收藏</div>
+            <!-- List group -->
+            <ul class="list-group">
+            <%　articles_hottest_5.forEach(function(hot_article){ %>
+                <li class="list-group-item">
+                        <div class="content-blog">
+                            <a href="/collection/37446102" target="_blank"><%= hot_article.title %></a>
+                            <div class="meta">
+                                <span>
+                                <%= hot_article.be_collected_count %> 人收藏</span>
+                                <span class="zg-bull">•</span>
+                                <span><%= hot_article.reply_count %> 个回复</span>
+                                <span class="zg-bull">•</span>
+                                <span><%= hot_article.visit_count %> 次浏览</span>
+                            </div>
+                        </div>
+                </li>
+                <% })%>
+                    
+                  
+                </ul>
+            </div>

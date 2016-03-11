@@ -34,63 +34,6 @@
 
 
 <%- include ../header-footer/footer %>
-<script>
-    document.write(document.referrer);
-
-
-
-
-    var login_register_result       = document.getElementById("login-register-result");
-    var login_email                 = document.getElementById("login-email");
-    var register_password_repeat    = document.getElementById("login-password");
-
-    var register_button             = document.getElementById("register-button");
-    var login_button                = document.getElementById("login-button");
-
-    register_button.onclick = function(e){
-        e.preventDefault();
-        var register_nickname               = document.getElementById("register-nickname").value.trim();
-        var register_email              = document.getElementById("register-email").value.trim();
-        var register_password           = document.getElementById("register-password").value.trim();
-        var register_password_repeat    = document.getElementById("register-password-repeat").value.trim();
-
-        if (register_password !== register_password_repeat ){
-            login_register_result.parentNode.style.display = "block";
-            login_register_result.innerHTML = "密码与确认密码不一致";
-        }
-
-        var request = new XMLHttpRequest();
-        request.open("POST", '/user/register', true);
-        request.setRequestHeader("Content-Type","application/json")
-        request.onload = function(){
-            alert(request.status);
-            if (request.status === 200 ){
-                var result = JSON.parse(request.responseText);
-                if (result.info === "registerSuccess"){
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "注册成功, 我们已经向您的邮箱发送了一封注册邮件, 请您前往邮箱查阅邮件, 并激活账户!";
-
-                }else if (result.info === "emailAlreadyUsed"){
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "邮箱已经注册, 请更换邮箱或者直接登录!";
-
-                }
-
-            }
-        };
-        request.send(JSON.stringify({
-            nickname: register_nickname,
-            email: register_email,
-            password: register_password
-        }));
-
-//        alert({
-//            nickname: register_nickname,
-//            email: register_email,
-//            password: register_password
-//        });
-    };
-</script>
 </body>
 
 </html>

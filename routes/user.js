@@ -2,11 +2,12 @@ var express         = require('express');
 var crypto          = require('crypto');
 var User            = require('../proxy').User;
 var UserFollower    = require('../proxy').UserFollower;
+var Articles        = require('../proxy').Articles;
 var mail            = require('../common/mail');
 var utility         = require('utility');
 var config          = require('../config');
 var validator       = require('validator');
-var eventproxy      = require('eventproxy');
+var EventProxy      = require('eventproxy');
 
 /**
  * 登录注册页面
@@ -26,33 +27,27 @@ exports.loginAndRigister = function (req, res, next) {
  * @param next
  */
 exports.login = function (req, res, next) {
-
     var passhash = crypto.createHash('md5').update(req.body.password).digest('hex');
-
     User.getUserByEmail(req.body.email, function (err, user) {
-
         if (!user) return res.status(200).json({resultFromServer: "unregisteredEmail"});
         if (!user.active) {
-            mail.sendActiveEmail(email, utility.md5(email + passhash + config.session_secret), nickname, uniquename, function (error, info) {
+            mail.sendActiveEmail(user.email, utility.md5(user.email + user.passhash + config.session_secret), user.nickname, user.uniquename, function (error, info) {
                 if (error) {
                     return console.log("****** 邮件发送失败" + error);
                 }
-                console.log('****** Message sent: ' + info.response);
-                console.log("****** 验证邮件已经发送,请查收");
                 return res.status(200).json({resultFromServer: 'unactiveEmail'});
                 // TODO 2015年12月19日12:07:54 怎么在res.json之后重定向到主页?
 
             });
+        } else { // 这边需要使用else, 否则异步执行sendActiveMail的时候后面的语句也会执行
+            // 检查密码是否一致
+            if (user.passhash !== passhash) return res.status(200).json({resultFromServer: "passwordError"});
+            // 用户名和密码匹配后,将用户信息存入session
+            user.passhash = null;
+            res.locals.user = req.session.user = user;
+            return res.status(200).json({resultFromServer: "loginSuccess"});
         }
-        // 检查密码是否一致
-        if (user.passhash !== passhash) return res.status(200).json({resultFromServer: "passwordError"});
-        // 用户名和密码匹配后,将用户信息存入session
-        user.passhash = null;
-        res.locals.user = req.session.user = user;
-        console.log("****** type =="+ (typeof  res.locals.user._id));
-        console.log("****** type =="+ (typeof  req.session.user._id));
-        console.log("****** type =="+ (typeof  user._id));
-        return res.status(200).json({resultFromServer: "loginSuccess"});
+
     });
 };
 
@@ -70,14 +65,11 @@ exports.register = function (req, res, next) {
         email = validator.trim(req.body.email),
         uniquename = nickname + Date.now(),
         avatarUrl = User.makeSomelineAvatarUrl(email, 48);
-    console.log(nickname + passhash + uniquename + avatarUrl);
 
     // 检测用户是否已经存在
     User.getUserByEmail(email, function (err, user) {
         if (err) console.log("****** 检测用户是否存在过程中出现问题" + err);
         if (user) {
-            console.log("****** emailAlreadyUsed");
-
             return res.status(200).json({resultFromServer: "emailAlreadyUsed"});
         }
 
@@ -87,7 +79,6 @@ exports.register = function (req, res, next) {
                 return  console.log("****** 保存注册用户时候出现问题" + err);
 
             }
-            console.log(email + passhash + config.session_secret);
             mail.sendActiveEmail(email, utility.md5(email + passhash + config.session_secret), nickname, uniquename, function (error, info) {
                 if (error) {
                     return console.log("****** 邮件发送失败" + error);
@@ -123,7 +114,7 @@ exports.logout = function (req, res, next) {
 exports.userIndex = function (req, res, next) {
     res.locals.user     = req.session.user;
     var other_user_id   = req.params.id;
-    var ep              = new eventproxy();
+    var ep              = new EventProxy();
     // 如果用户已经登录,就判断查看的other_user_id和登录用户的id是否相同
 
     if (req.session.user) {
@@ -164,30 +155,6 @@ exports.userIndex = function (req, res, next) {
     }
 
 
-
-    //var page = req.params.page ? parseInt(req.params.page) : 1;
-    //User.findOne({_id: req.params.id}, function (err, user) {
-    //    if (err) next(err);
-    //    if (!user) return res.status(200).json({info: "用户已经注销"});
-    //
-    //    Article.getTen(req.params.name, page, function (err, articles, total) {
-    //        if (err) {
-    //            console.log('==[Error] in routes/users/u/:name ' + err);
-    //
-    //            res.redirect('/articles');
-    //        }
-    //        res.render('user/index', {
-    //            tags: tags,
-    //            articles: articles,
-    //            page: page,
-    //            isFirstPage: (page - 1) === 0,
-    //            isLastPage: ((page - 1) * 10 + articles.length) === total,
-    //            user: req.session.user
-    //        });
-    //    });
-    //
-    //});
-
 };
 
 /**
@@ -197,8 +164,9 @@ exports.userIndex = function (req, res, next) {
  * @param next
  */
 exports.accountSettings = function (req, res, next) {
+    res.locals.user = req.session.user;
     res.render('user/account-settings', {
-        user: req.session.user
+        other_user: req.session.user
     });
 };
 
@@ -294,14 +262,11 @@ exports.updatePassword = function (req, res, next){
     var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
     var oldPassword = crypto.createHash('md5').update(req.body.oldPassword).digest('hex');
     // 检查密码是否一致
-    console.log(newPassword+oldPassword);
     User.getUserById(req.session.user._id, function (err, user){
         if (err) next(err);
         if (user.passhash !== oldPassword) {
-            console.log("当前密码不正确!");
             return res.status(200).json({resultFromServer: "wrongOldPassword"});
         }
-        console.log("当前密码正确!");
         user.passhash = newPassword;
         user.save(function(err){
             if (err) next(err);
@@ -329,7 +294,6 @@ exports.updateNickNameAndSignature = function (req, res, next){
         user.signature = newSignature;
         user.save(function(err, user){
             if (err) next(err);
-            console.log("***************");
             user.passhash = null;
             res.locals.user = req.session.user = user;
             res.status(200).json({resultFromServer: "updateNickNameAndSignatureSuccess"});
@@ -347,36 +311,63 @@ exports.updateNickNameAndSignature = function (req, res, next){
 exports.follow = function (req, res, next) {
     res.locals.user = req.session.user;
     var be_follower_id = req.params.id;
-    console.log(be_follower_id);
     var follower_id = req.session.user._id;
-
-    console.log('****** ======'+res.locals.user._id);
-
     User.getUserById(be_follower_id, function (err, be_follower) {
-        console.log('****** ======');
-
         if (err){
             console.log(err);
             return next(err);
         }
-        console.log('****** ==+===='+be_follower);
-
         if (!be_follower) return res.render("error", {error: "该用户已经注销"}); // 主要是A用户自己删除了自己的账户之前B在浏览其主页,A删除了自己的账户后,B关注A发现A用户不存在了
-
-
         UserFollower.getUserFollower(be_follower_id, follower_id, function (err, connection) {
             // 这里的connection表示一条关系,也就是关注者和被关注者之间的关系,也就是数据库中一条记录
             if (err) return next(err);
             if (!connection) {
+                var ep = new EventProxy();
+                ep.all('follower_count_plus','be_follower_count_plus', 'save', function(){
+                    return res.status(200).json({resultFromServer: "followSuccess"});
+                });
                 UserFollower.newAndSave(be_follower_id, follower_id, function (err, connection) {
                     if (err) return next(err);
-                    if (connection) return res.status(200).json({resultFromServer: "followSuccess"});
+                    ep.emit('save');
                 });
+                User.getUserById(follower_id, function (err, follower) {
+                    follower.be_follower_count++;
+                    follower.save(function(err){
+                        if (err) next(err);
+                        ep.emit('be_follower_count_plus');
+
+                    });
+                });
+                be_follower.follower_count++;
+                be_follower.save(function(err){
+                    if (err) next(err);
+                    ep.emit('follower_count_plus');
+                });
+
             } else {
+                var ep = new EventProxy();
+                ep.all('follower_count_minus','be_follower_count_minus', 'remove', function(){
+                    return res.status(200).json({resultFromServer: "cancenFollowSuccess"})
+                });
                 UserFollower.remove(be_follower_id, follower_id, function (err) {
                     if (err) return next(err);
-                    return res.status(200).json({resultFromServer: "cancenFollowSuccess"});
+                    ep.emit('remove');
+
                 });
+                User.getUserById(follower_id, function (err, follower) {
+                    follower.be_follower_count--;
+                    follower.save(function(err){
+                        if (err) next(err);
+                        ep.emit('be_follower_count_minus');
+
+                    });
+                });
+                be_follower.follower_count--;
+                be_follower.save(function(err){
+                    if (err) next(err);
+                    ep.emit('follower_count_minus');
+                });
+
             }
         });
     });
@@ -389,11 +380,9 @@ exports.follow = function (req, res, next) {
  * @param next
  */
 exports.getBeFollowers = function (req, res, next) {
-    var follower_id     = req.params.other_user_id;
+    var follower_id     = req.params.user_id;
     res.locals.user     = req.session.user;
-    var ep              = new eventproxy();
-
-
+    var ep              = new EventProxy();
     ep.all("other_user", "be_followers", function (other_user, be_followers){
         return res.render("user/be_followers", {other_user: other_user, be_followers:be_followers });
     });
@@ -420,8 +409,8 @@ exports.getBeFollowers = function (req, res, next) {
  */
 exports.getFollowers = function (req, res, next) {
     res.locals.user = req.session.user;
-    var be_follower_id = req.params.other_user_id;
-    var ep              = new eventproxy();
+    var be_follower_id = req.params.user_id;
+    var ep              = new EventProxy();
 
 
     ep.all("other_user", "followers", function (other_user, followers){
@@ -440,4 +429,51 @@ exports.getFollowers = function (req, res, next) {
             if (err) return next(err);
             ep.emit('followers', followers); 
         });
+};
+
+
+exports.getArticles_20 = function (req, res, next) {
+    res.locals.user = req.session.user;
+    var user_id     = req.params.user_id;
+    var ep              = new EventProxy();
+    ep.all("other_user", "articles_20", function (other_user, articles){
+
+            res.render('user/articles_20', {
+                other_user:other_user,
+                articles: articles
+        });
+    });
+    User.getUserById(user_id, function (err, other_user) {
+            if (err) return next(err);
+            if (!other_user) return res.render("error", {error:"",message: "用户不存在"});
+            other_user.passhash = null;
+            ep.emit('other_user', other_user);
+        });
+    Articles.getTwentyArticlesByUserId(user_id, function (err, articles ) {
+        if (err) articles = [];
+        ep.emit('articles_20', articles);
+    });
+};
+
+exports.getArticles_Collects_20 = function (req, res, next) {
+    res.locals.user = req.session.user;
+    var collector_id     = req.params.user_id;
+    var ep              = new EventProxy();
+    ep.all("other_user", "articles_collects_20", function (other_user, articles){
+
+            res.render('user/articles_collects_20', {
+                other_user:other_user,
+                articles: articles
+        });
+    });
+    User.getUserById(collector_id, function (err, other_user) {
+            if (err) return next(err);
+            if (!other_user) return res.render("error", {error:"",message: "用户不存在"});
+            other_user.passhash = null;
+            ep.emit('other_user', other_user);
+        });
+    Articles.getTwentyArticlesByCollectorId(collector_id, function (err, articles ) {
+        if (err) articles = [];
+        ep.emit('articles_collects_20', articles);
+    });
 };

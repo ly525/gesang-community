@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<%- include ../header-footer/header %>
+
+<body>
+
+<!--引入 导航栏-->
+<%- include ../nav/navbar %>
+
+<div style="margin-top: 40px;"></div>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-9">
+            <h2 style="text-align: center">用文字撰写青春，让记忆详实</h2>
+            <!--<span><a href="/upload" title="上传">Upload</a></span>-->
+            <div class="container" style="margin: 20px">
+                <form method="post" id="create_article_form">
+                    <div class="form-group">
+                        <label for="input-create-article-title">标题</label>
+                        <input type="text" name="title" class="form-control" id="input_create_article_title"
+                               placeholder="标题不要太短,大家会尊重">
+                    </div>
+                    <div class="form-group">
+                        <label>标签</label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input type="text" name="tag1" class="form-control" placeholder="标签1">
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" name="tag2" class="form-control" placeholder="标签2">
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="text" name="tag3" class="form-control" placeholder="标签3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>正文</label>
+                        <textarea name="content" rows="20" cols="100" id="input_create_article_content"></textarea>
+                    </div>
+                    <div style="float: right">
+                        <button type="submit" class="btn btn-default" onclick="create_article_form.action='/article/create?is_draft=true'">存为草稿</button>
+                        <button type="submit" class="btn btn-default" onclick="create_article_form.action='/article/create?is_draft=false'">发表文章</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <!--引入 文章右边说明-->
+            <%- include ./sidebar %>
+        </div>
+    </div>
+</div>
+<%- include ../header-footer/footer %>
+<script>
+    (function () {
+        $('#create_article_form').on('submit', function (e) {
+
+        });
+        $('#input_create_article_title').on('change', function () {
+            var $this = $(this);
+            var value = $(this).val().trim();
+            if (value.length < 10) alert('据说标题长点会吸引人哎!');
+        });
+
+        $('#input_create_article_content').on('change', function () {
+            var $this = $(this);
+            var value = $(this).val().trim();
+            if (value.length < 10) alert('我的天,啥都不写你也敢发表让别人看啊!');
+        });
+        $("a.fa.fa-columns.no-disable.no-mobile").on('click', function () {
+            $(".navbar.navbar-default.navbar-fixed-top").css("display", "none");
+        });
+    })();
+</script>
+</body>
+
+</html>

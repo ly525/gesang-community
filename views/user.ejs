@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<%- include ./header-footer/header %>
+
+    <body>
+        <!-- Fixed navbar -->
+        <%- include ./nav/navbar %>
+            <!-- /Fixed navbar -->
+        <div style="margin-top: 40px;"></div>
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <img class="img-thumbnail" src="https://sfault-avatar.b0.upaiyun.com/361/028/3610280978-564f4d2f7490a_huge256" alt="Generic placeholder image" width="140" height="140">
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-7">
+                        <h3><%= user.name %><br> <small>总要不辜负自己</small></h3>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-3">
+                        <%- include ./right_top_follow_label %>
+                        <a class="btn btn-success" href="/users/user/account-settings" role="button"><span class="glyphicon glyphicon-cog"></span>&nbsp;编辑资料</a>
+                    </div><!-- /.col-lg-4 -->
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container">
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            我的主页
+                        </a>
+                        <a href="#" class="list-group-item">我的回答</a>
+                        <a href="#" class="list-group-item">我的提问</a>
+                        <a href="#" class="list-group-item">我的专栏文章</a>
+                        <a href="#" class="list-group-item">我的笔记</a>
+                        <a href="#" class="list-group-item">我的收藏夹</a>
+                        <a href="#" class="list-group-item">我的关注 </a>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bs-example" data-example-id="simple-table">
+                        <table class="table">
+                            <caption>活跃标签</caption>
+
+                            <tbody>
+
+                            <% tags.forEach(function (tag,index) { %>
+
+                                <%if(index % 3 === 0){ %>
+
+                                    <tr>
+                                <% } %>
+                                     <td><a href="/articles/tag/<%= tag %>" class="label label-primary"><%= tag %></a></td>
+                                <%if(index+1 % 4 === 0){ %>
+                                    </tr>
+                                <% } %>
+                            <% }) %>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bs-example" data-example-id="simple-table">
+                        <table class="table">
+                            <caption>文章</caption>
+                            <tbody>
+                            <% articles.forEach(function(article,index){%>
+
+                                <tr><td><span class="label label-primary">浏览 <%= article.pv%> </span><a href="/users/u/<%=article.author %>" ><%= article.title %></a></td></tr>
+
+                                </a>
+
+
+                            <%})%>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <h2>Heading</h2>
+                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+                </div>
+            </div>
+
+            <hr>
+
+        </div>
+
+            <!-- /container -->
+            <%- include ./header-footer/footer %>
+    </body>
+
+</html>

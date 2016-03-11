@@ -9,9 +9,8 @@ var UserSchema = new Schema({
     passhash: { type: String },
     email: { type: String},
     url: { type: String },
-    profile_image_url: {type: String},
     location: { type: String },
-    signature: { type: String },
+    signature: { type: String, default: "听说你还没有写一个自我介绍!"},
     avatarUrl: { type: String },
     is_block: {type: Boolean, default: false},
 
@@ -27,15 +26,12 @@ var UserSchema = new Schema({
     is_star: { type: Boolean },
     level: { type: String },
     active: { type: Boolean, default: false },
-
     receive_reply_mail: {type: Boolean, default: false },
     receive_at_mail: { type: Boolean, default: false },
     from_wp: { type: Boolean },
-
     retrieve_time: {type: Number},
     retrieve_key: {type: String},
-
-    accessToken: {type: String},
+    accessToken: {type: String}
 });
 
 

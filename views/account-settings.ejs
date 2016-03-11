@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<%- include ./header-footer/header %>
+
+<body>
+<!-- Fixed navbar -->
+<%- include ./nav/navbar %>
+<!-- /Fixed navbar -->
+<div style="margin-top: 40px;"></div>
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <img class="img-thumbnail"
+                     src="https://sfault-avatar.b0.upaiyun.com/361/028/3610280978-564f4d2f7490a_huge256"
+                     alt="Generic placeholder image" width="140" height="140">
+                <a class="btn btn-default" href="#" role="button">修改头像</a>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-7">
+                <blockquote>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control" value="<%= user.name %>">
+                    </div>
+                    <br>
+                    <footer>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" value="总要不辜负自己">
+                        </div>
+                    </footer>
+                </blockquote>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-3">
+                <br>
+                <span class="label label-primary"><%= other_user.be_follower_count %> <br> 关注的人</span>
+                <span class="label label-primary"><%= other_user.follower_count %> <br> 关注者</span><br><br>
+                <a class="btn btn-success" href="/users/user/account-settings" role="button"><span
+                            class="glyphicon glyphicon-cog"></span>&nbsp;保存修改</a>
+            </div><!-- /.col-lg-4 -->
+        </div>
+
+
+    </div>
+</div>
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-success">
+                    Email 地址
+                </a>
+                <a href="#" class="list-group-item">密码修改</a>
+                <a href="#" class="list-group-item">第三方账号</a>
+
+
+            </div>
+        </div>
+        <div class="col-md-6">
+
+
+
+            <div class="bs-example" data-example-id="simple-table">
+                <ul class="list-group">
+                    <label>修改邮箱</label>
+                    <li class="list-group-item">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">当前邮箱</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"><%= user.email %></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-2 control-label">新的邮箱</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Email addreess">
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-default btn-sm" role="button">提交</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="bs-example" data-example-id="simple-table">
+                <ul class="list-group">
+                    <label>修改密码</label>
+                    <li class="list-group-item">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">当前密码</label>
+                                <div class="col-sm-7">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-2 control-label">新密码</label>
+                                <div class="col-sm-7">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-7">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-default btn-sm" role="button">提交</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bs-example" data-example-id="simple-table">
+                <table class="table">
+                    <tbody>
+                    <ul class="list-group">
+                        <label>第三方账号</label>
+                        <li class="list-group-item">
+                            <div class="social-account__list user-settings__social-list">
+
+                                <div class="social-account__item">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <a class="label label-primary">豆瓣</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="/user/oauth/douban" class="btn btn-default btn-xs ">绑定账号</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="social-account__item">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <a class="label label-primary">新浪微博</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="/user/oauth/weibo" class="btn btn-default btn-xs ">绑定账号</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="social-account__item">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <a class="label label-primary">腾讯 QQ</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="/user/oauth/qq" class="btn btn-default btn-xs ">绑定账号</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="social-account__item">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <a class="label label-primary">微信</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="/user/oauth/weixin" class="btn btn-default btn-xs ">绑定账号</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="social-account__item">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <a class="label label-primary">GitHub</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="/user/oauth/github" class="btn btn-default btn-xs ">绑定账号</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+
+
+                    </ul>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <h2>Heading</h2>
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula
+                porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+                fermentum massa justo sit amet risus.</p>
+            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+</div>
+
+<!-- /container -->
+<%- include ./header-footer/footer %>
+</body>
+
+</html>

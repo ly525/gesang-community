@@ -3,7 +3,6 @@ var router = require('express').Router();
 var crypto = require('crypto');
 
 router.post('/:_id', function (req, res) {
-    console.log('--' + req.params._id + '--');
     var date = new Date();
     var postTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':' + (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
     var md5 = crypto.createHash('md5'),

@@ -1,39 +1,64 @@
 <!-- FOOTER -->
+<div id="fixedTools" class="hidden-xs hidden-sm">
+    <a id="backtop" class="border-bottom" href="#">回<br>顶<br>部</a>
+</div>
 
-<footer class="footer">
+
+<footer id="footer" class="footer hidden-print">
+
+<div class="container">
+<div class="row">
+
+<div class="footer-about col-md-4 col-sm-12" id="about">
+
+<h3>关于 格桑花苑</h3>
+<p>南京中医药大学校园问答社区</p>
+<p>反馈或建议请发送邮件至：ourbiyeshiji@aliyun.com</p>
+</div>
+
+<div class="footer-links col-md-2 col-sm-12">
+<h4>对我们有帮助的社区</h4>
+<ul class="list-unstyled list-inline">
+<li><a href="#">豆瓣</a></li>
+<li><a href="#">知乎</a></li>
+<li><a href="#">慕课网</a></li>
+<li><a href="#">极课学院</a></li>
+<li><a href="#">传智播客</a></li>
+<li><a href="#">Cnode社区</a></li>
+
+</ul>
+</div>
+<div class="footer-techs col-md-2 col-sm-12">
+<h4>我们用到的技术</h4>
+<ul class="list-unstyled list-inline">
+<li><a href="#">NodeJS</a></li>
+<li><a href="#">MongoDB</a></li>
+<li><a href="#"></a></li>
+<li><a href="#">Bootstrap</a></li>
+
+</ul>
+</div>
+<div class="footer-sponsors col-md-2 col-sm-12">
+<h4>二维码</h4>
+<p>
+<img src="http://localhost:8000/img/prcode.png" style="width: 80px;height:80px" alt="又拍云存储">
+</p>
+</div>
+
+<div class="copyright">
     <div class="container">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p><a href="/footer/links">友情链接</a></p>
-        <p class="text-muted">Place sticky footer content here.</p>
-        <p class="text-muted">Place sticky footer content here.</p>
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright © <a href="＃">格桑花苑</a></span> |
+                <span><a href="http://www.miibeian.gov.cn/" target="_blank">苏ICP备16009124号-1</a></span>
+            </div>
+        </div>
     </div>
+</div>
 </footer>
-
-
 <script src="http://localhost:8000/js/jquery.min.js"></script>
 <script src="http://localhost:8000/js/bootstrap.min.js"></script>
 <script src="http://localhost:8000/js/simplemde.min.js"></script>
+<script src="http://localhost:8000/js/gesanghuayuan.js"></script>
 
-<script>
-    $(".search-module .dropdown-menu li a").click(function(e){
-        e.preventDefault();
-        $("#search-choice-item").text($(this).text());
-//        alert($(this).text());
-    });
-    if (document.getElementsByTagName("textarea")){
-        var simplemde = new SimpleMDE();
-        simplemde.value("This text will appear in the editor");
-    }
-
-//    $("#logout-button").click(function(e){
-//        var request = new XMLHttpRequest();
-//        request.open("POST", '/user/logout', true);
-//        request.setRequestHeader("Content-Type", "application/json")
-//        request.onload = function () {
-//            if (request.status === 200) {
-//                var response = JSON.parse(request.responseText);
-//                if (response.resultFromServer === "logoutSuccess") {
-//                    location.reload();
-//                }
-</script>
 <!-- FOOTER -->

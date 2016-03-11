@@ -1,0 +1,43 @@
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <img class="img-thumbnail" src="http://localhost:8000/img/avatar_demo.jpg"
+                     alt="Generic placeholder image" width="140" height="140">
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-7">
+                <h3><%= other_user.nickname %><br>
+                    <small><%= other_user.signature %></small>
+                </h3>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-3">
+                <%- include ./right_top_follow_label %>
+                <!--A用户已经登录-->
+                <% if ( user !== null){ %>
+                <!--查看A本人主页-->
+                <% if (other_user.uniquename === user.uniquename  ){ %>
+                <a class="btn btn-success" href="/user/account-settings" role="button">编辑资料</a>
+                <!--查看B主页,需要判断A是否已经关注B-->
+                <% } else { %>
+                <!--如果已经关注-->
+                <% if (is_already_follow){ %>
+                <a id="follow-other-button" class="btn btn-success" href="/user/follow/<%= other_user._id %>"
+                   role="button">取消关注</a>
+                <!--如果没有关注-->
+                <% } else { %>
+                <a id="follow-other-button" class="btn btn-success" href="/user/follow/<%= other_user._id %>"
+                   role="button">关注</a>
+                <% } %>
+                <% } %>
+                <!--如果A用户没有登录-->
+                <% } else { %>
+                <a id="follow-other-button" class="btn btn-success" href="/user/login-register" role="button">登录/注册
+                    后可关注</a>
+                <% } %>
+
+            </div><!-- /.col-lg-4 -->
+        </div>
+
+
+    </div>
+</div>

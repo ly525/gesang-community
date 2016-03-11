@@ -26,9 +26,8 @@
             <nav>
 
                 <ul id="myTab" class="nav nav-justified nav-tabs">
-                    <li class="active"><a href="#register" data-toggle="tab">
-                            注册</a></li>
-                    <li><a href="#login" data-toggle="tab">登录</a></li>
+                    <li><a href="#register" data-toggle="tab">注册</a></li>
+                    <li class="active"><a href="#login" data-toggle="tab">登录</a></li>
                 </ul>
 
             </nav>
@@ -36,10 +35,10 @@
 
             <div id="myTabContent" class="tab-content">
 
-                <div class="tab-pane fade in active" id="register">
+                <div class="tab-pane fade " id="register">
                     <!--不加action的时候默认的是什么?-->
 
-                    <form class="form-signin" method="post" action="/user/register">
+                    <form class="form-signin" >
                         <h1>&nbsp</h1>
                         <input type="text" id="register-nickname" class="form-control" placeholder="用户名" nickname="name" required autofocus><br>
                         <input type="hidden" class="referrer-dd" name="referrer">
@@ -47,10 +46,10 @@
                         <input type="password" id="register-password" class="form-control" placeholder="密码" name="password" required><br>
                         <input type="password" id="register-password-repeat"  class="form-control" placeholder="确认密码" name="password-repeat" required><br>
 
-                        <button id="register-button" class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+                        <button id="register-button" class="btn btn-lg btn-primary btn-block" >注册</button>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="login">
+                <div class="tab-pane fade in active" id="login">
                     <form class="form-signin">
                         <h1>&nbsp</h1>
                         <input type="email"    id="login-email" name="email" class="form-control" placeholder="邮箱" required autofocus><br>
@@ -60,7 +59,7 @@
                                 <input type="checkbox" value="remember-me"> 记住密码
                             </label>
                         </div>
-                        <button id="login-button" class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                        <button id="login-button" class="btn btn-lg btn-primary btn-block" >登录</button>
                     </form>
                 </div>
 
@@ -77,98 +76,5 @@
 
 
 <%- include ../header-footer/footer %>
-<script>
-    document.write(document.referrer);
-
-    var login_register_result       = document.getElementById("login-register-result");
-
-
-
-    var login_button                = document.getElementById("login-button");
-    login_button.onclick = function(e) {
-        e.preventDefault();
-        var login_email = document.getElementById("login-email").value.trim();
-        var login_password = document.getElementById("login-password").value.trim();
-        document.getElementById("login-password").value = "";
-        var request = new XMLHttpRequest();
-        request.open("POST", '/user/login', true);
-        request.setRequestHeader("Content-Type", "application/json")
-        request.onload = function () {
-            if (request.status === 200) {
-                var response = JSON.parse(request.responseText);
-                if (response.resultFromServer === "loginSuccess") {
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "登录成功即将跳转到之前的页面!";
-                    if (document.refferrer){
-                        window.location.href = document.referrer;
-                    }else {
-                        window.location.href = "/";
-                    }
-
-
-                } else if (response.resultFromServer === "unactiveEmail") {
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "您的邮箱未激活,已经给您发送了一封激活邮件,请您前往注册邮箱中查看邮件并激活!";
-
-                } else if (response.resultFromServer === "unregisteredEmail") {
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "您的邮箱没有注册, 您可以使用该邮箱注册激活之后登录!";
-
-                }
-
-            }
-        };
-        request.send(JSON.stringify({
-            email: login_email,
-            password: login_password
-        }));
-
-    };
-
-    /**
-     * 使用Ajax发起注册请求
-     * @type {Element}
-     */
-    var register_button                 = document.getElementById("register-button");
-    register_button.onclick = function(e) {
-        e.preventDefault();
-        var register_nickname = document.getElementById("register-nickname").value.trim();
-        var register_email = document.getElementById("register-email").value.trim();
-        var register_password = document.getElementById("register-password").value.trim();
-        var register_password_repeat = document.getElementById("register-password-repeat").value.trim();
-
-        if (register_password !== register_password_repeat) {
-            login_register_result.parentNode.style.display = "block";
-            login_register_result.innerHTML = "密码与确认密码不一致";
-        }
-
-        var request = new XMLHttpRequest();
-        request.open("POST", '/user/register', true);
-        request.setRequestHeader("Content-Type", "application/json")
-        request.onload = function () {
-            if (request.status === 200) {
-                var response = JSON.parse(request.responseText);
-                if (response.resultFromServer === "registerSuccess") {
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "注册成功, 我们已经向您的邮箱发送了一封注册邮件, 请您前往邮箱查阅邮件, 并激活账户!";
-
-                } else if (response.resultFromServer === "emailAlreadyUsed") {
-                    login_register_result.parentNode.style.display = "block";
-                    login_register_result.innerHTML = "邮箱已经注册, 请更换邮箱或者直接登录!";
-
-                }
-
-            }
-        };
-        request.send(JSON.stringify({
-            nickname: register_nickname,
-            email: register_email,
-            password: register_password
-        }));
-    };
-
-
-</script>
 </body>
-
 </html>

@@ -7,90 +7,45 @@
 <%- include ../nav/navbar %>
 <!-- /Fixed navbar -->
 <div style="margin-top: 40px;"></div>
-<div class="jumbotron">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2">
-                <img class="img-thumbnail" src="http://localhost:8000/img/avatar_demo.jpg" alt="Generic placeholder image" width="140" height="140">
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-7">
-                <h3><%= other_user.nickname %><br> <small>总要不辜负自己</small></h3>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-3">
-                <br>
-                <span class="label label-primary">1 <br> 被赞数</span>
-                <span class="label label-primary">1 <br> 被赞数</span><br><br>
-                <!--A用户已经登录-->
-                <% if ( user !== null){ %>
-                    <!--查看A本人主页-->
-                    <% if (other_user.uniquename === user.uniquename  ){ %>
-                        <a class="btn btn-success" href="/user/account-settings" role="button">编辑资料</a>
-                    <!--查看B主页,需要判断A是否已经关注B-->
-                    <% } else { %>
-                        <!--如果已经关注-->
-                        <% if (is_already_follow){ %>
-                            <a id="follow-other-button" class="btn btn-success" href="/user/follow/<%= other_user._id %>"  role="button">取消关注</a>
-                        <!--如果没有关注-->
-                        <% } else { %>
-                            <a id="follow-other-button" class="btn btn-success" href="/user/follow/<%= other_user._id %>"  role="button">关注</a>
-                        <% } %>
-                    <% } %>
-                <!--如果A用户没有登录-->
-                <% } else { %>
-                    <a id="follow-other-button" class="btn btn-success" href="/user/login-register"  role="button">登录/注册 后可关注</a>
-                <% } %>
-
-            </div><!-- /.col-lg-4 -->
-        </div>
-
-
-    </div>
-</div>
+<%- include ./userHeader %>
 <div class="container">
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-2">
-            <div class="list-group">
-                <% if ( user !== null){ %>
-                <!--查看A本人主页-->
-                    <% if (other_user.uniquename === user.uniquename  ){ %>
-                    <a href="#" class="list-group-item list-group-item-success">我的主页</a>
-                    <a href="#" class="list-group-item">回答</a>
-                    <a href="#" class="list-group-item">提问</a>
-                    <a href="#" class="list-group-item">文章</a>
-                    <a href="/user/<%= other_user._id %>/followers" class="list-group-item">关注者</a>
-                    <a href="/user/<%= other_user._id %>/be_followers" class="list-group-item">关注的人</a>
-                    <a  class="list-group-item">收藏的文章</a>
-                    <a href="#" class="list-group-item">收藏的话题</a>
-                    <% }else{ %>
-                    <a href="#" class="list-group-item list-group-item-success"><%= other_user.nickname%>的主页</a>
-                    <a href="#" class="list-group-item">回答</a>
-                    <a href="#" class="list-group-item">提问</a>
-                    <a href="" class="list-group-item">文章</a>
-                    <a href="/user/<%= other_user._id %>/followers"  class="list-group-item">关注者</a>
-                    <a href="/user/<%= other_user._id %>/be_followers" class="list-group-item">关注的人</a>
-                    <a href="#" class="list-group-item">收藏的文章</a>
-                    <a href="#" class="list-group-item">收藏的话题</a>
-
-
-
-                    <% } %>
-                <% } %>
-
-            </div>
+            <%- include ./left_sidebar %>
         </div>
         <div class="col-md-6">
-            <div class="bs-example" data-example-id="simple-table">
-                <table class="table">
-                    <caption><%= other_user.nickname %>被<%= followers.length %>人关注</caption>
-                    <tbody >
-                    <% followers.forEach(function(follower,index){%>
-                        <tr><td><%= follower.follower_id%> </td></tr>
-                    <%})%>
-                    </tbody>
-                </table>
-            </div>
 
+            <div class="panel panel-success">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><a href="/user/u/other_user._id"><%= other_user.nickname %></a>&nbsp;被<%= followers.length %>人关注</div>
+                <!-- List group -->
+                <ul class="list-group">
+                    <% followers.forEach(function(follower,index){%>
+
+                    <li class="list-group-item">
+
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="http://localhost:8000/img/avatar_demo.jpg" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="/user/u/follower._id"><%= follower.nickname%></a></h4>
+                            <%= follower.signature %>ewfwfewfewf
+                        </div>
+
+                    </div>
+                    </li>
+                    <%})%>
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+            </div>
 
         </div>
         <div class="col-md-3">
@@ -107,35 +62,7 @@
 <!-- /container -->
 <%- include ../header-footer/footer %>
 
-<script>
-
-    /**
-     * 发送关注某人请求
-     * @param {Element} follow_other_button 关注按钮
-     */
-    var follow_other_button = document.getElementById("follow-other-button");
-    follow_other_button.onclick = function (e){
-        e.preventDefault();
-        var target  =   follow_other_button.getAttribute("href");
-        var request =   new XMLHttpRequest();
-        request.open("POST", target, true);
-        request.setRequestHeader("Content-Type","application/json");
-        request.onload = function (){
-            if (request.status === 200){
-                var follow_other_result = JSON.parse(request.responseText);
-                if (follow_other_result.resultFromServer === "followSuccess"){
-                    follow_other_button.innerHTML = "取消关注"
-                }else {
-                    follow_other_button.innerHTML = "关注";
-                }
-            }
-        };
-
-        request.send();
-    };
-
-
-</script>
 </body>
 
 </html>
+

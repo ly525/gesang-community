@@ -8,7 +8,7 @@ function requiredNotLogin(req, res, next) {
         return res.redirect('/');//返回之前的页面,这边可能会出现重定向
         //console.log('测试redirect之后的语句是否执行');
     }
-    console.log("******检测用户状态: 未登录");
+    console.log("****** 检测用户状态: 未登录");
 
     next();
 }
