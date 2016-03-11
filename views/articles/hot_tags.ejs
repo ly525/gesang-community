@@ -4,7 +4,7 @@
                 </div>
                 <div class="panel-body">
                     <%articles_hot_tags_3.forEach(function(articles_hot_tag){ %>
-                    <span class="label label-warning"><%=articles_hot_tag._id %>&nbsp&nbsp&nbsp·&nbsp<%=articles_hot_tag.value %></span>
+                    <a href="/tag/<%=articles_hot_tag._id %>" class="label label-warning"><%=articles_hot_tag._id %>&nbsp&nbsp&nbsp·&nbsp<%=articles_hot_tag.value %></a>
                     <% })%>
 
                 </div>

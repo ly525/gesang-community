@@ -3,6 +3,7 @@ var router = express.Router();
 var requiredNotLogin = require('./accessControl').requiredNotLogin;
 var requiredLogin = require('./accessControl').requiredLogin;
 var user = require('./user');
+var tag = require('./tag');
 var article = require('./article');
 var articles = require('./articles');
 
@@ -55,4 +56,10 @@ router.post('/article/:article_id/like', requiredLogin, article.like);
 router.post('/article/:article_id/dislike', requiredLogin, article.dislike);
 router.post('/article/:article_id/collect', requiredLogin, article.collect);
 router.post('/article/:article_id/createReply', requiredLogin, article.createReply);
+
+/**
+　* 添加标签路由
+ *	
+*/
+router.get('/tag/:tag_name', tag.singleTag);
 module.exports = router;
