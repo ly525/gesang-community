@@ -1,5 +1,7 @@
 var Articles    = require('../proxy').Articles;
+var Tag         = require('../proxy').Tag;
 var EventProxy  = require('eventproxy');
+
 exports.index = function (req, res, next) {
     res.locals.user = req.session.user;
     // 判断是否是第一页,并且把请求的页数转换为number类型
@@ -9,13 +11,14 @@ exports.index = function (req, res, next) {
     // Article.getTwenty = function (author, page, callback) {}
     
     var ep = new EventProxy();
-    ep.all('articles_20','articles_hottest_5' ,function(articles_20,articles_hottest_5){
+    ep.all('articles_20','articles_hottest_5' ,'articles_hot_tags_3',function(articles_20,articles_hottest_5,articles_hot_tags_3){
             
 
 
             res.render('articles/index', {
                 articles: articles_20[0],
-                articles_hottest_5:articles_hottest_5,
+                articles_hottest_5: articles_hottest_5,
+                articles_hot_tags_3: articles_hot_tags_3,
                 page: page,
                 isFirstPage: (page - 1) === 0,
                 isLastPage: ((page - 1) * 20 + articles_20.length) === articles_20[1]
@@ -32,10 +35,8 @@ exports.index = function (req, res, next) {
         if (err) next(err);
         ep.emit('articles_hottest_5',articles_hottest_5 );
     });
-    console.log("*********************");
-        Articles.tagStatistical(function(results){
-            // console.log(results);
-        });
-        console.log("*********************");
+    Tag.tagArticleStatistical(function(articles_hot_tags_3){
+        ep.emit('articles_hot_tags_3',articles_hot_tags_3 );
+    });
     
 };

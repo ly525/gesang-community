@@ -3,14 +3,9 @@
                     <h3 class="panel-title">热议标签</h3>
                 </div>
                 <div class="panel-body">
-
-                    <span class="label label-warning">校园卡</span>
-                    <span class="label label-warning">实习</span>
-                    <span class="label label-warning">食堂</span>
-                    <span class="label label-warning">宿舍</span>
-                    <span class="label label-warning">读书</span>
-                    <span class="label label-warning">图书馆</span>
-                    <span class="label label-warning">大神</span>
+                    <%articles_hot_tags_3.forEach(function(articles_hot_tag){ %>
+                    <span class="label label-warning"><%=articles_hot_tag._id %>&nbsp&nbsp&nbsp·&nbsp<%=articles_hot_tag.value %></span>
+                    <% })%>
 
                 </div>
             </div>
