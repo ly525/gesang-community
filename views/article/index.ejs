@@ -4,19 +4,15 @@
 
 <body>
 <%- include ../nav/navbar %>
-<div class="container">
-    <div class="masthead">
-        <h1 class="text-muted">-</h1>
-    </div>
     <!--更改文章布局 Start-->
-    <div class="container">
+    <div class="container main-container">
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
 
                 <!--作者信息-->
                 <div class="user-info">
-                     <div class="media">
+                    <div class="media">
                     <div class="media-left">
                         <a href="/user/u/<%= article.author_id %>">
                             <img class="media-object" src="<%= article.author.avatarUrl %>" alt="<%= article.author.nickname %>">
@@ -71,7 +67,7 @@
                     <% if(article.tags){ %>
                     <% article.tags.forEach(function (tag, index) { %>
                     <% if(tag){ %>
-                    <a href="/articles/tag/<%= tag %>" class="label label-success">
+                    <a href="/tag/<%= tag %>" class="label label-success">
                         <%= tag %>
                     </a>
                     <% } %>
@@ -79,8 +75,11 @@
                     <% } %>
                     <!--标签显示 End-->
                     </div>
+                    <!-- media-body End -->
                 </div>
+                <!-- media End -->
                 </div>
+                <!-- user-info End -->
                 <div class="content">
                     <div class="inner-header article">
                         <h1><%= article.title %></h1>
@@ -99,17 +98,12 @@
                     </div>
                 </div>
                 <%- include ../reply/index %>
-
             </div>
+            <!-- col-md-10 End -->
             <div class="col-md-1"></div>
         </div>
-        <div class="main-content">
-
-        </div>
     </div>
-</div>
-<!--更改文章布局 End-->
-<!-- /container -->
+    <!--更改文章布局 End-->
 <%- include ../header-footer/footer %>
 </body>
 

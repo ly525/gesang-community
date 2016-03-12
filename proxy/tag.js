@@ -34,6 +34,7 @@ exports.tagArticleStatistical = function(callback){
 };
 
 exports.getArticlesByTagName = function (tag_name, callback) {
-    Article.find({tags: tag_name}).sort('create_at').exec(callback);
+    console.log(tag_name);
+    Article.find({tags: tag_name}).exec(callback);
     
 };

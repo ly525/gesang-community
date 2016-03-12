@@ -13,7 +13,13 @@
 <div class="container">
     <div class="main-container row">
         <!--这边是文章汇总部分-->
+        <div class="col-md-2">
+           
+        </div>
         <div class="col-md-8 article-summary">
+            <blockquote>
+                <p>标签名: <%= tag_name %> </p>
+        </blockquote>
             <% articles.forEach(function(article, index){ %>
             <div class="media">
             <div class="media-left">
@@ -23,18 +29,13 @@
             </div>
             <div class="media-body">
                 <h4 class="media-heading"><a href="/article/<%= article._id %>"><%= article.title %></a></h4>
-                <h6 class="media-heading"> 作者:
-                <a href="/user/u/<%= article.author._id %>"><%= article.author.nickname %>
-                </a>
-                        &nbsp;&nbsp;&nbsp; <%= article.author.signature %>
-                        &nbsp;&nbsp;&nbsp; <%= article.create_at_ago() %>
+                <h6 class="media-heading">
+                        <%= article.create_at_ago() %>
                 </h6>
                 <%= article.content.length > 100? article.content.substring(0, 100): article.content %>
               </div>
               <div class="media-right">
-                <a href="#">
-                  <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<%= article.author.avatarUrl %>" data-holder-rendered="true" style="width: 20px; height: 20x;">
-                </a>
+                
               </div>
             </div>
             <!--单个文章简介 start-->
@@ -44,7 +45,7 @@
             <!--单个文章简介 end-->
         </div>
         <!--存放右侧模块: 我的文章系列,热门专栏,热门标签-->
-        <div class="col-md-4">
+        <div class="col-md-2">
            
         </div>
         <!--右侧模块 End-->
