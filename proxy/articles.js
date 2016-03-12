@@ -28,7 +28,7 @@ exports.getTwentyArticlesWithoutUserId = function (page, callback) {
             if (articles.length === 0) return callback(null, 0, []);
 
             var proxy = new EventProxy();
-            proxy.after('topics_ready', articles.length, function () {
+            proxy.after('articles_ready', articles.length, function () {
                 return callback(null, total, articles);
             });
             articles.forEach(function(article){
@@ -36,7 +36,7 @@ exports.getTwentyArticlesWithoutUserId = function (page, callback) {
                    ep.all('author', function(author){
                        author.passsh = null;
                        article.author = author;
-                       proxy.emit('topics_ready');
+                       proxy.emit('articles_ready');
                    });
                     User.getUserById(article.author_id, function(err, author){
                         ep.emit('author', author);
@@ -84,3 +84,31 @@ exports.get5HottestCollectedArticles = function (callback){
     Article.find({deleted: false}).sort('-be_collected_count').limit(5).exec(callback);
 };
 
+exports.getTwentyArticlesWithArticleTitle = function (page, title, callback) {
+    Article.count({title:title, deleted: false}, function(err, total){
+        Article.find({title:title, deleted: false}).skip((page - 1) * 20).limit(20).sort('-last_reply_at').exec(function(err, articles){
+            if(err) return callback(err);
+            if (articles.length === 0) return callback(null, 0, []);
+
+            var proxy = new EventProxy();
+            proxy.after('articles_ready', articles.length, function () {
+                return callback(null, total, articles);
+            });
+            articles.forEach(function(article){
+                var ep = new EventProxy();
+                ep.all('author', function(author){
+                    author.passsh = null;
+                    article.author = author;
+                    proxy.emit('articles_ready');
+                });
+                User.getUserById(article.author_id, function(err, author){
+                    ep.emit('author', author);
+                });
+            });
+
+        });
+
+
+    });
+
+};

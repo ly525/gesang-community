@@ -44,7 +44,7 @@ exports.newAndSave = function (req, res, next) {
 
 exports.showEditPage = function (req, res) {
     res.locals.user = req.session.user;
-    Article.getArticleWithoutRendingByArticleId(req.params.article_id, function (err, article) {
+    Article.getArticleWithoutRendingNorAuthorByArticleId(req.params.article_id, function (err, article) {
         if (err) next(err);
         res.render('article/editArticle', {
             article: article
@@ -57,7 +57,7 @@ exports.update = function (req, res, next) {
     var title       = validator.trim(req.body.title);
     var content     = validator.trim(req.body.content);
     var tags        = [validator.trim(req.body.tag1), validator.trim(req.body.tag2), validator.trim(req.body.tag3)];
-    Article.getArticleWithoutRendingByArticleId(req.params.article_id, function(err, article){
+    Article.getArticleWithoutRendingNorAuthorByArticleId(req.params.article_id, function(err, article){
 
         article.title       = title;
         article.content     = content;
@@ -79,7 +79,7 @@ exports.delete =  function (req, res, next) {
 
     var article_id  = req.params.article_id;
     //var ep          = new EventProxy();
-    Article.getArticleWithoutRendingByArticleId(article_id, function(err, article){
+    Article.getArticleWithoutRendingNorAuthorByArticleId(article_id, function(err, article){
         if (err) next(err);
         console.log("****** "+article.author_id);
         console.log("****** "+req.session.user._id);
@@ -180,7 +180,7 @@ exports.collect = function (req, res, next) {
     res.locals.user = req.session.user;
     var article_id = req.params.article_id;
     var collector_id = req.session.user._id;
-    Article.getArticleByArticleId(article_id, function (err, article) {
+    Article.getArticleWithoutRendingNorAuthorByArticleId(article_id, function (err, article) {
         if (err) return next(err);
         if (!article) return res.render("error", {error: "该文章已经被作者删除!"}); // 主要是A用户自己删除了自己的账户之前B在浏览其主页,A删除了自己的账户后,B关注A发现A用户不存在了
         ArticleCollector.getArticleCollector(article_id, collector_id, function (err, connection) {

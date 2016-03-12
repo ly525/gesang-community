@@ -1,18 +1,44 @@
-var router = require('express').Router();
-var Article = require('../models/article');
+var Articles        = require('../proxy').Articles;
+var validator       = require('validator');
+exports.club_article = function (req, res) {
+    res.locals.user = req.session.user;
+    var keyword = validator.trim(req.query.keyword);
+    var pattern = new RegExp(keyword, 'i'); // i修饰符用于执行对大小写不敏感的匹配
+    var page = req.query.page ? parseInt(req.query.page) : 1;
 
-router.get('/', function (req, res) {
-    console.log("关键字是"+req.query.keyword);
-    Article.search(req.query.keyword, function (err, articles) {
-        if (err) {
-            console.log('==[Error] in routes/search ' + err);
-            return res.redirect('/articles');
-        }
+    Articles.getTwentyArticlesWithArticleTitle(page,pattern, function (err, total, articles_20 ) {
+        if (err) next(err);
         res.render('index', {
-            articles: articles,
-            user: req.session.user
+            articles: articles_20,
+            page: page,
+            isFirstPage: (page - 1) === 0,
+            isLastPage: ((page - 1) * 20 + articles_20.length) === total
         });
-    })
-});
+    });
 
-module.exports = router;
+};
+
+exports.club_question = function (req, res) {
+
+};
+
+exports.club_answer = function (req, res) {
+
+};
+
+exports.club_author = function (req, res) {
+
+};
+
+exports.book_name = function (req, res) {
+
+};
+
+
+exports.book_author = function (req, res) {
+
+};
+
+exports.book_press = function (req, res) {
+
+};

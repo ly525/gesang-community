@@ -10,7 +10,7 @@
     <div class="jumbotron">
             <div class="search-header">
                 <h1>搜索</h1>
-                <form class="form-inline " method="get" action="/search">
+                <form id="index-page-search-form" class="form-inline" method="get" action="/search/club_article">
                     <div class="form-group">
                         <label class="sr-only" for="indexSearchContent">Amount (in dollars)</label>
                         <div class="input-group">
@@ -21,23 +21,24 @@
 
                     <div class="btn-group" role="group" aria-label="...">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default" id="search-choice-item">
-                                书名
+                            <button name="type" type="text" class="btn btn-default" id="search-choice-item">
+                                简文
                             </button>
                         </div>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">问答</a></li>
-                            <li><a href="#">简文</a></li>
-                            <li><a href="#">作者</a></li>
+                            <li><a href="#" title="club_question">问题</a></li>
+                            <li><a href="#" title="club_answer">回答</a></li>
+                            <li><a href="#" title="club_article">简文</a></li>
+                            <li><a href="#" title="club_author">社区作者</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">书名</a></li>
-                            <li><a href="#">作者</a></li>
-                            <li><a href="#">出版社</a></li>
+                            <li><a href="#" title="book_name">书名</a></li>
+                            <li><a href="#" title="book_author">书作者</a></li>
+                            <li><a href="#" title="book_press">出版社</a></li>
                         </ul>
-                        <button type="submit" class="btn btn-primary">搜索</button>
+                        <button type="submit" class="btn btn-primary" id="indexConfirmSearchButton">搜索</button>
                     </div>
                 </form>
             </div>
@@ -45,33 +46,38 @@
             <div class="main-content row">
                 <div class="col-md-2 "></div>
                 <div class="col-md-8">
-                    <%  articles.forEach(function(article, index){ %>
-                    <!--单个文章简介 start-->
-                    <div class="article-item">
+                    <%if(typeof  articles !== "undefined"){ %>
 
-                        <div class="box">
-                            <a href="#" class="btn btn-info btn-sm disabled" role="button">42<br> 赞</a><br><br>
-                            <span><%= article.pv %><br>浏览</span>
+                    <% articles.forEach(function(article, index){ %>
+                    <div class="media">
+                        <div class="media-left">
+                            <h5 title="点赞数">１　<span class="glyphicon glyphicon-thumbs-up" ></span> </h5>
+                            <h5 title="浏览量"><%= article.visit_count %>　<span class="glyphicon glyphicon-user"></span> </h5>
+
                         </div>
-                        <div class="summary article-item-right">
-                            <h3><a href="/article/<%= article._id %>" ><%= article.title %></a></h3>
-                            <p class="info">
-                                <a href="/user/u/<%= article.author %>" class="right_avatar"><img src="<%= article.avartar %>"></a>
-                                作者:
-                                <a href="/users/u/<%= article.author %>">
-                                    <%= article.author %>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="/article/<%= article._id %>"><%= article.title %></a></h4>
+                            <h6 class="media-heading"> 作者:
+                                <a href="/user/u/<%= article.author._id %>"><%= article.author.nickname %>
                                 </a>
-                                &nbsp;&nbsp;&nbsp; 一句话介绍
-                                &nbsp;&nbsp;&nbsp; 日期:<%= article.time.postTime %>
-                            </p>
-                            <p class="brief-introduction">
-                                <%= article.content %>
-                            </p>
+                                &nbsp;&nbsp;&nbsp; <%= article.author.signature %>
+                                &nbsp;&nbsp;&nbsp; <%= article.create_at_ago() %>
+                            </h6>
+                            <%= article.content.length > 100? article.content.substring(0, 100): article.content %>
                         </div>
-
+                        <div class="media-right">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<%= article.author.avatarUrl %>" data-holder-rendered="true" style="width: 20px; height: 20x;">
+                            </a>
+                        </div>
                     </div>
+                    <!--单个文章简介 start-->
+
+
                     <% }) %>
                     <!--单个文章简介 end-->
+                    <%- include ./paging %>
+                    <% } %>
                 </div>
 
                 <!--右侧模块 End-->

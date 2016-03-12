@@ -9,10 +9,20 @@ $(function () {
  * 给搜索框的搜索下拉菜单添加点击被选中事件
  */
 $(".search-header .dropdown-menu li a").click(function(e){
-    alert("***")
     e.preventDefault();
     $("#search-choice-item").text($(this).text());
-//        alert($(this).text());
+    $("#index-page-search-form").attr("action","/search/"+$(this).attr("title"));
+});
+
+/**
+ *indexConfirmSearchButton
+ */
+
+$("#indexConfirmSearchButton").click(function(e){
+    if ($("#indexSearchContent").val().trim().length === 0 ){
+        alert("搜索内容不能为空");
+        return false;
+    }
 });
 
 /**
