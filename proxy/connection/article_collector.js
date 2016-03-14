@@ -1,7 +1,7 @@
-var ArticleCollector        = require('../models').ArticleCollector;
+var ArticleCollector        = require('../../models/index').ArticleCollector;
 var EventProxy              = require('eventproxy');
-var User                    = require('./user');
-var Article                 = require('./article');
+var User                    = require('./../user/user');
+var Article                 = require('./../article/article');
 exports.getArticleCollector = function (article_id, collector_id, callback) {
     ArticleCollector.findOne({article_id: article_id, collector_id: collector_id}, callback);
 };

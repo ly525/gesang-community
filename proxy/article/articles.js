@@ -1,8 +1,8 @@
-var Article          = require('../models').Article;
+var Article          = require('../../models/index').Article;
 var markdown         = require('markdown').markdown;
 var EventProxy       = require('eventproxy');
-var User             = require('./user');
-var ArticleCollector = require('../models').ArticleCollector;
+var User             = require('./../user/user');
+var ArticleCollector = require('../../models/index').ArticleCollector;
 
 
 /**

@@ -1,7 +1,7 @@
-var ArticleLiker = require('../models').ArticleLiker;
+var ArticleLiker = require('../../models/index').ArticleLiker;
 var EventProxy   = require('eventproxy');
-var User         = require('./user');
-var Article      = require('./article');
+var User         = require('./../user/user');
+var Article      = require('./../article/article');
 
 exports.getArticleLiker = function (article_id, liker_id, callback) {
     ArticleLiker.findOne({article_id: article_id, liker_id: liker_id}, callback);

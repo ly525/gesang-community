@@ -1,6 +1,6 @@
 var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
-var BaseModel = require("./base_model");
+var BaseModel = require("./../base_model");
 var ObjectId  = Schema.ObjectId;
 
 var ArticleCollectorSchema = new Schema({

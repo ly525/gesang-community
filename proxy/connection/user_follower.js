@@ -1,6 +1,6 @@
-var UserFollower = require('../models').UserFollower;
+var UserFollower = require('../../models/index').UserFollower;
 var EventProxy   = require('eventproxy');
-var User         = require('./user');
+var User         = require('./../user/user');
 
 exports.getUserFollower = function (be_follower_id, follower_id, callback) {
     UserFollower.findOne({be_follower_id: be_follower_id, follower_id: follower_id}, callback);

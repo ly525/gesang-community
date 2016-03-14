@@ -1,6 +1,6 @@
-var Reply      = require('../models').Reply;
+var Reply      = require('../../models/index').Reply;
 var EventProxy = require('eventproxy');
-var User       = require('./user');
+var User       = require('./../user/user');
 var markdown   = require('markdown').markdown;
 
 /**

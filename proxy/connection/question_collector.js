@@ -1,6 +1,6 @@
-var QuestionCollector = require('../models').QuestionCollector;
+var QuestionCollector = require('../../models/index').QuestionCollector;
 var EventProxy        = require('eventproxy');
-var User              = require('./user');
+var User              = require('./../user/user');
 var Question          = require('./question');
 
 exports.getQuestionCollector = function (collector_id, question_id, callback) {

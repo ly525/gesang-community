@@ -2,7 +2,7 @@ var markdown  = require('markdown').markdown;
 var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
-var BaseModel = require("./base_model");
+var BaseModel = require("./../base_model");
 
 var ArticleSchema = new Schema({
     author_id         : {type: ObjectId},

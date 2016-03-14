@@ -11,12 +11,12 @@ mongoose.connect("mongodb://" + config.mongodb_host + ':' + config.mongodb_port 
 
 
 // models
-require('./user');
-require('./user_follower');
-require('./article');
-require('./reply');
-require('./article_collector');
-require('./article_liker');
+require('./user/user');
+require('./user/user_follower');
+require('./article/article');
+require('./article/reply');
+require('./connection/article_collector');
+require('./connection/article_liker');
 
 exports.User             = mongoose.model('User');
 exports.UserFollower     = mongoose.model('UserFollower');

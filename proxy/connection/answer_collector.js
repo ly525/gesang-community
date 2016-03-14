@@ -1,6 +1,6 @@
-var AnswerCollector = require('../models').AnswerCollector;
+var AnswerCollector = require('../../models/index').AnswerCollector;
 var EventProxy      = require('eventproxy');
-var User            = require('./user');
+var User            = require('./../user/user');
 var Answer          = require('./answer');
 
 exports.getAnswerCollector = function (collector_id, answer_id, callback) {

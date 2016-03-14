@@ -1,7 +1,7 @@
 var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
 var utility   = require('utility');
-var BaseModel = require("./base_model");
+var BaseModel = require("./../base_model");
 
 var UserSchema = new Schema({
     nickname  : {type: String},
