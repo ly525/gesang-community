@@ -3,7 +3,7 @@ module.exports = function (app) {
     console.log('给APP添加错误处理路由');
     //     catch 404 and forward to error handler
     app.use(function (req, res, next) {
-        var err = new Error('Not Found');
+        var err    = new Error('Not Found');
         err.status = 404;
         next(err);
     });
@@ -13,12 +13,13 @@ module.exports = function (app) {
     // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
         res.locals.user = req.session.user;
-        err.status = err.status || 500;
+        err.status      = err.status || 500;
         console.log("错误" + err.status + err);
         res.render('error', {
             message: err.message,
-            error: err
+            error  : err
         });
+        next(err);
     });
 
 }

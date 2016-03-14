@@ -1,47 +1,45 @@
 var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-var async = require('async');
+var router  = express.Router();
+var fs      = require('fs');
+var async   = require('async');
 //var co = require('co');
 //var thunkify = require('thunkify');
 
 //var markdown = require("markdown").markdown;
 //var lendHistoryModel = markdown.toHTML("");
 
-var mysql = require('mysql');
-var client = mysql.createConnection({
-    'host': '127.0.0.1',
-    'port': '3306',
-    'user': 'root',
+var mysql    = require('mysql');
+var client   = mysql.createConnection({
+    'host'    : '127.0.0.1',
+    'port'    : '3306',
+    'user'    : 'root',
     'password': 'liuyan123'
 
 });
 var database = 'library';
 
 
-
-
-var queryHighestRatingBook = "select * from book_lend_history where book_rating not regexp '收录|评价' order by book_rating desc limit 1";
-var queryLowestRatingBook = "select * from book_lend_history where book_rating not regexp '收录|评价' order by book_rating limit 1";
+var queryHighestRatingBook            = "select * from book_lend_history where book_rating not regexp '收录|评价' order by book_rating desc limit 1";
+var queryLowestRatingBook             = "select * from book_lend_history where book_rating not regexp '收录|评价' order by book_rating limit 1";
 var queryContainDoubanRatingBookCount = "select count(*) as count from book_lend_history where book_rating not regexp '收录|评价'";
-var queryBookLendHistory = "select * from book_lend_history";
+var queryBookLendHistory              = "select * from book_lend_history";
 
 var queryRatingTopTwenty = 'select book_name,book_author,book_press,book_rating from book order by book_rating desc limit 20';
-var queryRatingGT8 = "select distinct(book_name),book_rating from book_lend_history where book_rating not regexp '收录 | 评价 ' and book_rating > 8.0 ";
+var queryRatingGT8       = "select distinct(book_name),book_rating from book_lend_history where book_rating not regexp '收录 | 评价 ' and book_rating > 8.0 ";
 
 
 var querySeninor1 = "select count( * ) as count from book_lend_history where(book_time_borrow between '2012-09-01' and '2013-09-01')";
 var querySeninor2 = "select count( * ) as count from book_lend_history where(book_time_borrow between '2013-09-01' and '2014-09-01')";
 var querySeninor3 = "select count( * )  as count from book_lend_history where(book_time_borrow between '2014-09-01' and '2015-09-01')";
 var querySeninor4 = "select count( * )  as count from book_lend_history where(book_time_borrow between '2015-09-01' and '2016-09-01')";
-var queryPeriod = 'select * , datediff(book_time_return, book_time_borrow) as period from book_lend_history order by datediff(book_time_return, book_time_borrow) desc';
+var queryPeriod   = 'select * , datediff(book_time_return, book_time_borrow) as period from book_lend_history order by datediff(book_time_return, book_time_borrow) desc';
 
 
 function getSumMoney(results) {
-    var sumMoney = 0;
+    var sumMoney  = 0;
     var locations = [0, 0, 0, 0, 0];
     results.forEach(function (result) {
-        var reg = /\d+(\.\d+)?/;
+        var reg             = /\d+(\.\d+)?/;
         var iScontainNumber = reg.test(result.book_price);
 
         if (iScontainNumber) {
@@ -99,7 +97,7 @@ router.get('/', function (req, res, next) {
                 });
 
             },
-        function (callback) {
+            function (callback) {
 
 
                 client.query(queryHighestRatingBook, function (err, result3) {
@@ -108,7 +106,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -118,7 +116,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -128,7 +126,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -138,7 +136,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -148,7 +146,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -158,7 +156,7 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
+            },
             function (callback) {
 
 
@@ -168,8 +166,8 @@ router.get('/', function (req, res, next) {
 
                 });
 
-                        },
-function (callback) {
+            },
+            function (callback) {
 
 
                 client.query(queryRatingTopTwenty, function (err, result10) {
@@ -178,24 +176,24 @@ function (callback) {
 
                 });
 
-}],
+            }],
         function (err, results) {
             // 在这里处理data和data2的数据,每个文件的内容从results中获取
             res.render('library', {
-                user: req.session.user,
-                title: 'Lend_history',
-                totalCount: results[0].length,
-                sumMoney: getSumMoney(results[0]),
-                highestRating: results[3][0],
-                lowestRating: results[1][0],
-                booksWithDoubanRatingCount: results[2][0].count,
+                user                         : req.session.user,
+                title                        : 'Lend_history',
+                totalCount                   : results[0].length,
+                sumMoney                     : getSumMoney(results[0]),
+                highestRating                : results[3][0],
+                lowestRating                 : results[1][0],
+                booksWithDoubanRatingCount   : results[2][0].count,
                 booksWithDoubanRatingCountGT8: results[4].length,
-                booksPeriodInfo: results[9],
-                senior1: results[5][0].count,
-                senior2: results[6][0].count,
-                senior3: results[7][0].count,
-                senior4: results[8][0].count,
-                top_twenty_books: results[10]
+                booksPeriodInfo              : results[9],
+                senior1                      : results[5][0].count,
+                senior2                      : results[6][0].count,
+                senior3                      : results[7][0].count,
+                senior4                      : results[8][0].count,
+                top_twenty_books             : results[10]
             });
 
             console.log('总的借书量是' + results[0].length);

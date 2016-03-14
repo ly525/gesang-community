@@ -4,106 +4,123 @@
 
 <body>
 <%- include ../nav/navbar %>
-    <!--更改文章布局 Start-->
-    <div class="container main-container">
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
+<!--更改文章布局 Start-->
+<div class="container main-container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
 
-                <!--作者信息-->
-                <div class="user-info">
-                    <div class="media">
+            <!--作者信息-->
+            <div class="user-info">
+                <div class="media">
                     <div class="media-left">
                         <a href="/user/u/<%= article.author_id %>">
-                            <img class="media-object" src="<%= article.author.avatarUrl %>" alt="<%= article.author.nickname %>">
+                            <img class="media-object" src="<%= article.author.avatarUrl %>"
+                                 alt="<%= article.author.nickname %>">
                         </a>
                     </div>
                     <div class="media-body">
                         <h5 class="media-heading">作者:
-                    <a href="/users/u/<%= article.author_id %>">
-                        <%= article.author.nickname %>
-                    </a>
-                    &nbsp&nbsp
+                            <a href="/user/u/<%= article.author_id %>">
+                                <%= article.author.nickname %>
+                            </a>
+                            &nbsp&nbsp
 
-                    &nbsp&nbsp 被<%= article.author.follower_count%>人关注，获得了0个喜欢</h5>
+                            &nbsp&nbsp 被<%= article.author.follower_count %>人关注，获得了0个喜欢</h5>
                         <!--添加关注 Start-->
-                    <% if (user){ %>
+                        <% if (user){ %>
                         <% if (String(article.author_id) !== user._id){ %>
-                                <a id="follow-other-button" class="label label-success" href="/user/follow/<%= article.author_id %>">
-                                    <% if (is_already_follow){%>
-                                    已关注
-                                    <% } else { %>
-                                    关注作者
-                                    <% } %>
-                                </a>
-                                <a id="collect-article-button" class="label label-success" href="/article/<%= article._id %>/collect">
-                                    <% if (is_already_collect){%>
-                                已收藏
-                                    <% } else { %>
-                                收藏文章
-                                    <% } %>
-                                </a>
-                    <% } %>
-                    <% } else {%>
-                    <a  class="label label-success" href="/user/login-register" target="_blank">登录后关注作者</a>
-                    <a  class="label label-success" href="/user/login-register" target="_blank">登录后收藏文章</a>
+                        <a id="follow-other-button" class="label label-success"
+                           href="/user/follow/<%= article.author_id %>">
+                            <% if (is_already_follow){ %>
+                            已关注
+                            <% } else { %>
+                            关注作者
+                            <% } %>
+                        </a>
+                        <a id="collect-article-button" class="label label-success"
+                           href="/article/<%= article._id %>/collect">
+                            <% if (is_already_collect){ %>
+                            已收藏
+                            <% } else { %>
+                            收藏文章
+                            <% } %>
+                        </a>
+                        <% } %>
+                        <% } else { %>
+                        <a class="label label-success" href="/user/login-register" target="_blank">登录后关注作者</a>
+                        <a class="label label-success" href="/user/login-register" target="_blank">登录后收藏文章</a>
 
-                    <% } %>
-                    <!--添加关注 End-->
+                        <% } %>
+                        <!--添加关注 End-->
 
-                    <!--编辑删除 Start-->
-                    <% if (user && (article.author.uniquename == user.uniquename)){ %>
-                    <span><a href="/article/<%= article._id %>/edit" class="label label-success">编辑</a> </span>
-                    <span><a href="/article/<%= article._id %>/delete" class="label label-success">删除</a> </span>
-                    <% } %>
-                    <!--编辑删除 Start-->
-
-
+                        <!--编辑删除 Start-->
+                        <% if (user && (article.author.uniquename == user.uniquename)){ %>
+                        <span><a href="/article/<%= article._id %>/edit" class="label label-success">编辑</a> </span>
+                        <span><a href="/article/<%= article._id %>/delete" class="label label-success">删除</a> </span>
+                        <% } %>
+                        <!--编辑删除 Start-->
 
 
-                    <!--标签显示 Start-->
-                    标签：
-                    <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
-                    <% if(article.tags){ %>
-                    <% article.tags.forEach(function (tag, index) { %>
-                    <% if(tag){ %>
-                    <a href="/tag/<%= tag %>" class="label label-success">
-                        <%= tag %>
-                    </a>
-                    <% } %>
-                    <% }) %>
-                    <% } %>
-                    <!--标签显示 End-->
+                        <!--标签显示 Start-->
+                        标签：
+                        <!--如果一篇文章没有xxx属性,那么article.xxx的值就是undefined -->
+                        <% if(article.tags){ %>
+                        <% article.tags.forEach(function (tag, index) { %>
+                        <% if(tag){ %>
+                        <a href="/tag/<%= tag %>" class="label label-success">
+                            <%= tag %>
+                        </a>
+                        <% } %>
+                        <% }) %>
+                        <% } %>
+                        <!--标签显示 End-->
                     </div>
                     <!-- media-body End -->
+                    <div class="media-right">
+                        &nbsp&nbsp&nbsp<span style="width: 100px; display: block"
+                                             class="media-heading"><%= article.be_liked_count %>个人赞</span>
+                        <% if (user){ %>
+                        <% if (String(article.author_id) !== user._id){ %>
+                        <a id="like-article-button" class="label label-success" href="/article/<%= article._id %>/like">
+                            <% if (is_already_like){ %>
+                            已经点赞
+                            <% } else { %>
+                            点赞文章
+                            <% } %>
+                        </a>
+                        <% } %>
+                        <% } %>
+
+                    </div>
                 </div>
                 <!-- media End -->
-                </div>
-                <!-- user-info End -->
-                <div class="content">
-                    <div class="inner-header article">
-                        <h1><%= article.title %></h1>
-                    </div>
-                    <div class="article-info">
-                        <%= article.create_at_ago() %>
-                        &nbsp&nbsp&nbsp 阅读: <span><%= article.visit_count %></span>
-                        <!--TODO 2016年02月06日12:46:24 这里评论可以改成超链接的形式,可以直接跳转到对应的评论部分!-->
-                        &nbsp&nbsp&nbsp 评论: <span><%= article.reply_count %></span>
-                        &nbsp&nbsp&nbsp 收藏: <span><%= article.be_collected_count %></span>
-                    </div>
-                    <div class="article-content">
-                        <p>
-                            <%- article.content %>
-                        </p>
-                    </div>
-                </div>
-                <%- include ../reply/index %>
             </div>
-            <!-- col-md-10 End -->
-            <div class="col-md-1"></div>
+            <!-- user-info End -->
+            <div class="content">
+                <div class="inner-header article">
+                    <h1><%= article.title %></h1>
+                </div>
+                <div class="article-info">
+                    <%= article.create_at_ago() %>
+                    &nbsp&nbsp&nbsp 阅读: <span><%= article.visit_count %></span>
+                    <!--TODO 2016年02月06日12:46:24 这里评论可以改成超链接的形式,可以直接跳转到对应的评论部分!-->
+                    &nbsp&nbsp&nbsp 评论: <span><%= article.reply_count %></span>
+                    &nbsp&nbsp&nbsp 收藏: <span><%= article.be_collected_count %></span>
+                </div>
+                <div class="article-content">
+                    <p>
+                        <%- article.content %>
+                    </p>
+                </div>
+            </div>
+            <%- include ../reply/index %>
         </div>
+        <!-- col-md-10 End -->
+        <div class="col-md-1"></div>
     </div>
-    <!--更改文章布局 End-->
+</div>
+<!--更改文章布局 End-->
 <%- include ../header-footer/footer %>
 </body>
 

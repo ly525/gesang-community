@@ -3,3 +3,4 @@ node_modules/
 routes/learnModule/
 .idea/
 access.log
+error.log

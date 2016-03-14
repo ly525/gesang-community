@@ -43,7 +43,6 @@ if(document.getElementById("login-button")){
     var login_button                = document.getElementById("login-button");
     login_button.onclick = function(e) {
         e.preventDefault();
-        alert("*****");
         var login_email = document.getElementById("login-email").value.trim();
         var login_password = document.getElementById("login-password").value.trim();
         document.getElementById("login-password").value = "";
@@ -151,7 +150,6 @@ if(document.getElementById("buttonUpdateNickNameAndSignature")){
         request.onreadystatechange = function () {
             if (request.readyState === 4 && request.status === 200) {
                 var response = JSON.parse(request.responseText);
-                alert(response.resultFromServer);
                 if (response.resultFromServer === "updateNickNameAndSignatureSuccess") {
                     window.location.href = "/user/u/"+"<%= user._id%>";
                 } else {
@@ -165,7 +163,6 @@ if(document.getElementById("buttonUpdateNickNameAndSignature")){
             newNickname:  newNickname,
             newSignature: newSignature
         }));
-        alert("提交");
     };
     <!--修改昵称和签名结束-->
 
@@ -178,7 +175,6 @@ if(document.getElementById("buttonUpdateNickNameAndSignature")){
     buttonModifyEmailAddress.onclick = function (e) {
         e.preventDefault();
         var newEmail = document.getElementById("inputNewEmail").value;
-        alert(newEmail);
         var request = new XMLHttpRequest();
         request.open("POST", "/user/updateEmail", true);
         request.setRequestHeader("Content-Type", "application/json");
@@ -271,7 +267,6 @@ if(document.getElementById("collect-article-button")){
         request.onload = function (){
             if (request.status === 200){
                 var collect_article_result = JSON.parse(request.responseText);
-                alert(collect_article_result);
                 if (collect_article_result.resultFromServer === "collectSuccess"){
                     collect_article_button.innerHTML = "已收藏"
                 }else {
@@ -304,6 +299,36 @@ if(document.getElementById("follow-other-button")){
                     follow_other_button.innerHTML = "已关注";
                 }else {
                     follow_other_button.innerHTML = "关注作者";
+                }
+            }
+        };
+
+        request.send();
+    };
+}
+
+/**
+ * Ajax发送点赞文章请求
+ * @param {Element} like-article-button 关注按钮
+ */
+
+if(document.getElementById("like-article-button")){
+    var like_article_button = document.getElementById("like-article-button");
+    like_article_button.onclick = function (e){
+        e.preventDefault();
+
+        var target  =   like_article_button.getAttribute("href");
+        var request =   new XMLHttpRequest();
+        alert(target);
+        request.open("POST", target, true);
+        request.setRequestHeader("Content-Type","application/json");
+        request.onload = function (){
+            if (request.status === 200){
+                var like_article_result = JSON.parse(request.responseText);
+                if (like_article_result.resultFromServer === "likeSuccess"){
+                    like_article_button.innerHTML = "已经点赞";
+                }else {
+                    like_article_button.innerHTML = "点赞文章";
                 }
             }
         };

@@ -1,6 +1,6 @@
-var User = require('../models').User;
+var User    = require('../models').User;
 var utility = require('utility');
-var uuid = require('node-uuid');
+var uuid    = require('node-uuid');
 
 
 /**
@@ -34,14 +34,14 @@ exports.getUserById = function (id, callback) {
     User.findOne({_id: id}, callback);
 };
 
-exports.newAndSave = function(nickname, uniquename, email, passhash,avatarUrl,active, callback){
-    var user = new User();
-    user.nickname = nickname;
+exports.newAndSave = function (nickname, uniquename, email, passhash, avatarUrl, active, callback) {
+    var user        = new User();
+    user.nickname   = nickname;
     user.uniquename = uniquename;
-    user.passhash = passhash;
-    user.active = active || false;
-    user.email = email;
-    user.avatarUrl = avatarUrl;
+    user.passhash   = passhash;
+    user.active     = active || true;
+    user.email      = email;
+    user.avatarUrl  = avatarUrl;
     user.save(callback);
 };
 

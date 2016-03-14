@@ -1,14 +1,14 @@
-    ObjectID = require('mongodb').ObjectID;
+ObjectID = require('mongodb').ObjectID;
 
 function Comment(_id, comment) {
-    this._id = _id;
+    this._id     = _id;
     this.comment = comment;
 };
 
 
 // 存储一条评论信息
 Comment.prototype.save = function (callback) {
-    var _id = this._id;
+    var _id     = this._id;
     var comment = this.comment;
     mongodbInstance.open(function (err, db) {
         if (err) return callback(err);

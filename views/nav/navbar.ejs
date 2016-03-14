@@ -27,19 +27,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">首页</a></li>
                 <li><a href="/questions">问答</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        简文<span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!--注意这边需要加上反斜杠 /, 否则就会导致点击时候这个链接变为了相对路径.-->
-                        <li><a href="/articles" title="文章">文章</a></li>
-                        <li><a href="/articles/archive" title="存档">存档</a></li>
-                        <li><a href="/articles/tags" title="标签">标签</a></li>
-                        <li><a href="#">待定</a></li>
-                    </ul>
-                </li>
+                <li> <a href="/articles" title="文章">简文</a></li>
+
                 <li><a href="/campus-card">校园卡</a></li>
                 <li><a href="/library">图书馆</a></li>
                 <% if(user){ %>
