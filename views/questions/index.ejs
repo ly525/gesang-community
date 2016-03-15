@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<%- include ../header-footer/header %>
+
+<body>
+
+<!-- Fixed navbar -->
+<%- include ../nav/navbar %>
+<!-- /Fixed navbar -->
+
+
+<div class="container">
+    <div class="main-container row">
+        <div class="col-md-8">
+            <!--Header-->
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-link">最新回复的</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-link">热门的</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-link">未被回答的</button>
+                </div>
+            </div>
+            <hr>
+            <!--Header-->
+
+            <div class="questions-summary">
+                <% questions.forEach(function (question){ %>
+                <div class="question-item">
+                    <div class="media">
+                        <div class="media-left">
+                            <h5 title="点赞数">1　<span class="glyphicon glyphicon-thumbs-up"></span></h5>
+                            <h5 title="浏览量">1　<span class="glyphicon glyphicon-user"></span>
+                            </h5>
+                        </div>
+                        <div class="media-body">
+                            <h6><%= question.lastest_answer.author.nickname%> 回答了 • <%= question.lastest_answer.create_at() %></h6>
+                            <h4 class="media-heading"><a href=""><%= question.title %></a></h4>
+                            <h6><a href=""><%= question.lastest_answer.author.nickname%></a> • <%= question.lastest_answer.author.signature %></h6>
+                            <p class="lead">
+                                <%= question.lastest_answer.content%></p>
+                        </div>
+                        <div class="media-right">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     src="<%= question.lastest_answer.author.avatarUrl %>" data-holder-rendered="true"
+                                     style="width: 20px; height: 20px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+
+
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
+<%- include ../header-footer/footer %>
+
+</body>
+
+</html>

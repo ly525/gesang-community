@@ -4,7 +4,7 @@ var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 var BaseModel = require("./../base_model");
 
-var ArticleSchema = new Schema({
+var QuestionSchema = new Schema({
     author_id      : {type: ObjectId},
     title          : {type: String},
     content        : {type: String},
@@ -26,5 +26,5 @@ var ArticleSchema = new Schema({
 });
 
 
-ArticleSchema.plugin(BaseModel);
-mongoose.model('Article', ArticleSchema);
+QuestionSchema.plugin(BaseModel);
+mongoose.model('Question', QuestionSchema);
