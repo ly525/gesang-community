@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<%- include ../header-footer/header %>
+
+<body>
+<%- include ../nav/navbar %>
+
+<div class="container main-container">
+    <div class="row">
+        <div class="col-md-2">.col-md-2</div>
+        <div class="col-md-6">
+            <div class="blog-header">
+                <!--标签显示 Start-->
+                <% if(question.tags){ %>
+                <% question.tags.forEach(function (tag, index) { %>
+                <% if(tag){ %>
+                <a href="/tag/<%= tag %>" class="label label-info">
+                    <%= tag %>
+                </a>
+                <% } %>
+                <% }) %>
+                <% } %>
+                <!--标签显示 End-->
+                <h3><strong><%= question.title%></strong></h3>
+                <blockquote><%= question.content%></blockquote>
+            </div>
+            <%- include ../answer/index %>
+        </div>
+        <div class="col-md-4">.col-md-2</div>
+    </div>
+
+</div>
+<%- include ../header-footer/footer %>
+</body>
+
+</html>

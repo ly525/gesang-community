@@ -1,0 +1,13 @@
+
+<hr>
+<div>
+    <div>
+        <strong><%= question.answer_count %> 个回答</strong>
+        <a href="#postAnswerArea" class="alert-link" style="float:right">写答案</a>
+    </div>
+    <br/>
+    <!--该问题已有的回答-->
+    <%- include ./publishedAnswers %>
+    <!--写答案-->
+   <%- include ./createAnswer %>
+</div>

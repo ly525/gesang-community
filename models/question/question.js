@@ -21,8 +21,7 @@ var QuestionSchema = new Schema({
     last_reply_at  : {type: Date, default: Date.now},
     content_is_html: {type: Boolean},
     category       : {type: String},
-    deleted        : {type: Boolean, default: false},
-    is_draft       : {type: Boolean, default: false}
+    deleted        : {type: Boolean, default: false}
 });
 
 

@@ -12,11 +12,13 @@ mongoose.connect("mongodb://" + config.mongodb_host + ':' + config.mongodb_port 
 
 // models
 require('./user/user');
-require('./user/user_follower');
+require('./connection/user_follower');
 require('./article/article');
 require('./article/reply');
 require('./connection/article_collector');
 require('./connection/article_liker');
+require('./question/question');
+require('./answer/answer');
 
 exports.User             = mongoose.model('User');
 exports.UserFollower     = mongoose.model('UserFollower');
@@ -24,3 +26,5 @@ exports.Article          = mongoose.model('Article');
 exports.Reply            = mongoose.model('Reply');
 exports.ArticleCollector = mongoose.model('ArticleCollector');
 exports.ArticleLiker     = mongoose.model('ArticleLiker');
+exports.Question         = mongoose.model('Question');
+exports.Answer           = mongoose.model('Answer');

@@ -6,3 +6,5 @@ exports.Articles         = require('./article/articles');
 exports.UserFollower     = require('./connection/user_follower');
 exports.ArticleCollector = require('./connection/article_collector');
 exports.ArticleLiker     = require('./connection/article_liker');
+exports.Question         = require('./question/question');
+exports.Answer           = require('./answer/answer');
