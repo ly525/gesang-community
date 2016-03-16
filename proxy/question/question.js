@@ -3,7 +3,7 @@ var markdown   = require('markdown').markdown;
 var EventProxy = require('eventproxy');
 var User       = require('../user/user');
 var Answer     = require('../answer/answer');
-
+var _          = require('lodash');
 
 /**
  * 保存一篇文章
@@ -35,5 +35,56 @@ exports.getQuestionAndUserWithoutAnswersById = function (id, callback) {
             question.author = user;
             callback(err, question);
         });
+    });
+};
+
+exports.getQuestionWithoutUserAndAnswersById = function (id, callback) {
+    Question.findOne({_id: id, deleted: false}, callback);
+};
+
+
+/**
+ * 根据关键词获取问题以及答案
+ * Callback:
+ * - err 数据库错误
+ * - count, 问题列表
+ * @param {String} query 查询关键字
+ * @param {Object} options 选项
+ * @param {Function} callback 回调函数
+ */
+exports.getQuestionsByQuery = function (query, options, callback) {
+    query.deleted = false;
+    Question.find(query, {}, options, function (err, questions) {
+        if (err) return callback(err);
+        if (questions.length === 0) return callback(null, []);
+        var proxy = new EventProxy();
+        proxy.after('question_ready', questions.length, function () {
+            questions = _.compact(questions); // 去除不合理的questions,比如null;https://lodash.com/docs#compact
+            return callback(null, questions);
+
+        });
+        proxy.fail(callback);
+
+        // 遍历问题
+        questions.forEach(function (question, index) {
+            var ep = new EventProxy();
+            ep.all('author', 'lastest_answer', function (author, lastest_answer) {
+                // 保证顺序
+                // 作者有可能被删除,对应不显示其回答和问题
+                if (author) {
+                    question.author = author;
+                    question.lastest_answer = lastest_answer;
+                    console.log("3" + question.lastest_answer.author);
+                } else {
+                    question[index] = null;
+                }
+                proxy.emit('question_ready');
+            });
+
+            User.getUserById(question.author_id, ep.done('author'));
+            Answer.getAnswerById(question.last_answer, ep.done('lastest_answer'));
+        });
+
+
     });
 };

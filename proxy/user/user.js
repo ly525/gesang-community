@@ -30,7 +30,7 @@ exports.getUserByUniquename = function (uniquename, callback) {
  */
 
 exports.getUserById = function (id, callback) {
-    if (!id) return callback();
+    if (!id) return callback(null, null);
     User.findOne({_id: id}, callback);
 };
 

@@ -14,15 +14,16 @@
     <div class="main-container row">
         <div class="col-md-8">
             <!--Header-->
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-link">最新回复的</button>
+            <div class="btn-group btn-group-justified question-nav" role="group" aria-label="...">
+                <div class="btn-group" role="group" >
+                    <a href="" class="btn btn-link">最新回复的</a>
                 </div>
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-link">热门的</button>
+                    <a href="" class="btn btn-link">热门的</a>
+
                 </div>
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-link">未被回答的</button>
+                    <a href="" class="btn btn-link">未被回答的</a>
                 </div>
             </div>
             <hr>
@@ -30,35 +31,46 @@
 
             <div class="questions-summary">
                 <% questions.forEach(function (question){ %>
+                <% if (question.last_answer) { %>
                 <div class="question-item">
                     <div class="media">
                         <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     src="<%= question.lastest_answer.author.avatarUrl %>" data-holder-rendered="true"
+                                     style="width: 30px; height: 30px;">
+                            </a>
                             <h5 title="点赞数">1　<span class="glyphicon glyphicon-thumbs-up"></span></h5>
                             <h5 title="浏览量">1　<span class="glyphicon glyphicon-user"></span>
                             </h5>
                         </div>
                         <div class="media-body">
-                            <h6><%= question.lastest_answer.author.nickname%> 回答了 • <%= question.lastest_answer.create_at() %></h6>
-                            <h4 class="media-heading"><a href=""><%= question.title %></a></h4>
-                            <h6><a href=""><%= question.lastest_answer.author.nickname%></a> • <%= question.lastest_answer.author.signature %></h6>
+                            <h6 class="question-item-author media-heading"><%= question.lastest_answer.author.nickname %>
+                                回答了
+                                • <%= question.lastest_answer.create_at_ago() %></h6>
+                            <h4 class="media-heading"><strong><a
+                                            href="question/<%= question._id %>"><%= question.title %></a></strong>
+                            </h4>
+                            <h5><strong><a href=""><%= question.lastest_answer.author.nickname %></a></strong>
+                                • <%= question.lastest_answer.author.signature %></h5>
                             <p class="lead">
-                                <%= question.lastest_answer.content%></p>
+                                <a href="" class="question-content-item">
+                                    <%= question.lastest_answer.content %>
+                                </a>
+                            </p>
                         </div>
-                        <div class="media-right">
-                            <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
-                                     src="<%= question.lastest_answer.author.avatarUrl %>" data-holder-rendered="true"
-                                     style="width: 20px; height: 20px;">
-                            </a>
-                        </div>
+
                     </div>
                 </div>
+                <!--question-item -->
+                <% } %>
                 <% }) %>
             </div>
 
 
         </div>
         <div class="col-md-4">
+            <%- include ./right_sidebar %>
         </div>
     </div>
 </div>

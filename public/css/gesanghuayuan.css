@@ -129,9 +129,9 @@ body {
 /*}*/
 
 /*.main-content {*/
-    /*margin: 0 auto;*/
-    /*width: 800px;*/
-    /*text-align: center;*/
+/*margin: 0 auto;*/
+/*width: 800px;*/
+/*text-align: center;*/
 /*}*/
 
 .user-info {
@@ -211,12 +211,12 @@ p.brief-introduction {
 
 }
 
-
 .media {
     border-bottom: 1px solid #eee;
-    padding: 15px;
+    /*padding: 15px;*/
 }
-.media-heading{
+
+.media-heading {
     padding-bottom: 5px;
 }
 
@@ -231,4 +231,39 @@ p.brief-introduction {
     border-radius: 2px;
     line-height: 1.25;
     z-index: 1000;
+}
+
+/*问答主页中问题汇总布局*/
+.questions-summary {
+    /*margin-right: 30px;*/
+    /*margin-left: 30px;*/
+}
+
+.question-item-author {
+    color: #999;
+}
+
+.question-content-item {
+    color: #000;
+    font-size: 14px;
+
+}
+
+.question-content-item:hover {
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+
+}
+
+.question-nav   a {
+    padding: 20px;
+    border-bottom: solid #fff 3px;
+
+}
+
+.question-nav  a:hover {
+    border-bottom: solid #40d2b1 3px;
+    text-decoration: none;
+
 }

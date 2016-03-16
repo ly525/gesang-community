@@ -29,9 +29,11 @@ var config = {
             user: 'liuyanshi@aliyun.com',
             pass: 'yanghan031216'
         }
-    }
+    },
 
-
+    // 一些阀值
+    // 每一页面显示最新回复的问题的数量
+    list_question_lastest_answered_count: 10
 };
 
 // 导出一个对象需要使用module.exports

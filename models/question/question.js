@@ -17,8 +17,8 @@ var QuestionSchema = new Schema({
     article_count  : {type: Number, default: 0},
     create_at      : {type: Date, default: Date.now},
     update_at      : {type: Date, default: Date.now},
-    last_reply     : {type: ObjectId},
-    last_reply_at  : {type: Date, default: Date.now},
+    last_answer    : {type: ObjectId},
+    last_answer_at : {type: Date, default: Date.now},
     content_is_html: {type: Boolean},
     category       : {type: String},
     deleted        : {type: Boolean, default: false}

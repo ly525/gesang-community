@@ -8,6 +8,7 @@ var article          = require('./article');
 var articles         = require('./articles');
 var search           = require('./search');
 var question         = require('./question');
+var questions         = require('./questions');
 var answer           = require('./answer');
 
 /**
@@ -82,7 +83,7 @@ router.get('/search/book_press', 	search.book_press);// 搜索出版社
  * 添加问题路由
  *
  */
-router.get('/questions',     question.latest_answered);// 最新回复的
+router.get('/questions',     questions.latest_answered);// 最新回复的
 //router.get('/questions/no_answers', 	        question.no_answers);// 没有答案的
 //router.get('/questions/most_views', 	        question.most_views);// 最多浏览的(热门的)
 

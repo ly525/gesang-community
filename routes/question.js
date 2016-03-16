@@ -5,10 +5,6 @@ var UserFollower = require('../proxy').UserFollower;
 var Answer       = require('../proxy').Answer;
 var Question     = require('../proxy').Question;
 
-exports.latest_answered = function (req, res, next) {
-    res.locals.user = req.session.user;
-    res.render("questions/index");
-};
 
 
 /**

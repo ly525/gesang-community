@@ -334,35 +334,7 @@ if (document.getElementById("like-article-button")) {
     };
 }
 
-if (document.getElementById("button-create-answer")) {
-    var button_create_answer     = document.getElementById("button-create-answer");
-    button_create_answer.onclick = function (e) {
-        e.preventDefault();
-        var content = document.getElementById("input-create-answer-content").innerHTML;
-        var data    = {content: content};
-        var target  = button_create_answer.parentNode.getAttribute("action");
-        alert(data + target);
-        postAjaxRequest(data, target, function (response) {
-            if (response.resultFromServer === "postAnswerSuccess") {
-                var publishedAnswersArea = document.getElementById("publishedAnswersArea");
-                var one_answer_area      = document.createElement("div");
-                one_answer_area.setAttribute("class", "panel panel-default");
-                one_answer_area.innerHTML = "<div class='panel-heading'>" +
-                    "<h3 class='panel-title'>" +
-                    "<a href='/user/u/<%= answer.author_id %>' class='label label-primary'>" +
-                    "<%= user.nickname %></a>" +
-                    "<span class='label label-default'>回复于 几秒前</span></h3>" +
-                    "</div>" +
-                    "<div class='panel-body'>" +
-                    "+content+" +
-                    "</div>";
-                publishedAnswersArea.appendChild(one_answer_area);
-            }
 
-        });
-    }
-
-}
 function postAjaxRequest(data, target, callback) {
     var request = new XMLHttpRequest();
     request.open("POST", target, true);
