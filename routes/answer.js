@@ -18,6 +18,7 @@ exports.newAndSave = function (req, res, next) {
         Question.getQuestionWithoutUserAndAnswersById(question_id, function (err, question) {
             if (err) next(err);
             question.last_answer = answer._id;
+            question.answer_count++;
             question.save(function (err) {
                 if (err) next(err);
                 res.redirect('/question/' + question_id);

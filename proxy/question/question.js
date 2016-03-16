@@ -22,7 +22,56 @@ exports.newAndSave = function (author_id, title, content, tags, callback) {
     question.save(callback);
 };
 
+exports.getFullQuestionById                  = function (id, callback) {
 
+    var proxy  = new EventProxy();
+    var events = ['question', 'author', 'answers'];
+
+    proxy.assign(events, function (question, author, answers) {
+
+        callback(null, '', question, author, answers);
+    }).fail(callback);
+    Question.findOne({_id: id, deleted: false}, proxy.done(function (question) {
+        // 问题不存在
+        if (!question) {
+            proxy.unbind();
+            return callback(null, "问题已经不存在或者已经被删除!");
+        }
+        proxy.emit('question', question);
+
+
+        // 获得提问者信息
+        User.getUserById(question.author_id, proxy.done(function (author) {
+            if (!author) {
+                proxy.unbind();
+                return callback(null, '提问者丢了');
+            }
+            author.passhash = null;
+            proxy.emit('author', author);
+        }));
+
+        // 获得问题所有未被删除的回答-包含回答者信息
+        Answer.getAnswersByQuestionId(question._id, proxy.done('answers'));
+
+
+    }));
+
+
+};
+exports.getQuestionAndUserWithoutAnswersById = function (id, callback) {
+    Question.findOne({_id: id, deleted: false}, function (err, question) {
+        if (err) callback(err);
+        console.log("question" + question);
+        if (!question) return callback(null, null);
+        User.getUserById(question.author_id, function (err, user) {
+            if (err) callback(err);
+            console.log("user" + user);
+            if (!user) callback(null, null);
+            question.author = user;
+            callback(err, question);
+        });
+    });
+};
 exports.getQuestionAndUserWithoutAnswersById = function (id, callback) {
     Question.findOne({_id: id, deleted: false}, function (err, question) {
         if (err) callback(err);
@@ -72,7 +121,7 @@ exports.getQuestionsByQuery = function (query, options, callback) {
                 // 保证顺序
                 // 作者有可能被删除,对应不显示其回答和问题
                 if (author) {
-                    question.author = author;
+                    question.author         = author;
                     question.lastest_answer = lastest_answer;
                     console.log("3" + question.lastest_answer.author);
                 } else {

@@ -6,7 +6,6 @@ var Answer       = require('../proxy').Answer;
 var Question     = require('../proxy').Question;
 
 
-
 /**
  * 显示写一篇新问题页面
  * @param req
@@ -113,10 +112,14 @@ exports.delete = function (req, res, next) {
 exports.index = function (req, res, next) {
     res.locals.user = req.session.user;
     var question_id = req.params.question_id;
-    console.log(question_id);
-    Question.getQuestionAndUserWithoutAnswersById(question_id, function (err, question) {
-        if (err) next(err);
-        if (!question) return res.render("error", {error:"",message: "用户不存在或者问题已经被删除"});
+
+    Question.getFullQuestionById(question_id, function (err, message, question, author, answers) {
+        if (message) return res.render('error', {error: "", message: message});
+        question.visit_count++;
+        question.save();
+
+        question.author  = author;
+        question.answers = answers;
         res.render("question/index", {question: question});
     });
 };
