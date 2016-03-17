@@ -1,19 +1,30 @@
 <div id="publishedAnswersArea">
-<% if (question.answers && question.answers.length > 0 ){ %>
-<% question.answers.forEach(function (answer, index) { %>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            
-            <a href="/user/u/<%= answer.author_id %>" class="label label-primary">
-                <%= answer.author.nickname %>
-            </a>
-            <span class="label label-default">回复于 <%= answer.create_at_ago() %></span></h3>
+    <% if (question.answers && question.answers.length > 0 ){ %>
+    <% question.answers.forEach(function (answer, index) { %>
+
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <p class="panel-title">
+
+                <strong><a href="/user/u/<%= answer.author_id %>">
+                        <%= answer.author.nickname %>
+                    </a>,</strong>
+
+                <span><small> &nbsp;&nbsp;&nbsp;<%= answer.author.signature %>
+                        &nbsp;&nbsp;&nbsp;回复于 <%= answer.create_at_ago() %></small></span>
+                <span style=" float: right"><small><a href=""><span class="glyphicon glyphicon-thumbs-up active"></span></a>  <%= answer.likes.length%>人赞</small> <img class="text-right" src="<%= answer.author.avatarUrl %>" style="width: 25px;height: 25px;" >
+</span>
+            </p>
+
+        </div>
+        <div class="panel-body">
+            <%- answer.content %>
+        </div>
     </div>
-    <div class="panel-body">
-        <%- answer.content %>
-    </div>
-</div>
-<% }) %>
-<% } %>
+
+
+    <% }) %>
+    <% } %>
 </div>
