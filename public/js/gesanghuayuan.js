@@ -26,8 +26,7 @@ $("#indexConfirmSearchButton").click(function (e) {
  * 初始化Markdown编辑器
  */
 if (document.getElementsByTagName("textarea").length > 0) {
-    var simplemde = new SimpleMDE();
-    simplemde.value("This text will appear in the editor");
+    var simplemde = new SimpleMDE({element: $(".simple-markdown-text-area")[0]});
 }
 
 
@@ -347,4 +346,77 @@ function postAjaxRequest(data, target, callback) {
         }
     };
     request.send(JSON.stringify(data));
+}
+
+
+if (document.getElementById("publishedAnswersArea")) {
+    var publishedAnswersArea = document.getElementById("publishedAnswersArea");
+    var answers              = publishedAnswersArea.children;
+    for (var i = 0; i < answers.length; i++) {
+        answers[i].onclick = function (event) {
+            var event = event || window.event;
+            event.preventDefault();
+            var el = event.srcElement;
+            console.log(el.className);
+            switch (el.className) {
+                //点赞
+                case 'like':
+                    praiseBox();
+                    break;
+                case 'glyphicon glyphicon-comment':
+                    showCommentBox(nextSiblingElement(el.parentNode.parentNode.nextSibling));
+                    break;
+
+                case 'btn btn-default btn-sm right-small-button cancel-comment':
+                    hiddenCommentBox(el.parentNode);
+                    break;
+                case 'glyphicon glyphicon-thumbs-up':
+                    praise(el);
+            }
+        };
+    }
+}
+
+// 显示评论框
+
+function showCommentBox(commentBox) {
+    commentBox.setAttribute("class", "panel-body comment-on");
+}
+
+// 隐藏评论框
+function hiddenCommentBox(commentBox) {
+    commentBox.setAttribute("class", "panel-body comment-off");
+}
+// 点赞
+function praise(el) {
+    var praiseElement = el.parentNode.parentNode.getElementsByClassName('like-total')[0];
+    var oldTotal      = parseInt(praiseElement.getAttribute("total"));
+    var title         = el.getAttribute("title");
+    var newTotal;
+    if (title === '赞') {
+        newTotal = oldTotal + 1;
+        console.log("点赞 newTotal" + newTotal)
+        praiseElement.innerHTML = (newTotal === 1) ? '我觉得很赞' : '我和' + oldTotal + '个人赞';
+        praiseElement.setAttribute("total", newTotal);
+        el.style.color = "green";
+        el.setAttribute("title", "取消赞");
+
+    } else {
+        newTotal                = oldTotal - 1;
+        praiseElement.innerHTML = (newTotal === 0) ? newTotal+'人赞' : newTotal + '个人觉得很赞';
+        praiseElement.setAttribute("total", newTotal);
+        el.style.color          = "#337ab7";
+        el.setAttribute("title", "赞");
+
+
+    }
+}
+
+function nextSiblingElement(node) {
+    if (node.nodeType === 1) {
+        return node;
+    } else {
+        return nextSiblingElement(node.nextSibling);
+
+    }
 }

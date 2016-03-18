@@ -1,11 +1,10 @@
 <form method="post" action="/article/<%= article._id%>/createReply" class="form-horizontal post-comment" id="postCommentArea">
     <div class="form-group">
         <label>正文</label>
-        <textarea name="content" rows="20" cols="100" id="input_create_article_content"></textarea>
+        <textarea name="content" class="simple-markdown-text-area" rows="20" cols="100" id="input_create_article_content"></textarea>
     </div>
     <% if(user) { %>
     <input type="submit" class="btn btn-default" value="发表评论" style="float: right;">
-    <% } else { %>
-    <input type="button" class="btn btn-default" value="登录/注册后可发表评论" style="float: right;">
     <% } %>
+
 </form>

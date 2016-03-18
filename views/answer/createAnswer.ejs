@@ -3,7 +3,7 @@
     <% if(user) { %>
     <div class="form-group">
         <label><a href="/user/u/<%=user._id %>"><%= user.nickname%> </a> &nbsp;&nbsp;&nbsp;&nbsp;<%= user.signature%></label>
-        <textarea name="content" rows="20" cols="100" id="input-create-answer-content"></textarea>
+        <textarea name="content" rows="20" cols="100" class="simple-markdown-text-area" id="input-create-answer-content"></textarea>
     </div>
     <input type="submit" class="btn btn-default" id="button-create-answer" value="提交" style="float: right;">
     <% }  %>

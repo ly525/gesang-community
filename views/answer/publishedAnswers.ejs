@@ -1,28 +1,44 @@
 <div id="publishedAnswersArea">
     <% if (question.answers && question.answers.length > 0 ){ %>
     <% question.answers.forEach(function (answer, index) { %>
+    <div class="question-answer-item">
+        <div class="panel panel-default">
 
+            <div class="panel-heading">
+                <p class="panel-title">
 
-    <div class="panel panel-default">
-
-        <div class="panel-heading">
-            <p class="panel-title">
-
-                <strong><a href="/user/u/<%= answer.author_id %>">
-                        <%= answer.author.nickname %>
-                    </a>,</strong>
+                    <strong><a href="/user/u/<%= answer.author_id %>">
+                            <%= answer.author.nickname %>
+                        </a>,</strong>
 
                 <span><small> &nbsp;&nbsp;&nbsp;<%= answer.author.signature %>
-                        &nbsp;&nbsp;&nbsp;回复于 <%= answer.create_at_ago() %></small></span>
-                <span style=" float: right"><small><a href=""><span class="glyphicon glyphicon-thumbs-up active"></span></a>  <%= answer.likes.length%>人赞</small> <img class="text-right" src="<%= answer.author.avatarUrl %>" style="width: 25px;height: 25px;" >
+                    </small></span>
+                <span style=" float: right"><img class="text-right" src="<%= answer.author.avatarUrl %>" style="width: 20px;height: 20px;" >
 </span>
-            </p>
+                </p>
 
-        </div>
-        <div class="panel-body">
-            <%- answer.content %>
+            </div>
+            <div class="panel-body">
+                <%- answer.content %>
+            </div>
+            <div class="panel-body">
+                <small>回复于 <%= answer.create_at_ago() %> &nbsp;&nbsp;&nbsp;
+                    <span class="like-total" total="<%= answer.likes.length%>">
+                        <%= answer.likes.length%>
+                    人赞
+                    </span>
+                    <a href="javascript:;" class="right-small-button" ><span title="赞" class="glyphicon glyphicon-thumbs-up"></span></a>
+                </small>
+                <a href="javascript:;" class="right-small-button" ><span title="评论" class="glyphicon glyphicon-comment"  ></span></a>
+            </div>
+            <div class="panel-body comment-off">
+                <textarea class="form-control" rows="3" placeholder="写下你的评论" ></textarea>
+                <button type="button" class="btn btn-primary right-small-button">评论</button>
+                <button type="button" class="btn btn-default btn-sm right-small-button cancel-comment">取消</button>
+            </div>
         </div>
     </div>
+
 
 
     <% }) %>

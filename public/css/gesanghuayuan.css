@@ -256,14 +256,30 @@ p.brief-introduction {
 
 }
 
-.question-nav   a {
+.question-nav a {
     padding: 20px;
     border-bottom: solid #fff 3px;
 
 }
 
-.question-nav  a:hover {
+.question-nav a:hover {
     border-bottom: solid #40d2b1 3px;
     text-decoration: none;
 
+}
+
+/* 评论相关样式*/
+/* 发表评论按钮和取消按钮 */
+.right-small-button {
+    float: right; /*向右靠齐*/
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comment-on {
+    display: block;
+}
+
+.comment-off {
+    display: none;
 }
