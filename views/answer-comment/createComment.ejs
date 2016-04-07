@@ -1,0 +1,6 @@
+<div class="panel-body comment-off">
+    <%- include ../answer-comment/publishedComments %>
+    <textarea class="form-control"  rows="3" placeholder="写下你的评论" ></textarea>
+    <button type="button" class="btn btn-primary right-small-button create-answer-comment" target="/comment/<%=answer._id%>/create">评论</button>
+    <button type="button" class="btn btn-default btn-sm right-small-button cancel-comment">取消</button>
+</div>

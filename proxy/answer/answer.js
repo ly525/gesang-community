@@ -72,3 +72,13 @@ exports.getAnswersByQuestionId = function (question_id, callback) {
         }
     });
 };
+
+exports.getAnswerWithoutUserById = function (answer_id, callback) {
+    if (!answer_id) return callback(null, null);
+    Answer.findOne({_id: answer_id}, function (err, answer) {
+        if (err) return callback(err);
+        if (!answer) return callback(null, null);
+        return callback(null, answer);
+    });
+
+};

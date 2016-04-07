@@ -1,0 +1,38 @@
+<div>
+
+    <table class="table">
+        <caption>评论区</caption>
+        <thead>
+        </thead>
+        <tbody>
+        <tr>
+            <th >
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<%=user.avatarUrl %>" data-holder-rendered="true" style="width: 30px; height: 30px;">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading">
+                            <strong>
+                                <a href="/user/u/<%= answer.author_id %>">
+                                    <%= answer.author.nickname %>
+                                </a>,
+                            </strong>
+                            <small> &nbsp;&nbsp;&nbsp;<%= answer.author.signature %>
+                            </small>
+                        </h6>
+                        <p>评论内容</p>
+                        <h6 class="media-heading"><%= answer.create_at_ago() %></h6>
+                    </div>
+                </div>
+
+            </th>
+
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>

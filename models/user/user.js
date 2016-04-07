@@ -17,6 +17,7 @@ var UserSchema = new Schema({
     score                : {type: Number, default: 0},
     article_count        : {type: Number, default: 0},
     reply_count          : {type: Number, default: 0},
+    comment_count        : {type: Number, default: 0},
     follower_count       : {type: Number, default: 0},
     be_follower_count    : {type: Number, default: 0},
     collect_tag_count    : {type: Number, default: 0},

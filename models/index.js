@@ -19,6 +19,7 @@ require('./connection/article_collector');
 require('./connection/article_liker');
 require('./question/question');
 require('./answer/answer');
+require('./answer/answer_comment');
 
 exports.User             = mongoose.model('User');
 exports.UserFollower     = mongoose.model('UserFollower');
@@ -28,3 +29,4 @@ exports.ArticleCollector = mongoose.model('ArticleCollector');
 exports.ArticleLiker     = mongoose.model('ArticleLiker');
 exports.Question         = mongoose.model('Question');
 exports.Answer           = mongoose.model('Answer');
+exports.AnswerComment           = mongoose.model('AnswerComment');

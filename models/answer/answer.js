@@ -4,15 +4,16 @@ var BaseModel = require('./../base_model');
 var ObjectId  = Schema.ObjectId;
 
 var AnswerSchema = new Schema({
-    content    : {type: String},
-    question_id: {type: ObjectId},
-    author_id  : {type: ObjectId},
-    reply_id   : {type: ObjectId},
-    create_at  : {type: Date, default: Date.now},
-    update_at  : {type: Date, default: Date.now},
-    likes      : [Schema.Types.ObjectId],
-    dislikes   : [Schema.Types.ObjectId],
-    deleted    : {type: Boolean, default: false}
+    content      : {type: String},
+    question_id  : {type: ObjectId},
+    author_id    : {type: ObjectId},
+    reply_id     : {type: ObjectId},
+    create_at    : {type: Date, default: Date.now},
+    update_at    : {type: Date, default: Date.now},
+    likes        : [Schema.Types.ObjectId],
+    dislikes     : [Schema.Types.ObjectId],
+    deleted      : {type: Boolean, default: false},
+    comment_count: {type: Number, default: 0}
 });
 
 AnswerSchema.plugin(BaseModel);
