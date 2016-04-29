@@ -185,7 +185,7 @@ article {
     color: white;
     text-align: center;
     min-height: 400px;
-    background: #aaa url("http://localhost:8000/img/search_background.jpg");
+    background: #aaa url("/img/search_background.jpg");
     background-size: cover;
 
 }
